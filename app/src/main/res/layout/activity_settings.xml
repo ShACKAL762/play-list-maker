@@ -58,7 +58,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
 
-                android:layout_marginEnd="6dp"
+
                 app:thumbTint="@color/ya_text_grey"
                 app:trackTint="@color/ya_light_gray"
                 android:fontFamily="@font/ys_display_regular"
