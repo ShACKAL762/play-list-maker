@@ -7,21 +7,13 @@
     android:background="@color/ya_blue"
     android:orientation="vertical">
 
-
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Title"
             android:layout_marginStart="16dp"
             android:layout_marginTop="14dp"
-            android:gravity="top"
+
             android:text="@string/app_name"
-            android:fontFamily="@font/ys_display_medium"
-            android:letterSpacing="0"
-            android:textColor="@color/ya_white"
-            android:textSize="@dimen/ys_text_22">
-
-        </TextView>
-
+            android:textColor="@color/ya_white"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,6 +27,7 @@
             android:id="@+id/find_button"
             android:text="@string/find"
             app:icon="@drawable/ic_find"
+            android:layout_marginTop="40dp"
             style="@style/BigButton"
             />
 
@@ -54,9 +47,5 @@
              />
 
     </LinearLayout>
-
-
-
-
 </LinearLayout>
 
