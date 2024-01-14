@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BigButton" parent="Widget.Material3.Button.UnelevatedButton">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="backgroundTint">@color/ya_white</item>
+        <item name="cornerRadius">@dimen/button_radius</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/ya_black</item>
+        <item name="android:textSize">@dimen/ys_text_22</item>
+        <item name="android:letterSpacing">0</item>
+
+
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/icon_padding</item>
+        <item name="iconSize">@dimen/icon_size_24x24</item>
+        <item name="iconTint">@color/ya_black</item>
+
+    </style>
+</resources>
