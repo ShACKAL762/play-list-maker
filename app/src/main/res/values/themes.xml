@@ -2,12 +2,16 @@
 <resources>
     <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/yp_white</item>
-        <item name="colorPrimaryVariant">@color/yp_blue</item>
+        <!-- background. -->
+        <item name="colorPrimary">@color/yp_blue</item>
+        <!-- second background. -->
+        <item name="colorPrimaryVariant">@color/yp_white</item>
+        <!-- text second background. -->
         <item name="colorOnPrimary">@color/yp_black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/yp_white</item>
-        <item name="colorSecondaryVariant">@color/yp_light_grey</item>
+        <item name="colorSecondary">@color/yp_light_grey</item>
+        <item name="colorSecondaryVariant">@color/yp_text_grey</item>
+        <!-- icons. -->
         <item name="colorOnSecondary">@color/yp_text_grey</item>
 
         <item name="android:textColor">@color/yp_black</item>
