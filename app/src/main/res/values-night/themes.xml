@@ -3,17 +3,15 @@
     <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/yp_white</item>
-        <item name="colorPrimaryVariant">@color/yp_blue</item>
-        <item name="colorOnPrimary">@color/yp_black</item>
+        <item name="colorPrimaryVariant">@color/yp_black</item>
+        <item name="colorOnPrimary">@color/yp_text_grey</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/yp_white</item>
-        <item name="colorSecondaryVariant">@color/yp_light_grey</item>
-        <item name="colorOnSecondary">@color/yp_text_grey</item>
+        <item name="colorSecondary">@color/yp_black</item>
+        <item name="colorSecondaryVariant">@color/yp_blue</item>
+        <item name="colorOnSecondary">@color/yp_white</item>
 
-        <item name="android:textColor">@color/yp_black</item>
 
-        <item name="colorSwitchThumbNormal">@color/switch_thumb</item>
-
+        <item name="android:textColor">@color/yp_white</item>
         <!-- Status bar color. -->
 
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>

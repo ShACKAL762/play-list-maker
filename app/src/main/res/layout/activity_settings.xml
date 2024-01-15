@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/ya_white"
+    android:background="?attr/colorSecondary"
     android:orientation="vertical">
 
     <LinearLayout
@@ -24,7 +24,6 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:text="@string/settings"
-            android:textColor="@color/ya_black"
             >
 
         </TextView>
@@ -38,18 +37,17 @@
         android:paddingStart="16dp"
         android:paddingEnd="12dp">
 
-                <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/theme_switch"
-                android:layout_width="match_parent"
-                android:layout_height="61dp"
-                android:gravity="center_vertical"
-                app:thumbTint="@color/ya_text_grey"
-                app:trackTint="@color/ya_light_gray"
-                android:fontFamily="@font/ys_display_regular"
-                android:text="@string/dark_theme"
-                android:textColor="@color/black"
-                android:textSize="@dimen/ys_text_16"
-                />
+        <androidx.appcompat.widget.SwitchCompat
+            style="@style/Switch"
+            android:id="@+id/theme_switch"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:fontFamily="@font/ys_display_regular"
+            android:gravity="center_vertical"
+            android:text="@string/dark_theme"
+            android:textSize="@dimen/ys_text_16"
+            app:thumbTint="@color/switch_thumb"
+            app:trackTint="@color/switch_track" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -57,19 +55,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:fontFamily="@font/ys_display_regular"
-                android:text="@string/share_app"
-                android:textColor="@color/black"
-                android:textSize="@dimen/ys_text_16"
-                />
+                style="@style/TextSettings"
+                android:text="@string/share_app" />
 
             <ImageView
-                android:layout_width="@dimen/icon_size_24x24"
-                android:layout_height="@dimen/icon_size_24x24"
-                android:layout_gravity="end|center_vertical"
+                style="@style/Icon"
                 android:src="@drawable/ic_share"
                  />
 
@@ -81,20 +71,13 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:fontFamily="@font/ys_display_regular"
                 android:text="@string/support_send"
-                android:textColor="@color/black"
-                android:textSize="@dimen/ys_text_16"
+                style="@style/TextSettings"
 
                 />
 
             <ImageView
-                android:layout_width="@dimen/icon_size_24x24"
-                android:layout_height="@dimen/icon_size_24x24"
-                android:layout_gravity="end|center_vertical"
+                style="@style/Icon"
                 android:src="@drawable/ic_support" />
 
 
@@ -106,20 +89,12 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:fontFamily="@font/ys_display_regular"
+                style="@style/TextSettings"
                 android:text="@string/EULA"
-                android:textColor="@color/black"
-                android:textSize="@dimen/ys_text_16"
-
                 />
 
             <ImageView
-                android:layout_width="@dimen/icon_size_24x24"
-                android:layout_height="@dimen/icon_size_24x24"
-                android:layout_gravity="end|center_vertical"
+                style="@style/Icon"
                 android:src="@drawable/ic_forward" />
 
 
