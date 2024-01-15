@@ -24,7 +24,7 @@
             android:name=".LibraryActivity"
             android:exported="false" />
         <activity
-            android:name=".FindActivity"
+            android:name=".SearchActivity"
             android:exported="false" />
 
         <activity

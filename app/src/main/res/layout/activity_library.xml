@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/yp_white"
+    android:background="?attr/colorPrimaryVariant"
     android:orientation="vertical">
 
     <LinearLayout
@@ -22,7 +22,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:text="@string/library"
-            android:textColor="@color/yp_black">
+            android:textColor="?attr/colorOnPrimary">
         </TextView>
     </LinearLayout>
 

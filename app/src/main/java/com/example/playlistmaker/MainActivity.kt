@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         val settingsButton = findViewById<Button>(R.id.settings_button)
 
         findButton.setOnClickListener {
-            startActivity(Intent(this,FindActivity::class.java))
+            startActivity(Intent(this,SearchActivity::class.java))
         }
         libraryButton.setOnClickListener {
             startActivity(Intent(this,LibraryActivity::class.java))

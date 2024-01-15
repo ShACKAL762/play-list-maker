@@ -17,7 +17,7 @@
         <item name="android:textColor">@color/yp_white</item>
         <!-- Status bar color. -->
 
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
