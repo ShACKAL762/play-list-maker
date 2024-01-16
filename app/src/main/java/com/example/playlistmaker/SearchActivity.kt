@@ -13,11 +13,11 @@ import android.widget.ImageView
 
 
 class SearchActivity : AppCompatActivity() {
+    private lateinit var searchLineText: String
     private lateinit var searchLine:EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
 
         val backButton = findViewById<ImageButton>(R.id.arrow_back)
         val clearButton = findViewById<ImageView>(R.id.search_cleaner)
@@ -29,6 +29,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchLineText = s.toString()
                 clearButton.visibility = clearButtonVisibility(s)
 
             }
@@ -48,6 +49,10 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
     }
+    override fun onResume() {
+        super.onResume()
+        searchLine.setSelection(searchLine.length())
+    }
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE
@@ -61,18 +66,18 @@ class SearchActivity : AppCompatActivity() {
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        println("save")
-        outState.putString(SEARCH_TEXT, searchLine.text.toString())
+        outState.putString(SEARCH_TEXT, searchLineText)
     }
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        println("restore")
         searchLine.setText(savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF))
     }
     companion object{
        const val SEARCH_TEXT = "SEARCH_TEXT"
        const val TEXT_DEF = ""
    }
+
+
 
 
 }
