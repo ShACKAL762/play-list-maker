@@ -28,7 +28,7 @@
 
     </LinearLayout>
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_marginStart="16dp"
@@ -40,7 +40,6 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_marginStart="14dp"
-                android:layout_marginEnd="8dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_search_line">
 
@@ -59,7 +58,7 @@
                 android:layout_gravity="end"
                 android:visibility="gone"
                 android:src="@drawable/ic_clean_button"/>
-        </LinearLayout>
+        </FrameLayout>
 
 
 
