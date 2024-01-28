@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimaryVariant"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:padding="4dp"
+        android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/arrow_back"
+                android:layout_width="@dimen/back_button"
+                android:layout_height="@dimen/back_button"
+                style="@style/BackArrowButton" />
+
+        <TextView
+            style="@style/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:textColor="?attr/colorOnPrimary"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/find"
+            >
+        </TextView>
+
+
+    </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/search_line">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="14dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_search_line">
+
+            </ImageView>
+
+            <EditText
+                android:id="@+id/search_line"
+                style="@style/SearchLine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="36dp"
+                android:gravity="center_vertical"
+                android:hint="@string/find" />
+            <ImageView
+                android:id="@+id/search_cleaner"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                android:src="@drawable/ic_clean_button"/>
+        </FrameLayout>
+
+
+
+</LinearLayout>
+

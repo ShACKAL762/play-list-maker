@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/yp_black</item>
+        <!-- second background. -->
+        <item name="colorPrimaryVariant">@color/yp_black</item>
+        <!-- text second background. -->
+        <item name="colorOnPrimary">@color/yp_white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/yp_white</item>
+        <item name="colorSecondaryVariant">@color/yp_black</item>
+        <!-- icons. -->
+        <item name="colorOnSecondary">@color/yp_white</item>
+
+
+        <item name="android:textColor">@color/yp_white</item>
+        <!-- Status bar color. -->
+
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <!-- Customize your theme here. -->
+    </style>
+</resources>
