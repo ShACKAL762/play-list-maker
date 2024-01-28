@@ -31,7 +31,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .with(itemView)
             .load(track.artworkUrl100)
             .fitCenter()
-            .placeholder(R.drawable.ic_clean_button)
+            .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(2))
             .into(trackImageView)
 
