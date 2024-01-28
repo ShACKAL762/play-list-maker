@@ -17,6 +17,8 @@
 
         <ImageButton
             android:id="@+id/arrow_back"
+            android:layout_width="@dimen/back_button"
+            android:layout_height="@dimen/back_button"
             style="@style/BackArrowButton" />
 
         <TextView
@@ -24,6 +26,9 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:text="@string/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="top"
             android:textColor="?attr/colorOnPrimary"
             >
 
@@ -57,11 +62,17 @@
             android:orientation="horizontal">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 style="@style/TextSettings"
                 android:text="@string/share_app" />
 
             <ImageView
-                style="@style/Icon"
+                android:layout_width="@dimen/icon_size_24x24"
+                android:layout_height="@dimen/icon_size_24x24"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="12dp"
                 android:src="@drawable/ic_share"
                  />
 
@@ -75,12 +86,18 @@
 
             <TextView
                 android:text="@string/support_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 style="@style/TextSettings"
 
                 />
 
             <ImageView
-                style="@style/Icon"
+                android:layout_width="@dimen/icon_size_24x24"
+                android:layout_height="@dimen/icon_size_24x24"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="12dp"
                 android:src="@drawable/ic_support" />
 
 
@@ -94,11 +111,17 @@
 
             <TextView
                 style="@style/TextSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:text="@string/EULA"
                 />
 
             <ImageView
-                style="@style/Icon"
+                android:layout_width="@dimen/icon_size_24x24"
+                android:layout_height="@dimen/icon_size_24x24"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="12dp"
                 android:src="@drawable/ic_forward" />
 
 

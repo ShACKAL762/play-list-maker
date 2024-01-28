@@ -14,10 +14,15 @@
 
             <ImageButton
                 android:id="@+id/arrow_back"
+                android:layout_width="@dimen/back_button"
+                android:layout_height="@dimen/back_button"
                 style="@style/BackArrowButton" />
 
         <TextView
             style="@style/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="top"
             android:textColor="?attr/colorOnPrimary"
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
@@ -47,8 +52,12 @@
 
             <EditText
                 android:id="@+id/search_line"
-                android:hint="@string/find"
-                style="@style/SearchLine"/>
+                style="@style/SearchLine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="36dp"
+                android:gravity="center_vertical"
+                android:hint="@string/find" />
             <ImageView
                 android:id="@+id/search_cleaner"
                 android:layout_width="40dp"
