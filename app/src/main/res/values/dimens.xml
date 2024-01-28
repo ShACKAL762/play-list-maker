@@ -2,6 +2,7 @@
 <resources>
     <dimen name="ys_text_22">22sp</dimen>
     <dimen name="ys_text_16">16sp</dimen>
+    <dimen name="ys_text_11">11sp</dimen>
     <dimen name="indent_between_buttons">16dp</dimen>
     <dimen name="indent_start_end">16dp</dimen>
     <dimen name="button_radius">16dp</dimen>
