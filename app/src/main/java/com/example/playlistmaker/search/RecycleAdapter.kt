@@ -1,9 +1,9 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.example.playlistmaker.R
 
 class RecycleAdapter (private val list :List<Track>) : RecyclerView.Adapter<TrackViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
