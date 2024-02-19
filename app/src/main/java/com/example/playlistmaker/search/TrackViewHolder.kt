@@ -15,6 +15,8 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var trackArtistName: TextView
     private var trackName: TextView
     private var trackTime: TextView
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
+    private val corner by lazy { itemView.resources.getDimension(R.dimen.corner_radius).toInt() }
 
     init {
         trackImageView = itemView.findViewById(R.id.track_image)
@@ -28,10 +30,11 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackArtistName.text = track.artistName
         if (track.trackTimeMillis != null)
             trackTime.text =
-                SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis.toInt())
-        else trackTime.text = trackTime.resources.getText(R.string.default_track_time)
+                dateFormat.format(track.trackTimeMillis.toInt())
+        else trackTime.text =
+            trackTime.resources.getText(R.string.default_track_time)
 
-        val corner = itemView.resources.getDimension(R.dimen.corner_radius).toInt()
+
         Glide
             .with(itemView)
             .load(track.artworkUrl100)

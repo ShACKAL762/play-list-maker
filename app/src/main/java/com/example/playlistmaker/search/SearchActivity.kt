@@ -33,7 +33,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var lostConnect: LinearLayout
     private lateinit var iApi: ItunesApi
     private val itunesURL = "https://itunes.apple.com"
-    val tracks = ArrayList<Track>()
+    val tracks = mutableListOf<Track>()
     private val retrofit = Retrofit.Builder()
         .baseUrl(itunesURL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -51,7 +51,6 @@ class SearchActivity : AppCompatActivity() {
         searchLine = findViewById(R.id.search_line)
         searchLineText = ""
         recyclerViewInit()
-
 
 
         val simpleTextWatcher = object : TextWatcher {
@@ -91,8 +90,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun clearRecycleView() {
-            tracks.clear()
-            recyclerView.adapter?.notifyDataSetChanged()
+        tracks.clear()
+        recyclerView.adapter?.notifyDataSetChanged()
 
     }
 
@@ -105,14 +104,15 @@ class SearchActivity : AppCompatActivity() {
                     notFound.isVisible = false
                     lostConnect.isVisible = false
                     tracks.clear()
-                    if (response.body()?.results?.isNotEmpty() == true) {
+
+                    val result = response.body()?.results
+                    if (result?.isNotEmpty() == true) {
                         recyclerView.isVisible = true
                         tracks.addAll(response.body()?.results!!)
                         recyclerView.adapter?.notifyDataSetChanged()
                     }
                 }
                 if (tracks.isEmpty()) {
-                    tracks.clear()
                     recyclerView.adapter?.notifyDataSetChanged()
                     recyclerView.isVisible = false
                     lostConnect.isVisible = false
