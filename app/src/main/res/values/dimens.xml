@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="ys_text_22">22sp</dimen>
+    <dimen name="ys_text_19">19sp</dimen>
     <dimen name="ys_text_16">16sp</dimen>
+    <dimen name="ys_text_14">14sp</dimen>
     <dimen name="ys_text_11">11sp</dimen>
     <dimen name="indent_between_buttons">16dp</dimen>
     <dimen name="indent_start_end">16dp</dimen>
@@ -10,4 +12,5 @@
     <dimen name="icon_padding">8dp</dimen>
     <dimen name="settings_line_height">60dp</dimen>
     <dimen name="back_button">48dp</dimen>
+    <dimen name="corner_radius">3dp</dimen>
 </resources>
