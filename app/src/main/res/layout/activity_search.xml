@@ -41,13 +41,15 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/search_line">
+
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginStart="14dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_gravity="center_vertical"
+                android:layout_marginStart="12dp"
                 android:src="@drawable/ic_search_line">
 
             </ImageView>
@@ -61,9 +63,9 @@
                 android:gravity="center_vertical"
                 android:hint="@string/find"
                 android:imeOptions="actionDone"
-                android:singleLine="true"/> />
+                android:singleLine="true"/>
             <ImageView
-                android:id="@+id/search_cleaner"
+                android:id="@+id/search_line_cleaner"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:paddingStart="12dp"
@@ -72,14 +74,40 @@
                 android:visibility="gone"
                 android:src="@drawable/ic_clean_button"/>
         </FrameLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/search_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/you_were_looking_for"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="44dp"
+            android:visibility="gone"
+            style="@style/SearchMessage"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="24dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp"
         android:background="@android:color/transparent"
-        android:visibility="visible"
+        android:visibility="gone"
         tool:visibility="gone"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clean_history_button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/clean_history"
+            android:visibility="gone"
+            style="@style/SearchMessageButton">
+        </com.google.android.material.button.MaterialButton>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/not_found_message"
@@ -100,7 +128,7 @@
             android:text="@string/not_found"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginTop="16dp"
-            style="@style/SearchErrorMessage"/>
+            style="@style/SearchMessage"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/lost_connection_message"
@@ -121,7 +149,7 @@
             android:text="@string/lost_connection"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginTop="16dp"
-            style="@style/SearchErrorMessage"/>
+            style="@style/SearchMessage"/>
         <TextView
             android:layout_width="312dp"
             android:layout_height="wrap_content"
@@ -129,27 +157,14 @@
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            style="@style/SearchErrorMessage"/>
+            style="@style/SearchMessage"/>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:backgroundTint="?attr/colorOnPrimary"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp"
-            android:fontFamily="@font/ys_display_medium"
             android:text="@string/refresh"
-            android:textSize="@dimen/ys_text_14"
-            android:letterSpacing="0"
-            android:textAllCaps="false"
-            android:maxLines="1"
             android:padding="1dp"
-            android:textColor="?attr/colorPrimaryVariant"
-            android:insetTop="0dp"
-            android:insetLeft="0dp"
-            android:insetRight="0dp"
-            android:insetBottom="0dp"
-            app:cornerRadius="54dp">
+            style="@style/SearchMessageButton">
         </com.google.android.material.button.MaterialButton>
 
     </LinearLayout>

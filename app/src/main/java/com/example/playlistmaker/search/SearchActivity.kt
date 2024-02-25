@@ -12,11 +12,13 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.google.android.material.button.MaterialButton
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,43 +28,63 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var searchLineText: String
+
     private lateinit var searchLine: EditText
     private lateinit var recyclerView: RecyclerView
-    private lateinit var refreshButton: MaterialButton
     private lateinit var notFound: LinearLayout
     private lateinit var lostConnect: LinearLayout
+    private lateinit var searchMessage: TextView
+
+    private lateinit var refreshButton: MaterialButton
+    private lateinit var cleanHistoryButton: MaterialButton
+    private lateinit var clearButton:ImageView
+    private lateinit var backButton:ImageButton
+
     private lateinit var iApi: ItunesApi
     private val itunesURL = "https://itunes.apple.com"
-    val tracks = mutableListOf<Track>()
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(itunesURL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    private var tracks = mutableListOf<Track>()
+    private val searchHistory = SearchHistory()
+    private val retrofit =
+        Retrofit.Builder().baseUrl(itunesURL).addConverterFactory(GsonConverterFactory.create())
+            .build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
         iApi = retrofit.create(ItunesApi::class.java)
+
+        clearButton = findViewById(R.id.search_line_cleaner)
+        backButton = findViewById(R.id.arrow_back)
+        searchMessage = findViewById(R.id.search_message)
+        cleanHistoryButton = findViewById(R.id.clean_history_button)
         refreshButton = findViewById(R.id.refresh)
         notFound = findViewById(R.id.not_found_message)
         lostConnect = findViewById(R.id.lost_connection_message)
-        val backButton = findViewById<ImageButton>(R.id.arrow_back)
-        val clearButton = findViewById<ImageView>(R.id.search_cleaner)
         searchLine = findViewById(R.id.search_line)
+
         searchLineText = ""
+
         recyclerViewInit()
 
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // empty
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchLineText = s.toString()
                 clearButton.isVisible = clearButtonVisibility(s)
 
+                when (searchLine.hasFocus() && s?.isEmpty() == true && searchHistory.getHistoryList(
+                    applicationContext
+                ).size > 0) {
 
+                    true -> showHistory()
+
+                    false -> unShowHistory()
+
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -71,10 +93,18 @@ class SearchActivity : AppCompatActivity() {
         }
         searchLine.addTextChangedListener(simpleTextWatcher)
 
+
+        searchLine.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && searchLine.text.isEmpty()
+                && searchHistory.getHistoryList(applicationContext).size > 0) {
+                showHistory()
+            }
+        }
+
         clearButton.setOnClickListener {
             hideKeyBoard(currentFocus)
             searchLine.setText("")
-            clearRecycleView()
+            showHistory()
 
         }
         backButton.setOnClickListener {
@@ -86,7 +116,43 @@ class SearchActivity : AppCompatActivity() {
             }
             true
         }
+
         refreshButton.setOnClickListener { search() }
+
+        cleanHistoryButton.setOnClickListener {
+            getSharedPreferences("history", MODE_PRIVATE).edit()
+                .putString("history", Gson().toJson(History(mutableListOf()), History::class.java))
+                .apply()
+            clearRecycleView()
+            unShowHistory()
+        }
+
+
+    }
+    override fun onResume() {
+        super.onResume()
+        searchLine.setSelection(searchLine.length())
+    }
+
+    private fun unShowHistory() {
+        cleanHistoryButton.isVisible = false
+        searchMessage.isVisible = false
+        recyclerView.adapter = RecycleAdapter(tracks)
+        tracks.clear()
+        recyclerView.adapter?.notifyDataSetChanged()
+        recyclerView.isVisible = true
+        
+    }
+
+    private fun showHistory() {
+        cleanHistoryButton.isVisible = true
+        searchMessage.isVisible = true
+        recyclerView.adapter = HistoryAdapter(tracks)
+        tracks.clear()
+        tracks.addAll(searchHistory.getHistoryList(this))
+        recyclerView.adapter?.notifyDataSetChanged()
+        recyclerView.isVisible = true
+
     }
 
     private fun clearRecycleView() {
@@ -131,16 +197,10 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-
     private fun recyclerViewInit() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = RecycleAdapter(tracks)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        searchLine.setSelection(searchLine.length())
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Boolean {

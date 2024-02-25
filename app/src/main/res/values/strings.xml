@@ -18,5 +18,7 @@
     <string name="message_lost_connection">Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="refresh">Обновить</string>
     <string name="default_track_time">--:--</string>
+    <string name="you_were_looking_for">Вы искали</string>
+    <string name="clean_history">Очистить историю</string>
 
 </resources>
