@@ -25,8 +25,7 @@ class HistoryAdapter(private val list: List<Track>) : RecyclerView.Adapter<Track
         holder.bind(itemView)
 
         holder.itemView.setOnClickListener {
-            //todo delete Toast
-        Toast.makeText(it.context,"Тыкнут ${itemView.trackName}",Toast.LENGTH_SHORT).show()
+
 
 
         }

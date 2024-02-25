@@ -31,8 +31,7 @@ class SearchHistory {
         historyList.add(0, itemView)
         while (historyList.size > 10)
             historyList.removeLast()
-        //todo delete Toast
-        Toast.makeText(context, "Добавлен ${itemView.trackName}", Toast.LENGTH_SHORT).show()
+
 
         context.getSharedPreferences(historyPref, Context.MODE_PRIVATE).edit()
             .putString(historyPref, Gson().toJson(History(historyList), History::class.java)).apply()
