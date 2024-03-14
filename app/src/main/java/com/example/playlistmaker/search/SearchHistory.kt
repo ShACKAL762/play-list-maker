@@ -5,6 +5,7 @@ import android.widget.Toast
 import com.google.gson.Gson
 
 class SearchHistory {
+    val historyMaxSize = 10
     fun getHistoryList(context: Context): MutableList<Track> {
         val history = context.getSharedPreferences(historyPref, Context.MODE_PRIVATE)
             .getString(historyPref, "")
@@ -29,7 +30,7 @@ class SearchHistory {
         }
 
         historyList.add(0, itemView)
-        while (historyList.size > 10)
+        while (historyList.size > historyMaxSize)
             historyList.removeLast()
 
 

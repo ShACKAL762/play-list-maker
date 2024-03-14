@@ -22,7 +22,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackImageView = itemView.findViewById(R.id.track_image)
         trackArtistName = itemView.findViewById(R.id.author_name)
         trackName = itemView.findViewById(R.id.track_name)
-        trackTime = itemView.findViewById(R.id.track_time)
+        trackTime = itemView.findViewById(R.id.time)
     }
 
     fun bind(track: Track) {

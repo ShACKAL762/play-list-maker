@@ -13,5 +13,10 @@
     <dimen name="settings_line_height">60dp</dimen>
     <dimen name="back_button">48dp</dimen>
     <dimen name="corner_radius">3dp</dimen>
+    <dimen name="big_corner_radius">8dp</dimen>
     <dimen name="image_120">120dp</dimen>
+    <dimen name="space_4">4dp</dimen>
+    <dimen name="space_24">24dp</dimen>
+    <dimen name="zero">0dp</dimen>
+    <dimen name="player_buttons">52dp</dimen>
 </resources>

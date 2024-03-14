@@ -132,6 +132,9 @@ class SearchActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         searchLine.setSelection(searchLine.length())
+        updateHistory()
+
+
     }
 
     private fun unShowHistory() {
@@ -147,12 +150,15 @@ class SearchActivity : AppCompatActivity() {
     private fun showHistory() {
         cleanHistoryButton.isVisible = true
         searchMessage.isVisible = true
+        updateHistory()
+        recyclerView.isVisible = true
+
+    }
+    private fun updateHistory(){
         recyclerView.adapter = HistoryAdapter(tracks)
         tracks.clear()
         tracks.addAll(searchHistory.getHistoryList(this))
         recyclerView.adapter?.notifyDataSetChanged()
-        recyclerView.isVisible = true
-
     }
 
     private fun clearRecycleView() {

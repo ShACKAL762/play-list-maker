@@ -20,5 +20,11 @@
     <string name="default_track_time">--:--</string>
     <string name="you_were_looking_for">Вы искали</string>
     <string name="clean_history">Очистить историю</string>
+    <string name="track_time">Длительность</string>
+    <string name="album">Альбом</string>
+    <string name="style">Жанр</string>
+    <string name="year">Год</string>
+    <string name="country">Страна</string>
+    <string name="play_progress">00:00</string>
 
 </resources>
