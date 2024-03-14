@@ -2,34 +2,31 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-     android:backgroundTint="@android:color/transparent">
+    android:backgroundTint="@android:color/transparent">
 
     <ImageView
         android:id="@+id/track_image"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="13dp"
-
-         />
+        android:layout_marginStart="13dp"/>
 
     <TextView
         android:id="@+id/track_name"
+        style="@style/TrackText"
         android:layout_width="250dp"
         android:layout_height="19dp"
         android:layout_marginStart="66dp"
         android:layout_marginTop="14dp"
-        style="@style/TrackText"
         android:textColor="?android:textColor"
-        android:textSize="@dimen/ys_text_16"
-         />
+        android:textSize="@dimen/ys_text_16" />
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_marginEnd="44dp"
         android:layout_height="13dp"
-        android:layout_marginTop="34dp"
         android:layout_marginStart="66dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="44dp"
         android:orientation="horizontal">
 
         <TextView
@@ -37,10 +34,11 @@
 
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-
-            android:maxLines="1"
             android:ellipsize="end"
+            android:maxLines="1"
             style="@style/TrackText"/>
+
+
         <ImageView
             android:layout_width="13dp"
             android:layout_height="13dp"
@@ -51,15 +49,15 @@
 
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            style="@style/TrackText"
-             />
+            style="@style/TrackText"/>
     </LinearLayout>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
+        android:layout_gravity="end"
         android:layout_marginTop="18dp"
-        android:src="@drawable/ic_forward"
-        android:layout_gravity="end"/>
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_forward" />
 
 </FrameLayout>

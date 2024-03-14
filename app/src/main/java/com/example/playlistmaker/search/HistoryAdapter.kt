@@ -10,7 +10,7 @@ import com.example.playlistmaker.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class RecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
+class HistoryAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
         return TrackViewHolder(view)
@@ -25,7 +25,9 @@ class RecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<Track
         holder.bind(itemView)
 
         holder.itemView.setOnClickListener {
-            SearchHistory().setHistory(it.context, itemView)
+
+
+
         }
     }
 
