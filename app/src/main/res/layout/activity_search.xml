@@ -74,11 +74,19 @@
                 android:visibility="gone"
                 android:src="@drawable/ic_clean_button"/>
         </FrameLayout>
+
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <ProgressBar
+            android:id="@+id/progress_circular"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="140dp"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/search_message"
             android:layout_width="wrap_content"

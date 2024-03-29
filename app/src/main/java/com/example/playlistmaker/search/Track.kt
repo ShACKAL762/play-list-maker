@@ -9,7 +9,8 @@ class Track(
     var releaseDate: String, // Год релиза
     var primaryGenreName: String, // Жанр
     var country: String, // Страна
-    var trackId: String
+    var trackId: String,
+    var previewUrl : String
 
 ) {
     override fun hashCode(): Int {
