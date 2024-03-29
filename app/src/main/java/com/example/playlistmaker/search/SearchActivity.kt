@@ -35,7 +35,7 @@ class SearchActivity : AppCompatActivity() {
         const val SEARCH_TEXT = "SEARCH_TEXT"
         const val TEXT_DEF = ""
 
-        const val SEARCH_DELAY = 1000
+        const val SEARCH_DELAY = 2000
         const val ITUNES_URL = "https://itunes.apple.com"
 
     }
@@ -52,8 +52,8 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var refreshButton: MaterialButton
     private lateinit var cleanHistoryButton: MaterialButton
-    private lateinit var clearButton:ImageView
-    private lateinit var backButton:ImageButton
+    private lateinit var clearButton: ImageView
+    private lateinit var backButton: ImageButton
 
 
     private lateinit var iApi: ItunesApi
@@ -95,9 +95,9 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                writeTextEnd()
                 searchLineText = s.toString()
                 clearButton.isVisible = clearButtonVisibility(s)
+                writeTextEnd()
 
                 when (searchLine.hasFocus() && s?.isEmpty() == true && searchHistory.getHistoryList(
                     applicationContext
@@ -119,7 +119,8 @@ class SearchActivity : AppCompatActivity() {
 
         searchLine.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && searchLine.text.isEmpty()
-                && searchHistory.getHistoryList(applicationContext).size > 0) {
+                && searchHistory.getHistoryList(applicationContext).size > 0
+            ) {
                 showHistory()
             }
         }
@@ -147,17 +148,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun writeTextEnd() {
-            handler.removeCallbacks(searchEvent)
+        handler.removeCallbacks(searchEvent)
         if (searchLine.text.isNotEmpty()) {
             handler.postDelayed(searchEvent, SEARCH_DELAY.toLong())
-            progressBar.isVisible = true
-        }else progressBar.isVisible = false
+        } else progressBar.isVisible = false
     }
 
     override fun onResume() {
         super.onResume()
         searchLine.setSelection(searchLine.length())
-        updateHistory()
 
 
     }
@@ -169,7 +168,7 @@ class SearchActivity : AppCompatActivity() {
         tracks.clear()
         recyclerView.adapter?.notifyDataSetChanged()
         recyclerView.isVisible = true
-        
+
     }
 
     private fun showHistory() {
@@ -177,10 +176,13 @@ class SearchActivity : AppCompatActivity() {
         searchMessage.isVisible = true
         updateHistory()
         recyclerView.isVisible = true
+        lostConnect.isVisible = false
+        notFound.isVisible = false
 
     }
-    private fun updateHistory(){
-        recyclerView.adapter = HistoryAdapter(tracks)
+
+    private fun updateHistory() {
+        recyclerView.adapter = RecycleAdapter(tracks)
         tracks.clear()
         tracks.addAll(searchHistory.getHistoryList(this))
         recyclerView.adapter?.notifyDataSetChanged()
@@ -194,6 +196,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun search() {
 
+        progressBar.isVisible = true
         iApi.search(searchLineText).enqueue(object : Callback<TrackList> {
             override fun onResponse(call: Call<TrackList>, response: Response<TrackList>) {
                 progressBar.isVisible = false
@@ -254,8 +257,4 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         searchLine.setText(savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF))
     }
-
-
-
-
 }
