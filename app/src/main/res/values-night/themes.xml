@@ -16,8 +16,12 @@
 
         <item name="colorTertiary">@color/yp_white</item>
         <item name="android:textColor">@color/yp_white</item>
+
+        <!-- Progress bar color. -->
+        <item name="colorAccent">@color/purple</item>
+
         <!-- Status bar color. -->
-        
+
         <item name="android:statusBarColor">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
     </style>

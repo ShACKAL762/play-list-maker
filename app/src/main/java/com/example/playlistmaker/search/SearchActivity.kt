@@ -3,6 +3,8 @@ package com.example.playlistmaker.search
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -12,6 +14,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +30,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class SearchActivity : AppCompatActivity() {
+
+    private companion object {
+        const val SEARCH_TEXT = "SEARCH_TEXT"
+        const val TEXT_DEF = ""
+
+        const val SEARCH_DELAY = 1000
+        const val ITUNES_URL = "https://itunes.apple.com"
+
+    }
+
+
     private lateinit var searchLineText: String
 
     private lateinit var searchLine: EditText
@@ -34,19 +48,26 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var notFound: LinearLayout
     private lateinit var lostConnect: LinearLayout
     private lateinit var searchMessage: TextView
+    private lateinit var progressBar: ProgressBar
 
     private lateinit var refreshButton: MaterialButton
     private lateinit var cleanHistoryButton: MaterialButton
     private lateinit var clearButton:ImageView
     private lateinit var backButton:ImageButton
 
+
     private lateinit var iApi: ItunesApi
-    private val itunesURL = "https://itunes.apple.com"
+
     private var tracks = mutableListOf<Track>()
     private val searchHistory = SearchHistory()
     private val retrofit =
-        Retrofit.Builder().baseUrl(itunesURL).addConverterFactory(GsonConverterFactory.create())
+        Retrofit.Builder().baseUrl(ITUNES_URL).addConverterFactory(GsonConverterFactory.create())
             .build()
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    private val searchEvent = Runnable { search() }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +83,7 @@ class SearchActivity : AppCompatActivity() {
         notFound = findViewById(R.id.not_found_message)
         lostConnect = findViewById(R.id.lost_connection_message)
         searchLine = findViewById(R.id.search_line)
+        progressBar = findViewById(R.id.progress_circular)
 
         searchLineText = ""
 
@@ -73,6 +95,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                writeTextEnd()
                 searchLineText = s.toString()
                 clearButton.isVisible = clearButtonVisibility(s)
 
@@ -110,14 +133,7 @@ class SearchActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
-        searchLine.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                search()
-            }
-            true
-        }
 
-        refreshButton.setOnClickListener { search() }
 
         cleanHistoryButton.setOnClickListener {
             getSharedPreferences("history", MODE_PRIVATE).edit()
@@ -129,6 +145,15 @@ class SearchActivity : AppCompatActivity() {
 
 
     }
+
+    private fun writeTextEnd() {
+            handler.removeCallbacks(searchEvent)
+        if (searchLine.text.isNotEmpty()) {
+            handler.postDelayed(searchEvent, SEARCH_DELAY.toLong())
+            progressBar.isVisible = true
+        }else progressBar.isVisible = false
+    }
+
     override fun onResume() {
         super.onResume()
         searchLine.setSelection(searchLine.length())
@@ -171,6 +196,7 @@ class SearchActivity : AppCompatActivity() {
 
         iApi.search(searchLineText).enqueue(object : Callback<TrackList> {
             override fun onResponse(call: Call<TrackList>, response: Response<TrackList>) {
+                progressBar.isVisible = false
 
                 if (response.code() == 200) {
                     notFound.isVisible = false
@@ -229,10 +255,7 @@ class SearchActivity : AppCompatActivity() {
         searchLine.setText(savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF))
     }
 
-    private companion object {
-        const val SEARCH_TEXT = "SEARCH_TEXT"
-        const val TEXT_DEF = ""
-    }
+
 
 
 }
