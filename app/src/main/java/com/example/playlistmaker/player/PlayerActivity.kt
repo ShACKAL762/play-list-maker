@@ -21,6 +21,7 @@ class PlayerActivity : AppCompatActivity() {
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
+        private const val TIMER_DELAY_MILLS = 300L
     }
 
     private val mediaPlayer = MediaPlayer()
@@ -31,9 +32,9 @@ class PlayerActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private val time = Runnable {
         playTime.text = currentTime()
-
         timerStart()
     }
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,28 +105,28 @@ class PlayerActivity : AppCompatActivity() {
             playerState = STATE_PREPARED
 
             handler.removeCallbacks(time)
-            playTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(0)
+            playTime.text = dateFormat.format(0)
         }
     }
 
     private fun timerStart() {
-
-        handler.postDelayed(time, 300)
+        handler.postDelayed(time, TIMER_DELAY_MILLS)
 
     }
 
     private fun currentTime(): String? {
-        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+        return dateFormat.format(mediaPlayer.currentPosition)
     }
 
     override fun onPause() {
         mediaPause()
+        handler.removeCallbacks(time)
         super.onPause()
     }
 
     override fun onDestroy() {
         mediaPlayer.release()
-
+        handler.removeCallbacks(time)
         super.onDestroy()
     }
 }

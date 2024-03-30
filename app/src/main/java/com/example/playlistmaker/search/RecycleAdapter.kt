@@ -30,11 +30,13 @@ class RecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<Track
         holder.bind(itemView)
 
         holder.itemView.setOnClickListener {
-            isClickAllowed = false
+            if (isClickAllowed) {
+                isClickAllowed = false
 
-            handler.postDelayed({isClickAllowed = true}, CLICK_DEBOUNCE_DELAY)
-            SearchHistory().setHistory(it.context, itemView)
-            it.context.startActivity(Intent(it.context, PlayerActivity::class.java))
+                handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+                SearchHistory().setHistory(it.context, itemView)
+                it.context.startActivity(Intent(it.context, PlayerActivity::class.java))
+            }
         }
     }
 

@@ -32,11 +32,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SearchActivity : AppCompatActivity() {
 
     private companion object {
-        const val SEARCH_TEXT = "SEARCH_TEXT"
-        const val TEXT_DEF = ""
+        private const val SEARCH_TEXT = "SEARCH_TEXT"
+        private const val TEXT_DEF = ""
 
-        const val SEARCH_DELAY = 2000
-        const val ITUNES_URL = "https://itunes.apple.com"
+        private const val SEARCH_DELAY = 2000
+        private const val ITUNES_URL = "https://itunes.apple.com"
 
     }
 
