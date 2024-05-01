@@ -10,7 +10,7 @@ class TrackListInteractorImp(private val track: TrackUseCaseRepoImp): TrackListI
     }
 
     override fun getTrack(context: Context): Track {
-        return getTrack(context)
+        return track.getTrack(context)
     }
 
 
