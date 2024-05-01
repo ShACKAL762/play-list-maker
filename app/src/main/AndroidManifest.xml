@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LibraryActivity"
+            android:name=".ui.LibraryActivity"
             android:exported="false" />
         <activity
             android:name=".ui.SearchActivity"
