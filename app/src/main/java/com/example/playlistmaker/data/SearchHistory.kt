@@ -1,8 +1,8 @@
 package com.example.playlistmaker.data
 
 import android.content.Context
-import com.example.playlistmaker.presentation.models.History
-import com.example.playlistmaker.presentation.models.Track
+import com.example.playlistmaker.domain.entity.History
+import com.example.playlistmaker.domain.entity.Track
 import com.google.gson.Gson
 
 class SearchHistory {

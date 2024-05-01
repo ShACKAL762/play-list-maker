@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui
+package com.example.playlistmaker.presentation.ui
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
@@ -19,11 +19,11 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.presentation.models.History
+import com.example.playlistmaker.domain.entity.History
 import com.example.playlistmaker.data.network.ItunesApi
 import com.example.playlistmaker.presentation.SearchRecycleAdapter
 import com.example.playlistmaker.data.SearchHistory
-import com.example.playlistmaker.presentation.models.Track
+import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.presentation.models.TrackList
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson

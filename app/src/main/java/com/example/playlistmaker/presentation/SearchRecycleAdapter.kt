@@ -5,13 +5,14 @@ import android.os.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.ui.PlayerActivity
+import com.example.playlistmaker.presentation.ui.PlayerActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.SearchHistory
-import com.example.playlistmaker.presentation.models.Track
+import com.example.playlistmaker.domain.entity.Track
 
 class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
     companion object{
+        const val TRACK_ID = "TRACK_ID"
         const val CLICK_DEBOUNCE_DELAY = 500L
     }
     private var isClickAllowed = true
@@ -35,7 +36,8 @@ class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter
 
                 handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
                 SearchHistory().setHistory(it.context, itemView)
-                it.context.startActivity(Intent(it.context, PlayerActivity::class.java))
+                val intent = Intent(it.context, PlayerActivity::class.java).putExtra(TRACK_ID, itemView.trackId)
+                it.context.startActivity(intent)
             }
         }
     }

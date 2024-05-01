@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.presentation.models.Track
+import com.example.playlistmaker.domain.entity.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -29,9 +29,9 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(track: Track) {
         trackName.text = track.trackName
         trackArtistName.text = track.artistName
-        if (track.trackTimeMillis != null)
+        if (track.trackTimeMillis != null){
             trackTime.text =
-                dateFormat.format(track.trackTimeMillis.toInt())
+                dateFormat.format(track.trackTimeMillis.toInt())}
         else trackTime.text =
             trackTime.resources.getText(R.string.default_track_time)
 
