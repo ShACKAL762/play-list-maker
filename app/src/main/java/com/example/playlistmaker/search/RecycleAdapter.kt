@@ -1,13 +1,21 @@
 package com.example.playlistmaker.search
 
 import android.content.Intent
+import android.os.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.player.PlayerActivity
 import com.example.playlistmaker.R
+import com.google.android.material.transition.Hold
+import java.util.logging.Handler
 
 class RecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
+    companion object{
+        const val CLICK_DEBOUNCE_DELAY = 500L
+    }
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
         return TrackViewHolder(view)
@@ -22,8 +30,13 @@ class RecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<Track
         holder.bind(itemView)
 
         holder.itemView.setOnClickListener {
-            SearchHistory().setHistory(it.context, itemView)
-            it.context.startActivity(Intent(it.context, PlayerActivity::class.java))
+            if (isClickAllowed) {
+                isClickAllowed = false
+
+                handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+                SearchHistory().setHistory(it.context, itemView)
+                it.context.startActivity(Intent(it.context, PlayerActivity::class.java))
+            }
         }
     }
 

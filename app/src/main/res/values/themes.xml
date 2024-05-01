@@ -17,6 +17,8 @@
         <item name="colorTertiary">@color/yp_text_grey</item>
         <item name="android:textColor">@color/yp_black</item>
 
+        <!-- Progress bar color. -->
+        <item name="colorAccent">@color/purple</item>
 
         <!-- Status bar color. -->
 
