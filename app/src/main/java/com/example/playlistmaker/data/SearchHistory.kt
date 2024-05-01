@@ -1,11 +1,12 @@
-package com.example.playlistmaker.search
+package com.example.playlistmaker.data
 
 import android.content.Context
-import android.widget.Toast
+import com.example.playlistmaker.presentation.models.History
+import com.example.playlistmaker.presentation.models.Track
 import com.google.gson.Gson
 
 class SearchHistory {
-    val historyMaxSize = 10
+    private val historyMaxSize = 10
     fun getHistoryList(context: Context): MutableList<Track> {
         val history = context.getSharedPreferences(historyPref, Context.MODE_PRIVATE)
             .getString(historyPref, "")

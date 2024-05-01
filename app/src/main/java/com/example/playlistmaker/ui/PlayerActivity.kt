@@ -1,4 +1,4 @@
-package com.example.playlistmaker.player
+package com.example.playlistmaker.ui
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -9,8 +9,11 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.R
-import com.example.playlistmaker.search.SearchHistory
-import com.example.playlistmaker.search.Track
+import com.example.playlistmaker.presentation.Player
+import com.example.playlistmaker.presentation.PlayerAdapter
+import com.example.playlistmaker.data.PlayerManager
+import com.example.playlistmaker.data.SearchHistory
+import com.example.playlistmaker.presentation.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -24,7 +27,8 @@ class PlayerActivity : AppCompatActivity() {
         private const val TIMER_DELAY_MILLS = 300L
     }
 
-    private val mediaPlayer = MediaPlayer()
+    private lateinit var mediaPlayer : MediaPlayer
+    private lateinit var player: Player
 
     private lateinit var playButton: ImageButton
     private lateinit var playTime: TextView
@@ -74,13 +78,13 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun mediaPause() {
         playButton.setImageResource(R.drawable.play_button)
-        mediaPlayer.pause()
+        player.pause()
     }
 
     private fun mediaPlay() {
         playButton.setImageResource(R.drawable.pause_button)
         timerStart()
-        mediaPlayer.start()
+        player.play()
     }
 
     private fun stopActivity() {
@@ -91,8 +95,9 @@ class PlayerActivity : AppCompatActivity() {
 
 
     private fun preparePlayer(track: Track) {
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
+        player = PlayerManager()
+        mediaPlayer = player.playerPrepare(track.previewUrl)
+
 
         mediaPlayer.setOnPreparedListener {
             playButton.isEnabled = true
@@ -125,7 +130,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        mediaPlayer.release()
+        player.release()
         handler.removeCallbacks(time)
         super.onDestroy()
     }

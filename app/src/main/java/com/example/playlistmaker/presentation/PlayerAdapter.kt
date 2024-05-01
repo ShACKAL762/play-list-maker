@@ -1,6 +1,7 @@
-package com.example.playlistmaker.player
+package com.example.playlistmaker.presentation
 
-import com.example.playlistmaker.search.Track
+import com.example.playlistmaker.presentation.models.Track
+import com.example.playlistmaker.ui.PlayerActivity
 
 class PlayerAdapter(private val context: PlayerActivity) {
     fun onBindPlayerHolder(list: List<Track>){

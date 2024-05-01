@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search
+package com.example.playlistmaker.presentation.models
 
 class Track(
     var trackName: String, // Название композиции)

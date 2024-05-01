@@ -1,4 +1,4 @@
-package com.example.playlistmaker.settings
+package com.example.playlistmaker.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -8,7 +8,7 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.example.playlistmaker.R
-import com.google.android.material.materialswitch.MaterialSwitch
+import com.example.playlistmaker.data.App
 
 class SettingsActivity : AppCompatActivity() {
     private val prefName = "main_preferences"

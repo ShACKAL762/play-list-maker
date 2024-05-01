@@ -1,16 +1,16 @@
-package com.example.playlistmaker.search
+package com.example.playlistmaker.presentation
 
 import android.content.Intent
 import android.os.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.player.PlayerActivity
+import com.example.playlistmaker.ui.PlayerActivity
 import com.example.playlistmaker.R
-import com.google.android.material.transition.Hold
-import java.util.logging.Handler
+import com.example.playlistmaker.data.SearchHistory
+import com.example.playlistmaker.presentation.models.Track
 
-class RecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
+class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
     companion object{
         const val CLICK_DEBOUNCE_DELAY = 500L
     }

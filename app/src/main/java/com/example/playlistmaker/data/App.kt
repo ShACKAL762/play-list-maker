@@ -1,10 +1,7 @@
-package com.example.playlistmaker.settings
+package com.example.playlistmaker.data
 
 import android.app.Application
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker.search.History
-import com.google.gson.Gson
 
 class App : Application() {
     private val prefName = "main_preferences"
