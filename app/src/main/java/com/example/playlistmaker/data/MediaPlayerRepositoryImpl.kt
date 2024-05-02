@@ -1,12 +1,12 @@
 package com.example.playlistmaker.data
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.domain.MediaPlayerRepository
+import com.example.playlistmaker.domain.repositories.MediaPlayerRepository
 import com.example.playlistmaker.domain.model.PlayerState
 
 
 
-class MediaPlayerRepositoryImp : MediaPlayerRepository {
+class MediaPlayerRepositoryImpl : MediaPlayerRepository {
     private lateinit var mediaPlayer: MediaPlayer
     private var playerState = PlayerState.DEFAULT
     override fun playerPrepare(previewUrl: String) {

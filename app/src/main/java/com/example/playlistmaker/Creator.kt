@@ -1,22 +1,26 @@
 package com.example.playlistmaker
 
-import com.example.playlistmaker.data.MediaPlayerRepositoryImp
-import com.example.playlistmaker.data.TrackListRepoImp
-import com.example.playlistmaker.domain.MediaPlayerInteractorImp
-import com.example.playlistmaker.domain.TrackListInteractorImp
+import com.example.playlistmaker.data.MediaPlayerRepositoryImpl
+import com.example.playlistmaker.data.TrackListRepoImpl
+import com.example.playlistmaker.domain.interactors.MediaPlayerInteractor
+import com.example.playlistmaker.domain.impl.MediaPlayerInteractorImpl
+import com.example.playlistmaker.domain.repositories.MediaPlayerRepository
+import com.example.playlistmaker.domain.interactors.TrackListInteractor
+import com.example.playlistmaker.domain.impl.TrackListInteractorImpl
+import com.example.playlistmaker.domain.repositories.TrackListRepository
 
 object Creator {
-    fun provideMediaPlayerInteractImp(): MediaPlayerInteractorImp {
-        return MediaPlayerInteractorImp(providePlayerManager())
+    fun provideMediaPlayerInteractImp(): MediaPlayerInteractor {
+        return MediaPlayerInteractorImpl(providePlayerManager())
     }
-    fun provideTrackListInteractorImp(): TrackListInteractorImp {
-        return TrackListInteractorImp(provideTrackUseCaseImp())
+    fun provideTrackListInteractorImp(): TrackListInteractor {
+        return TrackListInteractorImpl(provideTrackUseCaseImp())
     }
-    private fun provideTrackUseCaseImp(): TrackListRepoImp {
-        return TrackListRepoImp()
+    private fun provideTrackUseCaseImp(): TrackListRepository {
+        return TrackListRepoImpl()
     }
 
-    private fun providePlayerManager(): MediaPlayerRepositoryImp {
-        return MediaPlayerRepositoryImp()
+    private fun providePlayerManager(): MediaPlayerRepository {
+        return MediaPlayerRepositoryImpl()
     }
 }

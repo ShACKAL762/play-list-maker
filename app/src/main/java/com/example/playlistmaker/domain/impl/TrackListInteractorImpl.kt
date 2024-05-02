@@ -1,10 +1,11 @@
-package com.example.playlistmaker.domain
+package com.example.playlistmaker.domain.impl
 
 import android.content.Context
-import com.example.playlistmaker.data.TrackListRepoImp
+import com.example.playlistmaker.domain.repositories.TrackListRepository
 import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.domain.interactors.TrackListInteractor
 
-class TrackListInteractorImp(private val track: TrackListRepoImp): TrackListInteractor{
+class TrackListInteractorImpl(private val track: TrackListRepository): TrackListInteractor {
     override fun getTrackList(context: Context): List<Track> {
         return track.getTrackList(context)
     }
