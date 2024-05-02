@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.playlistmaker.domain.TrackListRepo
 import com.example.playlistmaker.domain.entity.Track
 
-class TrackUseCaseRepoImp:TrackListRepo{
+class TrackListRepoImp:TrackListRepo{
     private val history = SearchHistory()
     override fun getTrackList(context: Context): List<Track> {
         return history.getHistoryList(context)
