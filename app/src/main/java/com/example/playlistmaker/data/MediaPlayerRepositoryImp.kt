@@ -22,36 +22,28 @@ class MediaPlayerRepositoryImp : MediaPlayerRepository {
             playerState = PlayerState.PREPARED
         }
     }
-
-
     override fun play() {
         playerState = PlayerState.PLAY
         mediaPlayer.start()
     }
-
     override fun pause() {
         playerState = PlayerState.PAUSE
         mediaPlayer.pause()
     }
-
     override fun release() {
         playerState = PlayerState.RELEASE
         mediaPlayer.release()
     }
-
     override fun playerState(): PlayerState {
         return playerState
     }
-
     override fun playerControl() {
         if (mediaPlayer.isPlaying)
             pause()
         else
             play()
     }
-
     override fun currentMills(): Int {
         return mediaPlayer.currentPosition
     }
-
 }

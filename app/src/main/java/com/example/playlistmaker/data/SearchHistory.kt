@@ -19,7 +19,6 @@ class SearchHistory {
 
     fun setHistory(context: Context, itemView: Track) {
         val historyList = getHistoryList(context)
-
         val iterator = historyList.iterator()
 
         while (iterator.hasNext()) {
@@ -33,7 +32,6 @@ class SearchHistory {
         historyList.add(0, itemView)
         while (historyList.size > historyMaxSize)
             historyList.removeLast()
-
 
         context.getSharedPreferences(historyPref, Context.MODE_PRIVATE).edit()
             .putString(historyPref, Gson().toJson(History(historyList), History::class.java)).apply()

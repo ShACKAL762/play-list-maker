@@ -25,14 +25,10 @@ class PlayerActivity : AppCompatActivity() {
     private var mediaPlayer = Creator.provideMediaPlayerInteractImp()
     private var trackGetter = Creator.provideTrackListInteractorImp()
 
-
     private lateinit var playButton: ImageButton
     private lateinit var backButton: ImageButton
     private lateinit var playTime: TextView
     private val handler = Handler(Looper.getMainLooper())
-
-
-
 
     private val time = Runnable {
         playTime.text = currentTime()
@@ -46,13 +42,14 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_player)
 
         playTime = findViewById(R.id.play_time)
+        playButton = findViewById(R.id.play)
+        backButton = findViewById(R.id.arrow_back)
 
         val trackData = trackGetter.getTrack(this)
         val playerAdapter = PlayerAdapter(this)
 
         playerAdapter.onBindPlayerHolder(trackData)
 
-        playButton = findViewById(R.id.play)
         playButton.isEnabled = false
 
         preparePlayer(trackData)
@@ -67,7 +64,7 @@ class PlayerActivity : AppCompatActivity() {
             }
         })
 
-        backButton = findViewById(R.id.arrow_back)
+
         backButton.setOnClickListener {
             stopActivity()
         }
