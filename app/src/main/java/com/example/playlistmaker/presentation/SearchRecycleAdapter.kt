@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.presentation.ui.PlayerActivity
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.SearchHistory
+import com.example.playlistmaker.data.SearchHistoryRepository
 import com.example.playlistmaker.domain.entity.Track
 
 class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
@@ -35,7 +35,7 @@ class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter
                 isClickAllowed = false
 
                 handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-                SearchHistory().setHistory(it.context, itemView)
+                SearchHistoryRepository().setHistory(it.context, itemView)
                 val intent = Intent(it.context, PlayerActivity::class.java).putExtra(TRACK_ID, itemView.trackId)
                 it.context.startActivity(intent)
             }

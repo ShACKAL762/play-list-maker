@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.impl
+package com.example.playlistmaker.domain.interactors_impl
 
 import android.content.Context
 import com.example.playlistmaker.domain.repositories.TrackListRepository

@@ -5,7 +5,7 @@ import com.example.playlistmaker.domain.entity.History
 import com.example.playlistmaker.domain.entity.Track
 import com.google.gson.Gson
 
-class SearchHistory {
+class SearchHistoryRepository {
     private val historyMaxSize = 10
     fun getHistoryList(context: Context): MutableList<Track> {
         val history = context.getSharedPreferences(historyPref, Context.MODE_PRIVATE)

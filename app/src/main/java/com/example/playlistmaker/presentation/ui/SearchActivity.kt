@@ -22,7 +22,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entity.History
 import com.example.playlistmaker.data.network.ItunesApi
 import com.example.playlistmaker.presentation.SearchRecycleAdapter
-import com.example.playlistmaker.data.SearchHistory
+import com.example.playlistmaker.data.SearchHistoryRepository
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.presentation.models.TrackList
 import com.google.android.material.button.MaterialButton
@@ -64,7 +64,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var iApi: ItunesApi
 
     private var tracks = mutableListOf<Track>()
-    private val searchHistory = SearchHistory()
+    private val searchHistory = SearchHistoryRepository()
     private val retrofit =
         Retrofit.Builder().baseUrl(ITUNES_URL).addConverterFactory(GsonConverterFactory.create())
             .build()
