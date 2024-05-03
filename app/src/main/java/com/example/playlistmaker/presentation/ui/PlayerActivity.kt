@@ -22,8 +22,8 @@ class PlayerActivity : AppCompatActivity() {
         private const val TIMER_DELAY_MILLS = 300L
     }
 
-    private var mediaPlayer = Creator.provideMediaPlayerInteractImp()
-    private var trackGetter = Creator.provideTrackListInteractorImp()
+    private var mediaPlayer = Creator.provideMediaPlayerInteract()
+    private var trackGetter = Creator.provideTrackListInteractor()
 
     private lateinit var playButton: ImageButton
     private lateinit var backButton: ImageButton
@@ -85,20 +85,16 @@ class PlayerActivity : AppCompatActivity() {
 
 
     private fun playButtonState() {
-        println(mediaPlayer.playerState().name)
         when (mediaPlayer.playerState()) {
             PlayerState.PLAY -> {
                 playButton.setImageResource(R.drawable.pause_button)
                 timerStart()
             }
-
             PlayerState.PAUSE -> playButton.setImageResource(R.drawable.play_button)
             PlayerState.DEFAULT -> playButton.setImageResource(R.drawable.play_button)
             PlayerState.RELEASE -> {}
-            PlayerState.PREPARED -> {
-                playButton.setImageResource(R.drawable.play_button)
+            PlayerState.PREPARED -> playButton.setImageResource(R.drawable.play_button)
 
-            }
         }
     }
 

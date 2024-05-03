@@ -10,13 +10,13 @@ import com.example.playlistmaker.domain.impl.TrackListInteractorImpl
 import com.example.playlistmaker.domain.repositories.TrackListRepository
 
 object Creator {
-    fun provideMediaPlayerInteractImp(): MediaPlayerInteractor {
+    fun provideMediaPlayerInteract(): MediaPlayerInteractor {
         return MediaPlayerInteractorImpl(providePlayerManager())
     }
-    fun provideTrackListInteractorImp(): TrackListInteractor {
-        return TrackListInteractorImpl(provideTrackUseCaseImp())
+    fun provideTrackListInteractor(): TrackListInteractor {
+        return TrackListInteractorImpl(provideTrackGet())
     }
-    private fun provideTrackUseCaseImp(): TrackListRepository {
+    private fun provideTrackGet(): TrackListRepository {
         return TrackListRepoImpl()
     }
 
