@@ -1,11 +1,10 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.search.SearchActivity
-import com.example.playlistmaker.settings.SettingsActivity
+import com.example.playlistmaker.R
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +19,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SearchActivity::class.java))
         }
         libraryButton.setOnClickListener {
-            startActivity(Intent(this,LibraryActivity::class.java))
+            startActivity(Intent(this, LibraryActivity::class.java))
         }
         settingsButton.setOnClickListener{
             startActivity(Intent(this, SettingsActivity::class.java))

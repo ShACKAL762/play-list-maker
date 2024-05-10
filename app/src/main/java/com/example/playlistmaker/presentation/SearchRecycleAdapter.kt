@@ -1,17 +1,18 @@
-package com.example.playlistmaker.search
+package com.example.playlistmaker.presentation
 
 import android.content.Intent
 import android.os.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.player.PlayerActivity
+import com.example.playlistmaker.presentation.ui.PlayerActivity
 import com.example.playlistmaker.R
-import com.google.android.material.transition.Hold
-import java.util.logging.Handler
+import com.example.playlistmaker.data.SearchHistoryRepository
+import com.example.playlistmaker.domain.entity.Track
 
-class RecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
+class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
     companion object{
+        const val TRACK_ID = "TRACK_ID"
         const val CLICK_DEBOUNCE_DELAY = 500L
     }
     private var isClickAllowed = true
@@ -34,8 +35,9 @@ class RecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<Track
                 isClickAllowed = false
 
                 handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-                SearchHistory().setHistory(it.context, itemView)
-                it.context.startActivity(Intent(it.context, PlayerActivity::class.java))
+                SearchHistoryRepository().setHistory(it.context, itemView)
+                val intent = Intent(it.context, PlayerActivity::class.java).putExtra(TRACK_ID, itemView.trackId)
+                it.context.startActivity(intent)
             }
         }
     }

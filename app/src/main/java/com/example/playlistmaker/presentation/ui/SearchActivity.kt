@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search
+package com.example.playlistmaker.presentation.ui
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +8,6 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
@@ -20,6 +19,12 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.entity.History
+import com.example.playlistmaker.data.network.ItunesApi
+import com.example.playlistmaker.presentation.SearchRecycleAdapter
+import com.example.playlistmaker.data.SearchHistoryRepository
+import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.presentation.models.TrackList
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import retrofit2.Call
@@ -59,7 +64,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var iApi: ItunesApi
 
     private var tracks = mutableListOf<Track>()
-    private val searchHistory = SearchHistory()
+    private val searchHistory = SearchHistoryRepository()
     private val retrofit =
         Retrofit.Builder().baseUrl(ITUNES_URL).addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -164,7 +169,7 @@ class SearchActivity : AppCompatActivity() {
     private fun unShowHistory() {
         cleanHistoryButton.isVisible = false
         searchMessage.isVisible = false
-        recyclerView.adapter = RecycleAdapter(tracks)
+        recyclerView.adapter = SearchRecycleAdapter(tracks)
         tracks.clear()
         recyclerView.adapter?.notifyDataSetChanged()
         recyclerView.isVisible = true
@@ -182,7 +187,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun updateHistory() {
-        recyclerView.adapter = RecycleAdapter(tracks)
+        recyclerView.adapter = SearchRecycleAdapter(tracks)
         tracks.clear()
         tracks.addAll(searchHistory.getHistoryList(this))
         recyclerView.adapter?.notifyDataSetChanged()
@@ -235,7 +240,7 @@ class SearchActivity : AppCompatActivity() {
     private fun recyclerViewInit() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = RecycleAdapter(tracks)
+        recyclerView.adapter = SearchRecycleAdapter(tracks)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Boolean {

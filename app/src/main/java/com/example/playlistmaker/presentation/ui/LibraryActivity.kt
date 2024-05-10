@@ -1,8 +1,9 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui
 
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.R
 
 
 class LibraryActivity : AppCompatActivity() {

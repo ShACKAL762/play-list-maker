@@ -1,14 +1,11 @@
-package com.example.playlistmaker.settings
+package com.example.playlistmaker
 
 import android.app.Application
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker.search.History
-import com.google.gson.Gson
 
 class App : Application() {
     private val prefName = "main_preferences"
-    private var darkTheme = false;
+    private var darkTheme = false
     override fun onCreate() {
 
         super.onCreate()

@@ -1,6 +1,6 @@
-package com.example.playlistmaker.player
+package com.example.playlistmaker.presentation.ui
 
-import android.media.MediaPlayer
+
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -8,32 +8,33 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.Creator
 import com.example.playlistmaker.R
-import com.example.playlistmaker.search.SearchHistory
-import com.example.playlistmaker.search.Track
+import com.example.playlistmaker.presentation.PlayerAdapter
+import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.domain.model.PlayerState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
     companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
         private const val TIMER_DELAY_MILLS = 300L
     }
 
-    private val mediaPlayer = MediaPlayer()
+    private var mediaPlayer = Creator.provideMediaPlayerInteract()
+    private var trackGetter = Creator.provideTrackListInteractor()
 
     private lateinit var playButton: ImageButton
+    private lateinit var backButton: ImageButton
     private lateinit var playTime: TextView
-    private var playerState = STATE_DEFAULT
     private val handler = Handler(Looper.getMainLooper())
+
     private val time = Runnable {
         playTime.text = currentTime()
         timerStart()
     }
+
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,24 +42,21 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_player)
 
         playTime = findViewById(R.id.play_time)
-
-        val history = SearchHistory()
-        val playerAdapter = PlayerAdapter(this)
-        val list = history.getHistoryList(this)
-        playerAdapter.onBindPlayerHolder(list)
-
         playButton = findViewById(R.id.play)
+        backButton = findViewById(R.id.arrow_back)
+
+        val trackData = trackGetter.getTrack(this)
+        val playerAdapter = PlayerAdapter(this)
+
+        playerAdapter.onBindPlayerHolder(trackData)
+
         playButton.isEnabled = false
 
-        preparePlayer(list.first())
+        preparePlayer(trackData)
 
         playButton.setOnClickListener {
-
-            if (mediaPlayer.isPlaying) {
-                mediaPause()
-            } else {
-                mediaPlay()
-            }
+            mediaPlayer.playerControl()
+            playButtonState()
         }
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -66,60 +64,50 @@ class PlayerActivity : AppCompatActivity() {
             }
         })
 
-        val backButton = findViewById<ImageButton>(R.id.arrow_back)
+
         backButton.setOnClickListener {
             stopActivity()
         }
     }
 
-    private fun mediaPause() {
-        playButton.setImageResource(R.drawable.play_button)
-        mediaPlayer.pause()
-    }
-
-    private fun mediaPlay() {
-        playButton.setImageResource(R.drawable.pause_button)
-        timerStart()
-        mediaPlayer.start()
-    }
-
     private fun stopActivity() {
-
         handler.removeCallbacks(time)
         finish()
     }
 
-
     private fun preparePlayer(track: Track) {
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
+        mediaPlayer.playerPrepare(track.previewUrl)
+        playButton.isEnabled = true
+        playButton.setImageResource(R.drawable.play_button)
+        handler.removeCallbacks(time)
+        playTime.text = dateFormat.format(0)
+    }
 
-        mediaPlayer.setOnPreparedListener {
-            playButton.isEnabled = true
-            playButton.setImageResource(R.drawable.play_button)
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            playButton.isEnabled = true
-            playButton.setImageResource(R.drawable.play_button)
-            playerState = STATE_PREPARED
 
-            handler.removeCallbacks(time)
-            playTime.text = dateFormat.format(0)
+    private fun playButtonState() {
+        when (mediaPlayer.playerState()) {
+            PlayerState.PLAY -> {
+                playButton.setImageResource(R.drawable.pause_button)
+                timerStart()
+            }
+            PlayerState.PAUSE -> playButton.setImageResource(R.drawable.play_button)
+            PlayerState.DEFAULT -> playButton.setImageResource(R.drawable.play_button)
+            PlayerState.RELEASE -> {}
+            PlayerState.PREPARED -> playButton.setImageResource(R.drawable.play_button)
+
         }
     }
 
     private fun timerStart() {
         handler.postDelayed(time, TIMER_DELAY_MILLS)
-
     }
 
     private fun currentTime(): String? {
-        return dateFormat.format(mediaPlayer.currentPosition)
+        return dateFormat.format(mediaPlayer.currentMills())
     }
 
     override fun onPause() {
-        mediaPause()
+        mediaPlayer.pause()
         handler.removeCallbacks(time)
         super.onPause()
     }
