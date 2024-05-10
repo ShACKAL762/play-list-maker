@@ -1,7 +1,7 @@
-package com.example.playlistmaker.presentation
+package com.example.playlistmaker.ui.player
 
 import com.example.playlistmaker.domain.entity.Track
-import com.example.playlistmaker.presentation.ui.PlayerActivity
+import com.example.playlistmaker.ui.player.activity.PlayerActivity
 
 class PlayerAdapter(private val context: PlayerActivity) {
     fun onBindPlayerHolder(track:Track){

@@ -1,14 +1,15 @@
-package com.example.playlistmaker.presentation
+package com.example.playlistmaker.ui.search
 
 import android.content.Intent
 import android.os.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.presentation.ui.PlayerActivity
+import com.example.playlistmaker.ui.player.activity.PlayerActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.SearchHistoryRepository
 import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.ui.TrackViewHolder
 
 class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
     companion object{

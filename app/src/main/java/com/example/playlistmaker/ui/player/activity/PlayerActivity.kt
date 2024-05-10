@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.ui
+package com.example.playlistmaker.ui.player.activity
 
 
 import android.os.Bundle
@@ -10,9 +10,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.Creator
 import com.example.playlistmaker.R
-import com.example.playlistmaker.presentation.PlayerAdapter
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.model.PlayerState
+import com.example.playlistmaker.ui.player.PlayerAdapter
 import java.text.SimpleDateFormat
 import java.util.Locale
 

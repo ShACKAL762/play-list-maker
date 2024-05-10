@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.interactors
+package com.example.playlistmaker.domain.player.interactors
 
 import android.content.Context
 import com.example.playlistmaker.domain.entity.Track

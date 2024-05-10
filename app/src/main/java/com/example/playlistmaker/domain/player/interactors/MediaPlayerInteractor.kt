@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.interactors
+package com.example.playlistmaker.domain.player.interactors
 
 
 import com.example.playlistmaker.domain.model.PlayerState

@@ -1,6 +1,6 @@
 package com.example.playlistmaker.data.network
 
-import com.example.playlistmaker.presentation.models.TrackList
+import com.example.playlistmaker.ui.models.TrackList
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

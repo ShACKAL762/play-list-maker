@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.ui
+package com.example.playlistmaker.ui.search.activity
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -21,10 +22,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entity.History
 import com.example.playlistmaker.data.network.ItunesApi
-import com.example.playlistmaker.presentation.SearchRecycleAdapter
 import com.example.playlistmaker.data.SearchHistoryRepository
 import com.example.playlistmaker.domain.entity.Track
-import com.example.playlistmaker.presentation.models.TrackList
+import com.example.playlistmaker.ui.models.TrackList
+import com.example.playlistmaker.ui.search.SearchRecycleAdapter
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import retrofit2.Call
@@ -77,6 +78,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        Log.e("aaa","Creater")
 
         iApi = retrofit.create(ItunesApi::class.java)
 

@@ -1,20 +1,31 @@
-package com.example.playlistmaker.presentation.ui
+package com.example.playlistmaker.ui.settings.activity
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
+import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
 import com.example.playlistmaker.App
+import com.example.playlistmaker.ui.settings.view_model.SettingViewModel
+import com.example.playlistmaker.ui.settings.view_model.SettingViewModelFactory
 
 class SettingsActivity : AppCompatActivity() {
     private val prefName = "main_preferences"
+    private lateinit var viewModel: SettingViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+        println("AAA")
+        viewModel =
+            ViewModelProvider(
+                this,
+                SettingViewModelFactory(applicationContext)
+            )[SettingViewModel::class.java]
 
         val backButton = findViewById<ImageButton>(R.id.arrow_back)
         val shareButton = findViewById<FrameLayout>(R.id.share_button)
@@ -24,27 +35,16 @@ class SettingsActivity : AppCompatActivity() {
 
 
         shareButton.setOnClickListener {
-
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.uri_of_course))
-            shareIntent.setType("text/plain")
-            startActivity(shareIntent)
+            Log.e("aaa","aaa")
+            viewModel.share()
         }
 
         supportButton.setOnClickListener {
-
-            val supportIntent = Intent(Intent.ACTION_SENDTO)
-            val uri = Uri.parse("mailto:")
-            supportIntent.setData(uri)
-            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.mail)))
-            supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.subject))
-            supportIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_text))
-            startActivity(supportIntent)
+            viewModel.sendSupport()
         }
 
         eulaButton.setOnClickListener {
-            val eluaIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.eula_uri)))
-            startActivity(eluaIntent)
+            viewModel.openLink()
         }
 
         backButton.setOnClickListener {
@@ -52,12 +52,14 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
+            //todo 4
             (applicationContext as App).switchTheme(checked)
         }
 
-        
+
         themeSwitcher.isChecked =
-            getSharedPreferences(prefName, MODE_PRIVATE).getBoolean("darkTheme",false)
+                //todo 6
+            getSharedPreferences(prefName, MODE_PRIVATE).getBoolean("darkTheme", false)
     }
 
 }

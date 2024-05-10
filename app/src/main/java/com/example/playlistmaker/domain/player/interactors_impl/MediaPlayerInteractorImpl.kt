@@ -1,7 +1,7 @@
-package com.example.playlistmaker.domain.interactors_impl
+package com.example.playlistmaker.domain.player.interactors_impl
 
 import com.example.playlistmaker.domain.repositories.MediaPlayerRepository
-import com.example.playlistmaker.domain.interactors.MediaPlayerInteractor
+import com.example.playlistmaker.domain.player.interactors.MediaPlayerInteractor
 import com.example.playlistmaker.domain.model.PlayerState
 
 class MediaPlayerInteractorImpl(private val mediaPlayerRepository: MediaPlayerRepository):
