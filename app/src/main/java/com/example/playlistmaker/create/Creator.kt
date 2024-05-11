@@ -33,12 +33,12 @@ object Creator {
     /***
     Create TrackList
      */
-    fun provideTrackListInteractor(): TrackListInteractor {
-        return TrackListInteractorImpl(provideTrackGet())
+    fun provideTrackListInteractor(context: Context): TrackListInteractor {
+        return TrackListInteractorImpl(provideTrackGet(context))
     }
 
-    private fun provideTrackGet(): TrackListRepository {
-        return TrackListRepositoryImpl()
+    private fun provideTrackGet(context: Context): TrackListRepository {
+        return TrackListRepositoryImpl(context)
     }
 
     /***

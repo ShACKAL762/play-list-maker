@@ -36,7 +36,7 @@ class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter
                 isClickAllowed = false
 
                 handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-                SearchHistoryRepository().setHistory(it.context, itemView)
+                SearchHistoryRepository(it.context).setHistory( itemView)
                 val intent = Intent(it.context, PlayerActivity::class.java).putExtra(TRACK_ID, itemView.trackId)
                 it.context.startActivity(intent)
             }

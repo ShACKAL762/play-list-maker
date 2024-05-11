@@ -10,23 +10,20 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entity.History
 import com.example.playlistmaker.data.network.ItunesApi
 import com.example.playlistmaker.data.search.SearchHistoryRepository
+import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.ui.models.TrackList
 import com.example.playlistmaker.ui.search.SearchRecycleAdapter
-import com.google.android.material.button.MaterialButton
+import com.example.playlistmaker.ui.search.view_model.SearchViewModel
+import com.example.playlistmaker.ui.search.view_model.SearchViewModel.SViewState
+import com.example.playlistmaker.ui.search.view_model.SearchViewModelFactory
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,26 +43,9 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-
-    private lateinit var searchLineText: String
-
-    private lateinit var searchLine: EditText
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var notFound: LinearLayout
-    private lateinit var lostConnect: LinearLayout
-    private lateinit var searchMessage: TextView
-    private lateinit var progressBar: ProgressBar
-
-    private lateinit var refreshButton: MaterialButton
-    private lateinit var cleanHistoryButton: MaterialButton
-    private lateinit var clearButton: ImageView
-    private lateinit var backButton: ImageButton
-
-
     private lateinit var iApi: ItunesApi
 
     private var tracks = mutableListOf<Track>()
-    private val searchHistory = SearchHistoryRepository()
     private val retrofit =
         Retrofit.Builder().baseUrl(ITUNES_URL).addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -74,25 +54,19 @@ class SearchActivity : AppCompatActivity() {
 
     private val searchEvent = Runnable { search() }
 
-
+    private lateinit var binding: ActivitySearchBinding
+    private lateinit var viewModel: SearchViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
-        Log.e("aaa","Creater")
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        viewModel =
+            ViewModelProvider(this, SearchViewModelFactory(this))[SearchViewModel::class.java]
 
+        setContentView(binding.root)
+        observeInit()
+
+//todo
         iApi = retrofit.create(ItunesApi::class.java)
-
-        clearButton = findViewById(R.id.search_line_cleaner)
-        backButton = findViewById(R.id.arrow_back)
-        searchMessage = findViewById(R.id.search_message)
-        cleanHistoryButton = findViewById(R.id.clean_history_button)
-        refreshButton = findViewById(R.id.refresh)
-        notFound = findViewById(R.id.not_found_message)
-        lostConnect = findViewById(R.id.lost_connection_message)
-        searchLine = findViewById(R.id.search_line)
-        progressBar = findViewById(R.id.progress_circular)
-
-        searchLineText = ""
 
         recyclerViewInit()
 
@@ -102,51 +76,48 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchLineText = s.toString()
-                clearButton.isVisible = clearButtonVisibility(s)
+                viewModel.setSearchLineData(s.toString())
+                binding.searchLineCleaner.isVisible = clearButtonVisibility(s)
+
+                //TODO{
                 writeTextEnd()
+                //TODO}
 
-                when (searchLine.hasFocus() && s?.isEmpty() == true && searchHistory.getHistoryList(
-                    applicationContext
-                ).size > 0) {
-
-                    true -> showHistory()
-
-                    false -> unShowHistory()
-
-                }
+                if (binding.searchLine.hasFocus() && s?.isEmpty() == true) {
+                    showHistory()
+                }else unShowHistory()
             }
 
             override fun afterTextChanged(s: Editable?) {
                 // empty
             }
         }
-        searchLine.addTextChangedListener(simpleTextWatcher)
+        binding.searchLine.addTextChangedListener(simpleTextWatcher)
 
 
-        searchLine.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus && searchLine.text.isEmpty()
-                && searchHistory.getHistoryList(applicationContext).size > 0
-            ) {
+
+
+        binding.searchLine.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && binding.searchLine.text.isEmpty()) {
                 showHistory()
             }
         }
 
-        clearButton.setOnClickListener {
+        binding.searchLineCleaner.setOnClickListener {
             hideKeyBoard(currentFocus)
-            searchLine.setText("")
-            showHistory()
+            viewModel.setSearchLineData("")
+            binding.searchLine.setText("")
+            viewModel.setHistoryVisibleState()
 
         }
-        backButton.setOnClickListener {
+        binding.arrowBack.setOnClickListener {
             finish()
         }
 
 
-        cleanHistoryButton.setOnClickListener {
-            getSharedPreferences("history", MODE_PRIVATE).edit()
-                .putString("history", Gson().toJson(History(mutableListOf()), History::class.java))
-                .apply()
+        binding.cleanHistoryButton.setOnClickListener {
+            viewModel.cleanHistory()
+            //todo
             clearRecycleView()
             unShowHistory()
         }
@@ -154,95 +125,110 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+    private fun observeInit() {
+
+        viewModel.recycleView.observe(this, Observer {
+            binding.recyclerView.isVisible = it
+        })
+
+        viewModel.notFoundPlaceholder.observe(this, Observer {
+            binding.notFoundMessage.isVisible = it
+        })
+
+        viewModel.progressBar.observe(this, Observer {
+            binding.progressCircular.isVisible = it
+        })
+
+        viewModel.lostConnectionPlaceholder.observe(this, Observer {
+            binding.lostConnectionMessage.isVisible = it
+        })
+        viewModel.cleanHistoryButton.observe(this, Observer {
+            binding.cleanHistoryButton.isVisible = it
+        })
+        viewModel.historyMessage.observe(this, Observer {
+            binding.searchMessage.isVisible = it
+        })
+    }
+
     private fun writeTextEnd() {
         handler.removeCallbacks(searchEvent)
-        if (searchLine.text.isNotEmpty()) {
+        if (binding.searchLine.text.isNotEmpty()) {
             handler.postDelayed(searchEvent, SEARCH_DELAY.toLong())
-        } else progressBar.isVisible = false
+        } else viewModel.changeState(SViewState.LOAD)
     }
 
     override fun onResume() {
         super.onResume()
-        searchLine.setSelection(searchLine.length())
+        binding.searchLine.setSelection(binding.searchLine.length())
 
 
     }
 
     private fun unShowHistory() {
-        cleanHistoryButton.isVisible = false
-        searchMessage.isVisible = false
-        recyclerView.adapter = SearchRecycleAdapter(tracks)
+        viewModel.changeState(SViewState.HIDE_HISTORY)
+        binding.recyclerView.adapter = SearchRecycleAdapter(tracks)
         tracks.clear()
-        recyclerView.adapter?.notifyDataSetChanged()
-        recyclerView.isVisible = true
+        binding.recyclerView.adapter?.notifyDataSetChanged()
 
     }
 
     private fun showHistory() {
-        cleanHistoryButton.isVisible = true
-        searchMessage.isVisible = true
+        viewModel.setHistoryVisibleState()
         updateHistory()
-        recyclerView.isVisible = true
-        lostConnect.isVisible = false
-        notFound.isVisible = false
+
 
     }
 
     private fun updateHistory() {
-        recyclerView.adapter = SearchRecycleAdapter(tracks)
+        val x = SearchHistoryRepository(this)
+        binding.recyclerView.adapter = SearchRecycleAdapter(tracks)
         tracks.clear()
-        tracks.addAll(searchHistory.getHistoryList(this))
-        recyclerView.adapter?.notifyDataSetChanged()
+        tracks.addAll(x.getHistoryList())
+        binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun clearRecycleView() {
         tracks.clear()
-        recyclerView.adapter?.notifyDataSetChanged()
+        binding.recyclerView.adapter?.notifyDataSetChanged()
 
     }
 
     private fun search() {
+        viewModel.changeState(SViewState.LOAD)
 
-        progressBar.isVisible = true
-        iApi.search(searchLineText).enqueue(object : Callback<TrackList> {
-            override fun onResponse(call: Call<TrackList>, response: Response<TrackList>) {
-                progressBar.isVisible = false
+        iApi.search(viewModel.searchLineLiveData.value.toString())
+            .enqueue(object : Callback<TrackList> {
+                override fun onResponse(call: Call<TrackList>, response: Response<TrackList>) {
 
-                if (response.code() == 200) {
-                    notFound.isVisible = false
-                    lostConnect.isVisible = false
-                    tracks.clear()
+                    if (response.code() == 200) {
+                        viewModel.changeState(SViewState.SUCCESS)
+                        tracks.clear()
 
-                    val result = response.body()?.results
-                    if (result?.isNotEmpty() == true) {
-                        recyclerView.isVisible = true
-                        tracks.addAll(response.body()?.results!!)
-                        recyclerView.adapter?.notifyDataSetChanged()
+                        val result = response.body()?.results
+                        if (result?.isNotEmpty() == true) {
+                            binding.recyclerView.isVisible = true
+                            tracks.addAll(response.body()?.results!!)
+                            binding.recyclerView.adapter?.notifyDataSetChanged()
+                        }
+                    }
+                    if (tracks.isEmpty()) {
+                        binding.recyclerView.adapter?.notifyDataSetChanged()
+                        viewModel.changeState(SViewState.NOT_FOUND)
                     }
                 }
-                if (tracks.isEmpty()) {
-                    recyclerView.adapter?.notifyDataSetChanged()
-                    recyclerView.isVisible = false
-                    lostConnect.isVisible = false
-                    notFound.isVisible = true
-                }
-            }
 
-            override fun onFailure(call: Call<TrackList>, t: Throwable) {
-                tracks.clear()
-                recyclerView.adapter?.notifyDataSetChanged()
-                recyclerView.isVisible = false
-                notFound.isVisible = false
-                lostConnect.isVisible = true
-            }
-        })
+                override fun onFailure(call: Call<TrackList>, t: Throwable) {
+                    tracks.clear()
+                    binding.recyclerView.adapter?.notifyDataSetChanged()
+                    viewModel.changeState(SViewState.LOST_CONNECTION)
+                }
+            })
 
     }
 
     private fun recyclerViewInit() {
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = SearchRecycleAdapter(tracks)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = SearchRecycleAdapter(tracks)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Boolean {
@@ -257,11 +243,11 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_TEXT, searchLineText)
+        outState.putString(SEARCH_TEXT, viewModel.searchLineLiveData.value)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        searchLine.setText(savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF))
+        binding.searchLine.setText(savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF))
     }
 }
