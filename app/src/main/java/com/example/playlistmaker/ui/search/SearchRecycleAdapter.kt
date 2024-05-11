@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.ui.player.activity.PlayerActivity
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.SearchHistoryRepository
+import com.example.playlistmaker.data.search.SearchHistoryRepository
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.ui.TrackViewHolder
 

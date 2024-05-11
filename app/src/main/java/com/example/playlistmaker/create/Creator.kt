@@ -1,7 +1,7 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.create
 
 import android.content.Context
-import com.example.playlistmaker.data.MediaPlayerRepositoryImpl
+import com.example.playlistmaker.data.player.MediaPlayerRepositoryImpl
 import com.example.playlistmaker.data.TrackListRepositoryImpl
 import com.example.playlistmaker.data.settings.ExternalNavigator
 import com.example.playlistmaker.data.settings.SettingRepositoryImpl
@@ -64,6 +64,9 @@ object Creator {
     private fun provideSharing(context: Context): SharingRepoitory {
         return ExternalNavigator(context)
     }
+    /***
+    Create Main
+     */
 
 
 }

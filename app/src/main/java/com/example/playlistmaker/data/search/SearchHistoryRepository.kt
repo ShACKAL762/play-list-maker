@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data
+package com.example.playlistmaker.data.search
 
 import android.content.Context
 import com.example.playlistmaker.domain.entity.History

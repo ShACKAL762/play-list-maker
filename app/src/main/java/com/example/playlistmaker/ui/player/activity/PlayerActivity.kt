@@ -8,7 +8,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.Creator
+import com.example.playlistmaker.create.Creator
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.model.PlayerState
