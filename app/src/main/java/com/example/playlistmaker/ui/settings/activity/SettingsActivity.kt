@@ -1,66 +1,56 @@
 package com.example.playlistmaker.ui.settings.activity
 
-import android.content.Intent
-import android.net.Uri
+
 import android.os.Bundle
-import android.util.Log
-import android.widget.FrameLayout
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.playlistmaker.R
-import com.example.playlistmaker.App
+import com.example.playlistmaker.databinding.ActivitySettingsBinding
 import com.example.playlistmaker.ui.settings.view_model.SettingViewModel
 import com.example.playlistmaker.ui.settings.view_model.SettingViewModelFactory
 
 class SettingsActivity : AppCompatActivity() {
-    private val prefName = "main_preferences"
+
     private lateinit var viewModel: SettingViewModel
+    private lateinit var binding: ActivitySettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-        println("AAA")
+
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
+
         viewModel =
             ViewModelProvider(
                 this,
-                SettingViewModelFactory(applicationContext)
+                SettingViewModelFactory(this)
             )[SettingViewModel::class.java]
 
-        val backButton = findViewById<ImageButton>(R.id.arrow_back)
-        val shareButton = findViewById<FrameLayout>(R.id.share_button)
-        val supportButton = findViewById<FrameLayout>(R.id.support_button)
-        val eulaButton = findViewById<FrameLayout>(R.id.eula_button)
-        val themeSwitcher = findViewById<SwitchCompat>(R.id.theme_switch)
+        viewModel.getTheme()
 
-
-        shareButton.setOnClickListener {
-            Log.e("aaa","aaa")
+        binding.shareButton.setOnClickListener {
             viewModel.share()
         }
 
-        supportButton.setOnClickListener {
+        binding.supportButton.setOnClickListener {
             viewModel.sendSupport()
         }
 
-        eulaButton.setOnClickListener {
+        binding.eulaButton.setOnClickListener {
             viewModel.openLink()
         }
 
-        backButton.setOnClickListener {
+        binding.arrowBack.setOnClickListener {
             finish()
         }
 
-        themeSwitcher.setOnCheckedChangeListener { _, checked ->
-            //todo 4
-            (applicationContext as App).switchTheme(checked)
+        viewModel.liveSwitchState.observe(this, Observer {
+            binding.themeSwitch.isChecked = it
+        })
+
+        binding.themeSwitch.setOnCheckedChangeListener { _, checked ->
+            viewModel.changeTheme(checked)
         }
-
-
-        themeSwitcher.isChecked =
-                //todo 6
-            getSharedPreferences(prefName, MODE_PRIVATE).getBoolean("darkTheme", false)
     }
-
 }
 

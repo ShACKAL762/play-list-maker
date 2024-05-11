@@ -11,7 +11,7 @@ import com.example.playlistmaker.domain.settings.interactor_impl.SharingInteract
 class SettingViewModelFactory (context:Context): ViewModelProvider.Factory {
 
     private val settingsInteractor by lazy {
-        Creator.provideSettingInteractor(context)
+        Creator.provideSettingInteractor(context.applicationContext)
     }
     private val sharingInteractor by lazy {
         Creator.provideSharingInteractor(context)
