@@ -10,49 +10,30 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.text.set
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker.domain.entity.History
 import com.example.playlistmaker.data.network.ItunesApi
 import com.example.playlistmaker.data.search.SearchHistoryRepository
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.entity.Track
-import com.example.playlistmaker.ui.models.TrackList
 import com.example.playlistmaker.ui.search.SearchRecycleAdapter
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel.SViewState
 import com.example.playlistmaker.ui.search.view_model.SearchViewModelFactory
-import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.playlistmaker.ui.search.view_model.view_state.SearchViewState
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
 class SearchActivity : AppCompatActivity() {
 
-    private companion object {
-        private const val SEARCH_TEXT = "SEARCH_TEXT"
-        private const val TEXT_DEF = ""
 
-        private const val SEARCH_DELAY = 2000
-        private const val ITUNES_URL = "https://itunes.apple.com"
 
-    }
-
-    private lateinit var iApi: ItunesApi
 
     private var tracks = mutableListOf<Track>()
-    private val retrofit =
-        Retrofit.Builder().baseUrl(ITUNES_URL).addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val searchEvent = Runnable { search() }
 
     private lateinit var binding: ActivitySearchBinding
     private lateinit var viewModel: SearchViewModel
@@ -63,12 +44,10 @@ class SearchActivity : AppCompatActivity() {
             ViewModelProvider(this, SearchViewModelFactory(this))[SearchViewModel::class.java]
 
         setContentView(binding.root)
+
         observeInit()
-
-//todo
-        iApi = retrofit.create(ItunesApi::class.java)
-
         recyclerViewInit()
+
 
 
         val simpleTextWatcher = object : TextWatcher {
@@ -78,14 +57,10 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 viewModel.setSearchLineData(s.toString())
                 binding.searchLineCleaner.isVisible = clearButtonVisibility(s)
-
-                //TODO{
-                writeTextEnd()
-                //TODO}
-
+                search()
                 if (binding.searchLine.hasFocus() && s?.isEmpty() == true) {
                     showHistory()
-                }else unShowHistory()
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -105,21 +80,20 @@ class SearchActivity : AppCompatActivity() {
 
         binding.searchLineCleaner.setOnClickListener {
             hideKeyBoard(currentFocus)
-            viewModel.setSearchLineData("")
             binding.searchLine.setText("")
-            viewModel.setHistoryVisibleState()
-
+            showHistory()
         }
+
         binding.arrowBack.setOnClickListener {
             finish()
         }
 
-
         binding.cleanHistoryButton.setOnClickListener {
             viewModel.cleanHistory()
-            //todo
-            clearRecycleView()
-            unShowHistory()
+
+        }
+        binding.refresh.setOnClickListener {
+            search()
         }
 
 
@@ -127,103 +101,38 @@ class SearchActivity : AppCompatActivity() {
 
     private fun observeInit() {
 
-        viewModel.recycleView.observe(this, Observer {
-            binding.recyclerView.isVisible = it
+        viewModel.searchStateLiveData.observe(this, Observer {
+            binding.recyclerView.isVisible = it.recycleView
+            binding.searchMessage.isVisible = it.searchMessage
+            binding.cleanHistoryButton.isVisible = it.cleanHistoryButton
+            binding.progressCircular.isVisible = it.progressBar
+            binding.lostConnectionMessage.isVisible = it.lostConnection
+            binding.notFoundMessage.isVisible = it.notFound
+            })
+
+        viewModel.trackListLiveData.observe(this, Observer {
+            tracks.clear()
+            tracks.addAll(it)
+            binding.recyclerView.adapter?.notifyDataSetChanged()
         })
 
-        viewModel.notFoundPlaceholder.observe(this, Observer {
-            binding.notFoundMessage.isVisible = it
-        })
 
-        viewModel.progressBar.observe(this, Observer {
-            binding.progressCircular.isVisible = it
-        })
-
-        viewModel.lostConnectionPlaceholder.observe(this, Observer {
-            binding.lostConnectionMessage.isVisible = it
-        })
-        viewModel.cleanHistoryButton.observe(this, Observer {
-            binding.cleanHistoryButton.isVisible = it
-        })
-        viewModel.historyMessage.observe(this, Observer {
-            binding.searchMessage.isVisible = it
-        })
     }
 
-    private fun writeTextEnd() {
-        handler.removeCallbacks(searchEvent)
-        if (binding.searchLine.text.isNotEmpty()) {
-            handler.postDelayed(searchEvent, SEARCH_DELAY.toLong())
-        } else viewModel.changeState(SViewState.LOAD)
-    }
 
     override fun onResume() {
         super.onResume()
+        binding.searchLine.setText(viewModel.searchLineLiveData.value)
         binding.searchLine.setSelection(binding.searchLine.length())
-
-
-    }
-
-    private fun unShowHistory() {
-        viewModel.changeState(SViewState.HIDE_HISTORY)
-        binding.recyclerView.adapter = SearchRecycleAdapter(tracks)
-        tracks.clear()
-        binding.recyclerView.adapter?.notifyDataSetChanged()
-
     }
 
     private fun showHistory() {
         viewModel.setHistoryVisibleState()
-        updateHistory()
-
-
-    }
-
-    private fun updateHistory() {
-        val x = SearchHistoryRepository(this)
-        binding.recyclerView.adapter = SearchRecycleAdapter(tracks)
-        tracks.clear()
-        tracks.addAll(x.getHistoryList())
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
-
-    private fun clearRecycleView() {
-        tracks.clear()
+        private fun search() {
         binding.recyclerView.adapter?.notifyDataSetChanged()
-
-    }
-
-    private fun search() {
-        viewModel.changeState(SViewState.LOAD)
-
-        iApi.search(viewModel.searchLineLiveData.value.toString())
-            .enqueue(object : Callback<TrackList> {
-                override fun onResponse(call: Call<TrackList>, response: Response<TrackList>) {
-
-                    if (response.code() == 200) {
-                        viewModel.changeState(SViewState.SUCCESS)
-                        tracks.clear()
-
-                        val result = response.body()?.results
-                        if (result?.isNotEmpty() == true) {
-                            binding.recyclerView.isVisible = true
-                            tracks.addAll(response.body()?.results!!)
-                            binding.recyclerView.adapter?.notifyDataSetChanged()
-                        }
-                    }
-                    if (tracks.isEmpty()) {
-                        binding.recyclerView.adapter?.notifyDataSetChanged()
-                        viewModel.changeState(SViewState.NOT_FOUND)
-                    }
-                }
-
-                override fun onFailure(call: Call<TrackList>, t: Throwable) {
-                    tracks.clear()
-                    binding.recyclerView.adapter?.notifyDataSetChanged()
-                    viewModel.changeState(SViewState.LOST_CONNECTION)
-                }
-            })
-
+        viewModel.writeEnd()
     }
 
     private fun recyclerViewInit() {
@@ -239,15 +148,5 @@ class SearchActivity : AppCompatActivity() {
         val inputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(v?.windowToken, 0)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_TEXT, viewModel.searchLineLiveData.value)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        binding.searchLine.setText(savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF))
     }
 }

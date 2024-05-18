@@ -6,7 +6,7 @@ enum class SearchState(
     val notFound:Boolean,
     val progressBar: Boolean,
     val cleanHistoryButton: Boolean,
-    val historyMessage: Boolean,
+    val searchMessage: Boolean,
     ) {
 
     NOT_FOUND(
@@ -15,7 +15,7 @@ enum class SearchState(
         notFound = true,
         progressBar = false,
         cleanHistoryButton = false,
-        historyMessage = false),
+        searchMessage = false),
 
     LOST_CONNECTION(
         recycleView = false,
@@ -23,7 +23,7 @@ enum class SearchState(
         notFound = false,
         progressBar = false,
         cleanHistoryButton = false,
-        historyMessage = false),
+        searchMessage = false),
 
     SUCCESS(
         recycleView = true,
@@ -31,7 +31,7 @@ enum class SearchState(
         notFound = false,
         progressBar = false,
         cleanHistoryButton = false,
-        historyMessage = false),
+        searchMessage = false),
 
     LOADING(
         recycleView = false,
@@ -39,7 +39,7 @@ enum class SearchState(
         notFound = false,
         progressBar = true,
         cleanHistoryButton = false,
-        historyMessage = false),
+        searchMessage = false),
 
     SHOW_HISTORY(
         recycleView = true,
@@ -47,7 +47,7 @@ enum class SearchState(
         notFound = false,
         progressBar = false,
         cleanHistoryButton = true,
-        historyMessage = true),
+        searchMessage = true),
 
     HIDE_HISTORY(
         recycleView = true,
@@ -55,6 +55,13 @@ enum class SearchState(
         notFound = false,
         progressBar = false,
         cleanHistoryButton = false,
-        historyMessage = false),
+        searchMessage = false),
+    DEFAULT(
+        recycleView = false,
+        lostConnection = false,
+        notFound = false,
+        progressBar = false,
+        cleanHistoryButton = false,
+        searchMessage = false)
 
 }

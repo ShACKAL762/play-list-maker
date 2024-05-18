@@ -12,7 +12,10 @@ class SearchViewModelFactory(context: Context): ViewModelProvider.Factory {
     private val historyTrackListInteractor by lazy {
         CreatorSearchView.provideHistoryTrackListInteractor(context.applicationContext)
     }
+    private val searchTrackListInteractor by lazy {
+        CreatorSearchView.provideSearchTrackListInteractor()
+    }
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return SearchViewModel(historyTrackListInteractor, searchActivityStateInteractor)as T
+        return SearchViewModel(historyTrackListInteractor, searchActivityStateInteractor, searchTrackListInteractor)as T
     }
 }
