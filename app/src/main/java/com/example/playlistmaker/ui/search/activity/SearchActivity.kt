@@ -1,37 +1,28 @@
 package com.example.playlistmaker.ui.search.activity
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.core.text.set
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker.data.network.ItunesApi
-import com.example.playlistmaker.data.search.SearchHistoryRepository
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.entity.Track
-import com.example.playlistmaker.ui.search.SearchRecycleAdapter
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
-import com.example.playlistmaker.ui.search.view_model.SearchViewModel.SViewState
 import com.example.playlistmaker.ui.search.view_model.SearchViewModelFactory
-import com.example.playlistmaker.ui.search.view_model.view_state.SearchViewState
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleAdapter
 
 
 class SearchActivity : AppCompatActivity() {
-
-
-
+    private companion object {
+        private const val SEARCH_TEXT = "SEARCH_TEXT"
+        private const val TEXT_DEF = ""
+    }
 
     private var tracks = mutableListOf<Track>()
 
@@ -47,8 +38,6 @@ class SearchActivity : AppCompatActivity() {
 
         observeInit()
         recyclerViewInit()
-
-
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -68,9 +57,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         binding.searchLine.addTextChangedListener(simpleTextWatcher)
-
-
-
 
         binding.searchLine.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && binding.searchLine.text.isEmpty()) {
@@ -95,34 +81,12 @@ class SearchActivity : AppCompatActivity() {
         binding.refresh.setOnClickListener {
             search()
         }
-
-
     }
 
-    private fun observeInit() {
-
-        viewModel.searchStateLiveData.observe(this, Observer {
-            binding.recyclerView.isVisible = it.recycleView
-            binding.searchMessage.isVisible = it.searchMessage
-            binding.cleanHistoryButton.isVisible = it.cleanHistoryButton
-            binding.progressCircular.isVisible = it.progressBar
-            binding.lostConnectionMessage.isVisible = it.lostConnection
-            binding.notFoundMessage.isVisible = it.notFound
-            })
-
-        viewModel.trackListLiveData.observe(this, Observer {
-            tracks.clear()
-            tracks.addAll(it)
-            binding.recyclerView.adapter?.notifyDataSetChanged()
-        })
-
-
-    }
 
 
     override fun onResume() {
         super.onResume()
-        binding.searchLine.setText(viewModel.searchLineLiveData.value)
         binding.searchLine.setSelection(binding.searchLine.length())
     }
 
@@ -148,5 +112,32 @@ class SearchActivity : AppCompatActivity() {
         val inputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(v?.windowToken, 0)
+    }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(SEARCH_TEXT, viewModel.searchLineLiveData.value)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        binding.searchLine.setText(savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF))
+    }
+    private fun observeInit() {
+
+        viewModel.searchStateLiveData.observe(this, Observer {
+            binding.recyclerView.isVisible = it.recycleView
+            binding.searchMessage.isVisible = it.searchMessage
+            binding.cleanHistoryButton.isVisible = it.cleanHistoryButton
+            binding.progressCircular.isVisible = it.progressBar
+            binding.lostConnectionMessage.isVisible = it.lostConnection
+            binding.notFoundMessage.isVisible = it.notFound
+        })
+
+        viewModel.trackListLiveData.observe(this, Observer {
+            tracks.clear()
+            tracks.addAll(it)
+            binding.recyclerView.adapter?.notifyDataSetChanged()
+        })
+
     }
 }

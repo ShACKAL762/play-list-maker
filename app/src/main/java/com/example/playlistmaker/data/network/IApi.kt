@@ -6,7 +6,7 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.Exception
+import java.io.IOException
 
 class IApi(url: String) {
     private val retrofit =
@@ -20,8 +20,12 @@ class IApi(url: String) {
 
         return try {
             iApi.search(trackName).execute()
-        }catch (e:Exception){
-            Response.error(490,ResponseBody.create(null,"Error"))
+
+        } catch (e: IOException) {
+            Response.error(490, ResponseBody.create(null, "Error"))
+        }catch (e:RuntimeException){
+            Response.error(490, ResponseBody.create(null, "Error"))
+
         }
     }
 }

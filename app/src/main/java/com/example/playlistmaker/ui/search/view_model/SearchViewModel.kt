@@ -2,7 +2,6 @@ package com.example.playlistmaker.ui.search.view_model
 
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,8 +15,6 @@ import com.example.playlistmaker.ui.search.view_model.view_state.SearchViewState
 import retrofit2.Response
 
 class SearchViewModel(
-    //private val searchLineInetractor:SearchLineInteractor,
-    //private val searchRecycleInteractor: SearchRecycleInteractor,
     private val historyTrackListInteractor: HistoryTrackListInteractor,
     private val stateInteractor: SearchActivityStateInteractor,
     private val searchTrackListInteractor: SearchTrackListInteractor
@@ -32,9 +29,8 @@ class SearchViewModel(
 
     private lateinit var response: Response<TrackList>
 
-
     //Изменяемые переменные
-    private val trackList = MutableLiveData<List<Track>>()//todo
+    private val trackList = MutableLiveData<List<Track>>()
     private val searchState = MutableLiveData<SearchState>()
     private val searchLine = MutableLiveData<String>()
 
@@ -43,25 +39,20 @@ class SearchViewModel(
     val searchLineLiveData: LiveData<String> = searchLine
     val searchStateLiveData: LiveData<SearchState> = searchState
 
-
     init {
         searchState.value = stateInteractor.changeState(SViewState.DEFAULT)
         searchLine.value = ""
     }
 
-
     fun setSearchLineData(text: String) {
         searchLine.value = text
     }
 
-    fun changeStateAsyn(state: SViewState) {
-        Log.e("ChangeState ", state.name)
+    private fun changeStateAsyn(state: SViewState) {
         searchState.postValue(stateInteractor.changeState(state))
-        println(searchState.value?.name)
     }
 
-    fun render(searchViewState: SearchViewState) {
-        handler.removeCallbacks(searchEvent)
+    private fun render(searchViewState: SearchViewState) {
         when (searchViewState) {
             is SearchViewState.Loading -> {
                 changeStateAsyn(SViewState.LOADING)
@@ -75,26 +66,27 @@ class SearchViewModel(
 
             is SearchViewState.Empty -> {
                 changeStateAsyn(SViewState.NOT_FOUND)
-
             }
 
             is SearchViewState.LostConnection -> {
                 changeStateAsyn(SViewState.LOST_CONNECTION)
             }
+
             is SearchViewState.ShowHistory -> {
-                trackList.value = searchViewState.tracks
                 changeStateAsyn(SViewState.SHOW_HISTORY)
+                trackList.value = searchViewState.tracks
             }
 
-            SearchViewState.HideHistory ->
+            is SearchViewState.HideHistory -> {
                 changeStateAsyn(SViewState.HIDE_HISTORY)
+            }
         }
     }
 
     fun cleanHistory() {
+        render(SearchViewState.HideHistory)
         trackList.value = mutableListOf()
         historyTrackListInteractor.clearHistory()
-        render(SearchViewState.HideHistory)
     }
 
     fun setHistoryVisibleState() {
@@ -109,8 +101,7 @@ class SearchViewModel(
         handler.removeCallbacks(searchEvent)
         if (!searchLineLiveData.value.isNullOrEmpty()) {
             handler.postDelayed(searchEvent, SEARCH_DELAY)
-        } else
-            setHistoryVisibleState()
+        }
     }
 
     private fun search() {
@@ -129,7 +120,6 @@ class SearchViewModel(
             .start()
     }
 
-
     enum class SViewState {
         SUCCESS,
         LOADING,
@@ -138,6 +128,5 @@ class SearchViewModel(
         SHOW_HISTORY,
         HIDE_HISTORY,
         DEFAULT
-
     }
 }
