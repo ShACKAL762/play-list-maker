@@ -25,7 +25,7 @@ class PlayerActivity : AppCompatActivity() {
             )[PlayerViewModel::class.java]
 
         binding = ActivityPlayerBinding.inflate(layoutInflater)
-        playerAdapter = PlayerAdapter(this)
+        playerAdapter = PlayerAdapter(binding)
 
         observeInit()
 
