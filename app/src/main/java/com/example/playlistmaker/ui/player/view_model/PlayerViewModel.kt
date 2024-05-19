@@ -5,8 +5,8 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.data.player.state.PlayerState
+import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.player.interactors.MediaPlayerInteractor
 import com.example.playlistmaker.domain.player.interactors.TrackListInteractor
 import java.text.SimpleDateFormat
@@ -87,6 +87,7 @@ class PlayerViewModel(
 
     fun pause() {
         playerInteractor.pause()
+        renderPlayerState()
         handler.removeCallbacks(time)
     }
 
