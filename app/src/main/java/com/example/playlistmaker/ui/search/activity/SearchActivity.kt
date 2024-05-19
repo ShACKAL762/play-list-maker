@@ -83,8 +83,6 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-
-
     override fun onResume() {
         super.onResume()
         binding.searchLine.setSelection(binding.searchLine.length())

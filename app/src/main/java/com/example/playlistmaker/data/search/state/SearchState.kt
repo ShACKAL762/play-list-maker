@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.search
+package com.example.playlistmaker.data.search.state
 
 enum class SearchState(
     val recycleView: Boolean,

@@ -2,7 +2,7 @@ package com.example.playlistmaker.create
 
 import android.content.Context
 import com.example.playlistmaker.data.search.HistoryTrackListRepositoryImpl
-import com.example.playlistmaker.data.search.SearchActivityStateRepositoryImpl
+import com.example.playlistmaker.data.search.state.SearchActivityStateRepositoryImpl
 import com.example.playlistmaker.data.search.SearchTrackListRepositoryImpl
 import com.example.playlistmaker.domain.search.Interactor.HistoryTrackListInteractor
 import com.example.playlistmaker.domain.search.Interactor.SearchActivityStateInteractor

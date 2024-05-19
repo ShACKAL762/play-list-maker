@@ -22,9 +22,9 @@ class IApi(url: String) {
             iApi.search(trackName).execute()
 
         } catch (e: IOException) {
-            Response.error(490, ResponseBody.create(null, "Error"))
+            Response.error(600, ResponseBody.create(null, "Connection Error"))
         }catch (e:RuntimeException){
-            Response.error(490, ResponseBody.create(null, "Error"))
+            Response.error(600, ResponseBody.create(null, "Connection Error"))
 
         }
     }
