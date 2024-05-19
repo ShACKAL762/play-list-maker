@@ -1,8 +1,8 @@
 package com.example.playlistmaker.data.player
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.domain.repositories.MediaPlayerRepository
 import com.example.playlistmaker.domain.model.PlayerState
+import com.example.playlistmaker.domain.repositories.MediaPlayerRepository
 
 
 

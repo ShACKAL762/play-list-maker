@@ -119,6 +119,10 @@ class SearchViewModel(
         }
             .start()
     }
+    override fun onCleared() {
+        handler.removeCallbacks(searchEvent)
+        super.onCleared()
+    }
 
     enum class SViewState {
         SUCCESS,
