@@ -2,7 +2,7 @@ package com.example.playlistmaker.data
 
 import android.content.Context
 import com.example.playlistmaker.data.history.HistoryRepository
-import com.example.playlistmaker.domain.repositories.TrackListRepository
+import com.example.playlistmaker.domain.player.repositories.TrackListRepository
 import com.example.playlistmaker.domain.entity.Track
 
 class TrackListRepositoryImpl(context: Context): TrackListRepository {

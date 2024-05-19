@@ -7,8 +7,8 @@ import com.example.playlistmaker.domain.player.interactors.MediaPlayerInteractor
 import com.example.playlistmaker.domain.player.interactors.TrackListInteractor
 import com.example.playlistmaker.domain.player.interactors_impl.MediaPlayerInteractorImpl
 import com.example.playlistmaker.domain.player.interactors_impl.TrackListInteractorImpl
-import com.example.playlistmaker.domain.repositories.MediaPlayerRepository
-import com.example.playlistmaker.domain.repositories.TrackListRepository
+import com.example.playlistmaker.domain.player.repositories.MediaPlayerRepository
+import com.example.playlistmaker.domain.player.repositories.TrackListRepository
 
 object CreatorPlayerView {
     /***

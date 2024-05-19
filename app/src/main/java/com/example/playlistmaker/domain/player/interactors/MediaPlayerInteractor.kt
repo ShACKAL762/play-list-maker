@@ -1,7 +1,7 @@
 package com.example.playlistmaker.domain.player.interactors
 
 
-import com.example.playlistmaker.domain.model.PlayerState
+import com.example.playlistmaker.data.player.state.PlayerState
 
 interface MediaPlayerInteractor {
     fun playerPrepare(previewUrl: String)

@@ -1,8 +1,8 @@
 package com.example.playlistmaker.domain.player.interactors_impl
 
-import com.example.playlistmaker.domain.repositories.MediaPlayerRepository
+import com.example.playlistmaker.domain.player.repositories.MediaPlayerRepository
 import com.example.playlistmaker.domain.player.interactors.MediaPlayerInteractor
-import com.example.playlistmaker.domain.model.PlayerState
+import com.example.playlistmaker.data.player.state.PlayerState
 
 class MediaPlayerInteractorImpl(private val mediaPlayerRepository: MediaPlayerRepository):
     MediaPlayerInteractor {
@@ -21,7 +21,7 @@ class MediaPlayerInteractorImpl(private val mediaPlayerRepository: MediaPlayerRe
     override fun release() {
        mediaPlayerRepository.pause()
     }
-    override fun playerState():PlayerState{
+    override fun playerState(): PlayerState {
         return mediaPlayerRepository.playerState()
     }
 
