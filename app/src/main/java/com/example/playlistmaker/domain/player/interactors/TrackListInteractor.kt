@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.playlistmaker.domain.entity.Track
 
 interface TrackListInteractor {
-    fun getTrackList(context: Context):List<Track>
-    fun getTrack(context: Context):Track
+    fun getTrackList():List<Track>
+    fun getTrack():Track
 
 }

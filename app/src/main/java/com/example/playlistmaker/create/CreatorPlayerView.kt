@@ -1,5 +1,6 @@
 package com.example.playlistmaker.create
 
+import android.content.Context
 import com.example.playlistmaker.data.TrackListRepositoryImpl
 import com.example.playlistmaker.data.player.MediaPlayerRepositoryImpl
 import com.example.playlistmaker.domain.player.interactors.MediaPlayerInteractor
@@ -24,11 +25,11 @@ object CreatorPlayerView {
     /***
     Create TrackList
      */
-    fun provideTrackListInteractor(): TrackListInteractor {
-        return TrackListInteractorImpl(provideTrackGet())
+    fun provideTrackListInteractor(context: Context): TrackListInteractor {
+        return TrackListInteractorImpl(provideTrackGet(context))
     }
 
-    private fun provideTrackGet(): TrackListRepository {
-        return TrackListRepositoryImpl()
+    private fun provideTrackGet(context: Context): TrackListRepository {
+        return TrackListRepositoryImpl(context)
     }
 }

@@ -6,12 +6,12 @@ import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.player.interactors.TrackListInteractor
 
 class TrackListInteractorImpl(private val track: TrackListRepository): TrackListInteractor {
-    override fun getTrackList(context: Context): List<Track> {
-        return track.getTrackList(context)
+    override fun getTrackList(): List<Track> {
+        return track.getTrackList()
     }
 
-    override fun getTrack(context: Context): Track {
-        return track.getTrack(context)
+    override fun getTrack(): Track {
+        return track.getTrack()
     }
 
 

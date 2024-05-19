@@ -1,15 +1,15 @@
-package com.example.playlistmaker.ui.search
+package com.example.playlistmaker.ui.search.view_model.recycleView
 
 import android.content.Intent
-import android.os.*
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.ui.player.activity.PlayerActivity
-import com.example.playlistmaker.R
 import com.example.playlistmaker.data.search.SearchHistoryRepository
+import com.example.playlistmaker.databinding.TrackViewBinding
 import com.example.playlistmaker.domain.entity.Track
-import com.example.playlistmaker.ui.TrackViewHolder
+import com.example.playlistmaker.ui.player.activity.PlayerActivity
 
 class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
     companion object{
@@ -19,8 +19,8 @@ class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
-        return TrackViewHolder(view)
+        val view = LayoutInflater.from(parent.context)
+        return TrackViewHolder(TrackViewBinding.inflate(view, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -36,7 +36,7 @@ class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter
                 isClickAllowed = false
 
                 handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-                SearchHistoryRepository().setHistory(it.context, itemView)
+                SearchHistoryRepository(it.context).setHistory( itemView)
                 val intent = Intent(it.context, PlayerActivity::class.java).putExtra(TRACK_ID, itemView.trackId)
                 it.context.startActivity(intent)
             }

@@ -23,7 +23,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private var mediaPlayer = Creator.provideMediaPlayerInteract()
-    private var trackGetter = Creator.provideTrackListInteractor()
+    private var trackGetter = Creator.provideTrackListInteractor(this)
 
     private lateinit var playButton: ImageButton
     private lateinit var backButton: ImageButton
@@ -45,7 +45,7 @@ class PlayerActivity : AppCompatActivity() {
         playButton = findViewById(R.id.play)
         backButton = findViewById(R.id.arrow_back)
 
-        val trackData = trackGetter.getTrack(this)
+        val trackData = trackGetter.getTrack()
         val playerAdapter = PlayerAdapter(this)
 
         playerAdapter.onBindPlayerHolder(trackData)
