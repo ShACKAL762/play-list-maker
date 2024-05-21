@@ -25,27 +25,20 @@ class SearchViewModel(
     }
 
     private val handler = Handler(Looper.getMainLooper())
-    private val searchEvent = Runnable { search() }
+    private var searchEvent = Runnable {}
 
     private lateinit var response: Response<TrackList>
 
     //Изменяемые переменные
     private val trackList = MutableLiveData<List<Track>>()
     private val searchState = MutableLiveData<SearchState>()
-    private val searchLine = MutableLiveData<String>()
 
     //Переменные для Observer
     val trackListLiveData: LiveData<List<Track>> = trackList
-    val searchLineLiveData: LiveData<String> = searchLine
     val searchStateLiveData: LiveData<SearchState> = searchState
 
     init {
         searchState.value = stateInteractor.changeState(SViewState.DEFAULT)
-        searchLine.value = ""
-    }
-
-    fun setSearchLineData(text: String) {
-        searchLine.value = text
     }
 
     private fun changeStateAsyn(state: SViewState) {
@@ -96,18 +89,19 @@ class SearchViewModel(
             render(SearchViewState.HideHistory)
     }
 
-    fun writeEnd() {
+    fun writeEnd(searchRequest : String) {
         render(SearchViewState.Loading)
         handler.removeCallbacks(searchEvent)
-        if (!searchLineLiveData.value.isNullOrEmpty()) {
+        if (searchRequest.isNotEmpty()) {
+            searchEvent = Runnable { search(searchRequest) }
             handler.postDelayed(searchEvent, SEARCH_DELAY)
         }
     }
 
-    private fun search() {
+    private fun search(searchRequest: String) {
         Thread {
             response = searchTrackListInteractor
-                .getTrackListResponse(ITUNES_URL, searchLineLiveData.value!!)
+                .getTrackListResponse(ITUNES_URL, searchRequest)
             if (response.code() == 200) {
                 val trackListResponse = response.body()?.results
                 if (trackListResponse.isNullOrEmpty()) {

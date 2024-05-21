@@ -44,9 +44,8 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.setSearchLineData(s.toString())
-                binding.searchLineCleaner.isVisible = clearButtonVisibility(s)
-                search()
+B                binding.searchLineCleaner.isVisible = clearButtonVisibility(s)
+                search(s.toString())
                 if (binding.searchLine.hasFocus() && s?.isEmpty() == true) {
                     showHistory()
                 }
@@ -79,7 +78,7 @@ class SearchActivity : AppCompatActivity() {
 
         }
         binding.refresh.setOnClickListener {
-            search()
+            search(binding.searchLine.text.toString())
         }
     }
 
@@ -92,9 +91,9 @@ class SearchActivity : AppCompatActivity() {
         viewModel.setHistoryVisibleState()
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
-        private fun search() {
+        private fun search(searchRequest: String) {
         binding.recyclerView.adapter?.notifyDataSetChanged()
-        viewModel.writeEnd()
+        viewModel.writeEnd(searchRequest)
     }
 
     private fun recyclerViewInit() {
@@ -113,7 +112,7 @@ class SearchActivity : AppCompatActivity() {
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_TEXT, viewModel.searchLineLiveData.value)
+        outState.putString(SEARCH_TEXT, binding.searchLine.text.toString())
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
