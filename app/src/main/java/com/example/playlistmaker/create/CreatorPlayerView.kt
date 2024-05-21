@@ -1,7 +1,7 @@
 package com.example.playlistmaker.create
 
 import android.content.Context
-import com.example.playlistmaker.data.TrackListRepositoryImpl
+import com.example.playlistmaker.data.history.HistoryRepository
 import com.example.playlistmaker.data.player.MediaPlayerRepositoryImpl
 import com.example.playlistmaker.domain.player.interactors.MediaPlayerInteractor
 import com.example.playlistmaker.domain.player.interactors.TrackListInteractor
@@ -30,6 +30,6 @@ object CreatorPlayerView {
     }
 
     private fun provideTrackGet(context: Context): TrackListRepository {
-        return TrackListRepositoryImpl(context)
+        return HistoryRepository(context)
     }
 }

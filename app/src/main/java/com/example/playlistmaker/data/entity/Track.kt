@@ -1,4 +1,4 @@
-package com.example.playlistmaker.domain.entity
+package com.example.playlistmaker.data.entity
 
 class Track(
     var trackName: String, // Название композиции)

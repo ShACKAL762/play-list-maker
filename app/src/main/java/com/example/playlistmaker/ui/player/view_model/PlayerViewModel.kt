@@ -5,7 +5,7 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.data.entity.Track
 import com.example.playlistmaker.data.player.state.PlayerState
 import com.example.playlistmaker.domain.player.interactors.MediaPlayerInteractor
 import com.example.playlistmaker.domain.player.interactors.TrackListInteractor
@@ -34,14 +34,14 @@ class PlayerViewModel(
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private val time = Runnable {
-        currentTime.value = playerCurrentTime()
-        timerStart()
-    }
-
     init {
         trackData.value = playerTrackInteractor.getTrack()
         preparePlayer(trackData.value!!)
+    }
+
+    private val time = Runnable {
+        currentTime.value = playerCurrentTime()
+        timerStart()
     }
 
     private fun preparePlayer(track: Track) {

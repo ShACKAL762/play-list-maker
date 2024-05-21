@@ -3,6 +3,6 @@ package com.example.playlistmaker.domain.settings.repository
 
 
 interface SettingsRepository {
-    fun getThemeSettings(): Boolean
-    fun updateThemeSetting(checked: Boolean)
+    fun isChecked(): Boolean
+    fun updateThemeSetting(isChecked: Boolean)
 }

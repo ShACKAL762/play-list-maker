@@ -6,11 +6,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.data.search.state.SearchState
-import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.data.entity.Track
 import com.example.playlistmaker.domain.search.Interactor.HistoryTrackListInteractor
 import com.example.playlistmaker.domain.search.Interactor.SearchActivityStateInteractor
 import com.example.playlistmaker.domain.search.Interactor.SearchTrackListInteractor
-import com.example.playlistmaker.ui.models.TrackList
+import com.example.playlistmaker.data.entity.TrackList
 import com.example.playlistmaker.ui.search.view_model.view_state.SearchViewState
 import retrofit2.Response
 

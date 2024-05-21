@@ -6,11 +6,11 @@ import com.example.playlistmaker.App
 import com.example.playlistmaker.domain.settings.repository.SettingsRepository
 class SettingRepositoryImpl (private val context: Context): SettingsRepository {
     private val prefName = "main_preferences"
-    override fun getThemeSettings(): Boolean {
+    override fun isChecked(): Boolean {
         return context.getSharedPreferences(prefName, MODE_PRIVATE).getBoolean("darkTheme", false)
     }
-    override fun updateThemeSetting(checked: Boolean) {
-        (context as App).switchTheme(checked)
+    override fun updateThemeSetting(isChecked: Boolean) {
+        (context as App).switchTheme(isChecked)
     }
 
 

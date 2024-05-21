@@ -1,7 +1,7 @@
 package com.example.playlistmaker.domain.search.repository
 
 import android.content.Context
-import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.data.entity.Track
 
 interface HistoryTrackListRepository {
     fun getTrackList():List<Track>

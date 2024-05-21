@@ -2,12 +2,22 @@ package com.example.playlistmaker.data.history
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.domain.entity.History
-import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.data.entity.History
+import com.example.playlistmaker.data.entity.Track
+import com.example.playlistmaker.domain.player.repositories.TrackListRepository
 import com.google.gson.Gson
 
-class HistoryRepository (val context: Context) {
+class HistoryRepository (val context: Context) : TrackListRepository {
     private val historyMaxSize = 10
+
+    override fun getTrackList(): List<Track> {
+        return getHistoryList()
+    }
+
+    override fun getTrack(): Track {
+        return getHistoryList().first()
+    }
+
     fun getHistoryList(): MutableList<Track> {
         val history = context.getSharedPreferences(historyPref, Context.MODE_PRIVATE)
             .getString(historyPref, "")
@@ -48,4 +58,6 @@ class HistoryRepository (val context: Context) {
     companion object{
         private const val historyPref = "history"
     }
+
+
 }

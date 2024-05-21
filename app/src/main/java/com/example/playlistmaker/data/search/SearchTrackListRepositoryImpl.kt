@@ -2,7 +2,7 @@ package com.example.playlistmaker.data.search
 
 import com.example.playlistmaker.data.network.IApi
 import com.example.playlistmaker.domain.search.repository.SearchTrackListRepository
-import com.example.playlistmaker.ui.models.TrackList
+import com.example.playlistmaker.data.entity.TrackList
 import retrofit2.Response
 
 class SearchTrackListRepositoryImpl : SearchTrackListRepository {

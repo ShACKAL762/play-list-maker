@@ -1,6 +1,6 @@
 package com.example.playlistmaker.ui.search.view_model.view_state
 
-import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.data.entity.Track
 
 sealed interface SearchViewState {
 

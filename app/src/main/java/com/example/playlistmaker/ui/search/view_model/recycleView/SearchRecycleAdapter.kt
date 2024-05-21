@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.data.history.HistoryRepository
 import com.example.playlistmaker.databinding.TrackViewBinding
-import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.data.entity.Track
 import com.example.playlistmaker.ui.player.activity.PlayerActivity
 
 class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {

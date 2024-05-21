@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.ActivitySearchBinding
-import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.data.entity.Track
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.example.playlistmaker.ui.search.view_model.SearchViewModelFactory
 import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleAdapter
@@ -44,7 +44,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-B                binding.searchLineCleaner.isVisible = clearButtonVisibility(s)
+                binding.searchLineCleaner.isVisible = clearButtonVisibility(s)
                 search(s.toString())
                 if (binding.searchLine.hasFocus() && s?.isEmpty() == true) {
                     showHistory()
@@ -91,7 +91,8 @@ B                binding.searchLineCleaner.isVisible = clearButtonVisibility(s)
         viewModel.setHistoryVisibleState()
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
-        private fun search(searchRequest: String) {
+
+    private fun search(searchRequest: String) {
         binding.recyclerView.adapter?.notifyDataSetChanged()
         viewModel.writeEnd(searchRequest)
     }
@@ -110,6 +111,7 @@ B                binding.searchLineCleaner.isVisible = clearButtonVisibility(s)
             getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(v?.windowToken, 0)
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_TEXT, binding.searchLine.text.toString())
@@ -119,6 +121,7 @@ B                binding.searchLineCleaner.isVisible = clearButtonVisibility(s)
         super.onRestoreInstanceState(savedInstanceState)
         binding.searchLine.setText(savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF))
     }
+
     private fun observeInit() {
 
         viewModel.searchStateLiveData.observe(this, Observer {

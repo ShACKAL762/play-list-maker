@@ -1,7 +1,7 @@
 package com.example.playlistmaker.data.network
 
 
-import com.example.playlistmaker.ui.models.TrackList
+import com.example.playlistmaker.data.entity.TrackList
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -22,9 +22,9 @@ class IApi(url: String) {
             iApi.search(trackName).execute()
 
         } catch (e: IOException) {
-            Response.error(600, ResponseBody.create(null, "Connection Error"))
+            Response.error(408, ResponseBody.create(null, "Connection Error"))
         }catch (e:RuntimeException){
-            Response.error(600, ResponseBody.create(null, "Connection Error"))
+            Response.error(408, ResponseBody.create(null, "Connection Error"))
 
         }
     }

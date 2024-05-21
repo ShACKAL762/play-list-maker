@@ -6,7 +6,7 @@ import com.example.playlistmaker.domain.settings.repository.SettingsRepository
 
 class SettingsInteractorImpl(private val settingRepository:SettingsRepository):SettingsInteractor {
     override fun getThemeSettings(): Boolean {
-        return settingRepository.getThemeSettings()
+        return settingRepository.isChecked()
     }
 
     override fun updateThemeSetting(checked: Boolean) {
