@@ -13,6 +13,7 @@ class App : Application() {
         switchTheme(darkTheme)
     }
     fun switchTheme(darkThemeEnabled: Boolean) {
+
         AppCompatDelegate.setDefaultNightMode(
             if (darkThemeEnabled) {
                 getSharedPreferences(prefName, MODE_PRIVATE).edit().putBoolean("darkTheme",true).apply()
