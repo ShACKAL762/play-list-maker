@@ -7,7 +7,7 @@ import com.example.playlistmaker.data.entity.Track
 import com.example.playlistmaker.domain.player.repositories.TrackListRepository
 import com.google.gson.Gson
 
-class HistoryRepository (val context: Context) : TrackListRepository {
+class HistoryRepository (private val context: Context, private val gson: Gson) : TrackListRepository {
     private val historyMaxSize = 10
 
     override fun getTrackList(): List<Track> {
@@ -23,7 +23,7 @@ class HistoryRepository (val context: Context) : TrackListRepository {
             .getString(historyPref, "")
         var historyList: MutableList<Track> = mutableListOf()
         if (!history.equals("")) {
-            historyList = Gson().fromJson(history, History::class.java).list
+            historyList = gson.fromJson(history, History::class.java).list//
         }
         return historyList
     }
@@ -45,13 +45,13 @@ class HistoryRepository (val context: Context) : TrackListRepository {
             historyList.removeLast()
 
         context.getSharedPreferences(historyPref, Context.MODE_PRIVATE).edit()
-            .putString(historyPref, Gson().toJson(History(historyList), History::class.java)).apply()
+            .putString(historyPref, gson.toJson(History(historyList), History::class.java)).apply()
 
     }
 
     fun clean() {
         context.getSharedPreferences("history", AppCompatActivity.MODE_PRIVATE).edit()
-            .putString("history", Gson().toJson(History(mutableListOf()), History::class.java))
+            .putString("history", gson.toJson(History(mutableListOf()), History::class.java))
             .apply()
     }
 

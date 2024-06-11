@@ -1,12 +1,11 @@
 package com.example.playlistmaker.data.search
 
 import android.content.Context
-import com.example.playlistmaker.data.history.HistoryRepository
 import com.example.playlistmaker.data.entity.Track
+import com.example.playlistmaker.data.history.HistoryRepository
 import com.example.playlistmaker.domain.search.repository.HistoryTrackListRepository
 
-class HistoryTrackListRepositoryImpl(val context: Context) : HistoryTrackListRepository {
-    private val history = HistoryRepository(context)
+class HistoryTrackListRepositoryImpl(val context: Context, private val history: HistoryRepository) : HistoryTrackListRepository {
     override fun getTrackList(): List<Track> {
         return history.getHistoryList()
     }

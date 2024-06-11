@@ -11,9 +11,11 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.data.entity.Track
+import com.example.playlistmaker.data.history.HistoryRepository
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleAdapter
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -26,6 +28,7 @@ class SearchActivity : AppCompatActivity() {
     private var tracks = mutableListOf<Track>()
 
     private lateinit var binding: ActivitySearchBinding
+    private val historyRepository:HistoryRepository by inject()
     private val viewModel:SearchViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +99,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun recyclerViewInit() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = SearchRecycleAdapter(tracks)
+        binding.recyclerView.adapter = SearchRecycleAdapter(tracks, historyRepository)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Boolean {

@@ -6,12 +6,13 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.data.entity.Track
 import com.example.playlistmaker.data.history.HistoryRepository
 import com.example.playlistmaker.databinding.TrackViewBinding
-import com.example.playlistmaker.data.entity.Track
 import com.example.playlistmaker.ui.player.activity.PlayerActivity
 
-class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
+class SearchRecycleAdapter(private val list: List<Track>,private val historyRepository: HistoryRepository) : RecyclerView.Adapter<TrackViewHolder>() {
+
     companion object{
         const val TRACK_ID = "TRACK_ID"
         const val CLICK_DEBOUNCE_DELAY = 500L
@@ -36,7 +37,7 @@ class SearchRecycleAdapter(private val list: List<Track>) : RecyclerView.Adapter
                 isClickAllowed = false
 
                 handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-                HistoryRepository(it.context).setHistory( itemView)
+                historyRepository.setHistory( itemView)
                 val intent = Intent(it.context, PlayerActivity::class.java).putExtra(TRACK_ID, itemView.trackId)
                 it.context.startActivity(intent)
             }

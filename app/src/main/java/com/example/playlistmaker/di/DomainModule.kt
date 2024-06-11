@@ -1,5 +1,7 @@
 package com.example.playlistmaker.di
 
+import com.example.playlistmaker.domain.main.interactor.MainMenuInteractor
+import com.example.playlistmaker.domain.main.iteractor_impl.MainMenuInteractorImpl
 import com.example.playlistmaker.domain.player.interactors.MediaPlayerInteractor
 import com.example.playlistmaker.domain.player.interactors.TrackListInteractor
 import com.example.playlistmaker.domain.player.interactors_impl.MediaPlayerInteractorImpl
@@ -17,15 +19,17 @@ import com.example.playlistmaker.domain.settings.interactor_impl.SharingInteract
 import org.koin.dsl.module
 
 val domainModule = module {
-    single<HistoryTrackListInteractor> { HistoryTrackListInteractorImpl(get()) }
-    single<SearchActivityStateInteractor> { SearchActivityStateInteractorImpl(get()) }
-    single<SearchTrackListInteractor> { SearchTrackListInteractorImpl(get()) }
+    factory<HistoryTrackListInteractor> { HistoryTrackListInteractorImpl(get()) }
+    factory<SearchActivityStateInteractor> { SearchActivityStateInteractorImpl(get()) }
+    factory<SearchTrackListInteractor> { SearchTrackListInteractorImpl(get()) }
+
+    factory <MainMenuInteractor>{MainMenuInteractorImpl(get())}
 
 
-    single<SharingInteractor> { SharingInteractorImpl(get()) }
-    single<SettingsInteractor> { SettingsInteractorImpl(get()) }
+    factory<SharingInteractor> { SharingInteractorImpl(get()) }
+    factory<SettingsInteractor> { SettingsInteractorImpl(get()) }
 
-    single<MediaPlayerInteractor>{ MediaPlayerInteractorImpl(get()) }
-    single<TrackListInteractor> { TrackListInteractorImpl(get()) }
+    factory<MediaPlayerInteractor>{ MediaPlayerInteractorImpl(get()) }
+    factory<TrackListInteractor> { TrackListInteractorImpl(get()) }
 
 }
