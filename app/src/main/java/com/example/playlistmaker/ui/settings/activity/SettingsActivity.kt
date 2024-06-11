@@ -4,14 +4,14 @@ package com.example.playlistmaker.ui.settings.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
 import com.example.playlistmaker.ui.settings.view_model.SettingViewModel
-import com.example.playlistmaker.ui.settings.view_model.SettingViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: SettingViewModel
+    private val viewModel: SettingViewModel by viewModel{ parametersOf(this) }
     private lateinit var binding: ActivitySettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,12 +19,6 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-
-        viewModel =
-            ViewModelProvider(
-                this,
-                SettingViewModelFactory(this)
-            )[SettingViewModel::class.java]
 
         viewModel.getTheme()
 

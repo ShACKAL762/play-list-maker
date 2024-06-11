@@ -3,21 +3,16 @@ package com.example.playlistmaker.ui.player
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.data.entity.Track
+import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerHolder(private val binding:ActivityPlayerBinding) {
 
-
-
     private val timeFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
 
-
     private val corner by lazy { binding.root.resources.getDimension(R.dimen.big_corner_radius).toInt() }
-
-
 
     fun bind(track: Track) {
         binding.trackName.text = track.trackName

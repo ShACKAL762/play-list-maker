@@ -7,7 +7,7 @@ import retrofit2.Response
 
 class SearchTrackListInteractorImpl(val searchTrackListRepository: SearchTrackListRepository):SearchTrackListInteractor {
     override fun getTrackListResponse(url: String, request:String): Response<TrackList> {
-        return searchTrackListRepository.getTrackListResponse(url,request)
+        return searchTrackListRepository.getTrackListResponse(request)
     }
 
 

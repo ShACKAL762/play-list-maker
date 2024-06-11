@@ -9,13 +9,12 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.data.entity.Track
+import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
-import com.example.playlistmaker.ui.search.view_model.SearchViewModelFactory
 import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SearchActivity : AppCompatActivity() {
@@ -27,12 +26,10 @@ class SearchActivity : AppCompatActivity() {
     private var tracks = mutableListOf<Track>()
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel:SearchViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
-        viewModel =
-            ViewModelProvider(this, SearchViewModelFactory(this))[SearchViewModel::class.java]
 
         setContentView(binding.root)
 
@@ -123,7 +120,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun observeInit() {
-
+        println(viewModel)
         viewModel.searchStateLiveData.observe(this, Observer {
             binding.recyclerView.isVisible = it.recycleView
             binding.searchMessage.isVisible = it.searchMessage
