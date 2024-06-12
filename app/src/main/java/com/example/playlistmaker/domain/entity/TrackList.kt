@@ -1,6 +1,4 @@
-package com.example.playlistmaker.data.entity
-
-
+package com.example.playlistmaker.domain.entity
 
 
 class TrackList(

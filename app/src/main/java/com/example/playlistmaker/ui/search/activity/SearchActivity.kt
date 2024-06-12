@@ -1,6 +1,7 @@
 package com.example.playlistmaker.ui.search.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,12 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker.data.entity.Track
-import com.example.playlistmaker.data.history.HistoryRepository
 import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.ui.player.activity.PlayerActivity
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleAdapter
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -28,7 +28,6 @@ class SearchActivity : AppCompatActivity() {
     private var tracks = mutableListOf<Track>()
 
     private lateinit var binding: ActivitySearchBinding
-    private val historyRepository:HistoryRepository by inject()
     private val viewModel:SearchViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,7 +98,13 @@ class SearchActivity : AppCompatActivity() {
 
     private fun recyclerViewInit() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = SearchRecycleAdapter(tracks, historyRepository)
+
+        binding.recyclerView.adapter = SearchRecycleAdapter(tracks){
+            viewModel.setTrack(it)
+            val intent = Intent(this, PlayerActivity::class.java).putExtra(
+                SearchRecycleAdapter.TRACK_ID, it.trackId)
+            this.startActivity(intent)
+        }
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Boolean {

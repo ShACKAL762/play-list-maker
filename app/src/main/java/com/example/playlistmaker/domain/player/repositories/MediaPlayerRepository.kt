@@ -1,7 +1,7 @@
 package com.example.playlistmaker.domain.player.repositories
 
 
-import com.example.playlistmaker.data.player.state.PlayerState
+import com.example.playlistmaker.domain.player.state.PlayerState
 
 interface MediaPlayerRepository {
     fun playerPrepare(previewUrl: String)

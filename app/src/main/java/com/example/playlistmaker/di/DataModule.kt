@@ -40,7 +40,7 @@ val retrofitModule = module {
     single<Converter.Factory> { GsonConverterFactory.create() }
 }
 val repoModule = module{
-    single<HistoryTrackListRepository> { HistoryTrackListRepositoryImpl(androidContext(),get()) }
+    single<HistoryTrackListRepository> { HistoryTrackListRepositoryImpl(get()) }
     single<SearchActivityStateRepository> { SearchActivityStateRepositoryImpl() }
     single<SearchTrackListRepository> { SearchTrackListRepositoryImpl(get()) }
     single { HistoryRepository(androidContext(),get())}

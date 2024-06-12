@@ -1,7 +1,7 @@
 package com.example.playlistmaker.ui.player
 
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
-import com.example.playlistmaker.data.entity.Track
+import com.example.playlistmaker.domain.entity.Track
 
 class PlayerAdapter(private val binding: ActivityPlayerBinding) {
     fun onBindPlayerHolder(track: Track){

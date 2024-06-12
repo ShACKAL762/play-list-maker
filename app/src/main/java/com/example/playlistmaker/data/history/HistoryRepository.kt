@@ -3,7 +3,7 @@ package com.example.playlistmaker.data.history
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.data.entity.History
-import com.example.playlistmaker.data.entity.Track
+import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.player.repositories.TrackListRepository
 import com.google.gson.Gson
 

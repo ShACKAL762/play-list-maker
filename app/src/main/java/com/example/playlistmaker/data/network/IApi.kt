@@ -1,7 +1,7 @@
 package com.example.playlistmaker.data.network
 
 
-import com.example.playlistmaker.data.entity.TrackList
+import com.example.playlistmaker.domain.entity.TrackList
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
