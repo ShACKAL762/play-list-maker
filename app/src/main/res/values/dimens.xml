@@ -19,4 +19,6 @@
     <dimen name="space_24">24dp</dimen>
     <dimen name="zero">0dp</dimen>
     <dimen name="player_buttons">52dp</dimen>
+    <dimen name="ys_text_13">13sp</dimen>
+    <dimen name="library_placeholder_margin_top">104dp</dimen>
 </resources>
