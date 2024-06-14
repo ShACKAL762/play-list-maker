@@ -21,4 +21,6 @@
     <dimen name="player_buttons">52dp</dimen>
     <dimen name="ys_text_13">13sp</dimen>
     <dimen name="library_placeholder_margin_top">104dp</dimen>
+    <dimen name="library_empty_text_margin_top">240dp</dimen>
+    <dimen name="title_height">56dp</dimen>
 </resources>

@@ -29,4 +29,8 @@ class LibraryActivity : AppCompatActivity() {
             finish()
         }
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        tabMediator.detach()
+    }
 }
