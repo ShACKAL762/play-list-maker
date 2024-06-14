@@ -32,7 +32,6 @@
             android:name=".ui.settings.activity.SettingsActivity"
             android:exported="true" />
         <activity android:name=".ui.player.activity.PlayerActivity"/>
-
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>

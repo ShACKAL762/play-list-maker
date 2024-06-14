@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.main.interactor.MainMenuInteractor
 
 class MainActivityViewModel(
-    private val mainMenuInteractor: MainMenuInteractor
+    private val mainMenuInteractor: MainMenuInteractor,
 ): ViewModel() {
     fun startSearch(){
         mainMenuInteractor.startSearch()

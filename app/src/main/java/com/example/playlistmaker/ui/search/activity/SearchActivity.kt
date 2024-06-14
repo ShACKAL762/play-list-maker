@@ -1,6 +1,7 @@
 package com.example.playlistmaker.ui.search.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,13 +10,13 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.ActivitySearchBinding
-import com.example.playlistmaker.data.entity.Track
+import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.ui.player.activity.PlayerActivity
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
-import com.example.playlistmaker.ui.search.view_model.SearchViewModelFactory
 import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SearchActivity : AppCompatActivity() {
@@ -27,12 +28,10 @@ class SearchActivity : AppCompatActivity() {
     private var tracks = mutableListOf<Track>()
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel:SearchViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
-        viewModel =
-            ViewModelProvider(this, SearchViewModelFactory(this))[SearchViewModel::class.java]
 
         setContentView(binding.root)
 
@@ -99,7 +98,13 @@ class SearchActivity : AppCompatActivity() {
 
     private fun recyclerViewInit() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.adapter = SearchRecycleAdapter(tracks)
+
+        binding.recyclerView.adapter = SearchRecycleAdapter(tracks){
+            viewModel.setTrack(it)
+            val intent = Intent(this, PlayerActivity::class.java).putExtra(
+                SearchRecycleAdapter.TRACK_ID, it.trackId)
+            this.startActivity(intent)
+        }
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Boolean {
@@ -123,7 +128,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun observeInit() {
-
+        println(viewModel)
         viewModel.searchStateLiveData.observe(this, Observer {
             binding.recyclerView.isVisible = it.recycleView
             binding.searchMessage.isVisible = it.searchMessage

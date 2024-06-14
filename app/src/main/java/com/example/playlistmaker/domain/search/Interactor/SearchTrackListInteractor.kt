@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.search.Interactor
 
-import com.example.playlistmaker.data.entity.TrackList
+import com.example.playlistmaker.domain.entity.TrackList
 import retrofit2.Response
 
 interface SearchTrackListInteractor {

@@ -5,24 +5,19 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.ui.player.PlayerAdapter
 import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
-import com.example.playlistmaker.ui.player.view_model.PlayerViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel: PlayerViewModel by viewModel()
     private lateinit var playerAdapter: PlayerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewModel =
-            ViewModelProvider(
-                this, PlayerViewModelFactory(this)
-            )[PlayerViewModel::class.java]
 
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         playerAdapter = PlayerAdapter(binding)
