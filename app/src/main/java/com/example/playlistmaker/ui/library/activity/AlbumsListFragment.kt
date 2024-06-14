@@ -11,6 +11,9 @@ class AlbumsListFragment : Fragment() {
 
     private val viewModel: AlbumsListViewModel by viewModel()
 
+    fun newInstance() = AlbumsListFragment().apply {
+    }
+
     private lateinit var binding: AlbumFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
