@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/title_height"
         android:padding="4dp"
         android:orientation="horizontal">
 
@@ -86,6 +86,7 @@
             android:layout_height="52dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="140dp"
+            android:indeterminateTint="@color/yp_blue"
             android:visibility="gone"/>
         <TextView
             android:id="@+id/search_message"

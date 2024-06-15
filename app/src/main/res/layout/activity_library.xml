@@ -3,13 +3,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/colorPrimaryVariant"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/title_template"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/title_height"
         android:padding="4dp"
         android:orientation="horizontal">
 
@@ -29,7 +30,22 @@
             android:text="@string/library"
             android:textColor="?attr/colorOnPrimary">
         </TextView>
+
     </LinearLayout>
+    <com.google.android.material.tabs.TabLayout
+    android:id="@+id/tabLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimaryVariant"
+    app:tabTextColor="?attr/colorOnPrimary"
+    app:tabIndicatorColor="?attr/colorOnPrimary"
+    app:tabTextAppearance="@style/tabText"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 
 
 </LinearLayout>
