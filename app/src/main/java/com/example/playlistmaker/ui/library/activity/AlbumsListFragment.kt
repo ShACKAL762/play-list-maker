@@ -8,11 +8,14 @@ import com.example.playlistmaker.databinding.AlbumFragmentBinding
 import com.example.playlistmaker.ui.library.activity.view_models.AlbumsListViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 class AlbumsListFragment : Fragment() {
+    companion object{
+    fun newInstance() = AlbumsListFragment().apply {
+    }
+
+    }
 
     private val viewModel: AlbumsListViewModel by viewModel()
 
-    fun newInstance() = AlbumsListFragment().apply {
-    }
 
     private lateinit var binding: AlbumFragmentBinding
 

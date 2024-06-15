@@ -10,9 +10,12 @@ import com.example.playlistmaker.ui.library.activity.view_models.FavoriteListFra
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteListFragment : Fragment() {
-    private val viewModel: FavoriteListFragmentViewModel by viewModel()
-    fun newInstance() = FavoriteListFragment().apply {
+    companion object{
+        fun newInstance() = FavoriteListFragment().apply {
     }
+
+    }
+    private val viewModel: FavoriteListFragmentViewModel by viewModel()
 
 
 private lateinit var binding: FavoriteFragmentBinding
