@@ -3,7 +3,7 @@
     <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <!-- background. -->
-        <item name="colorPrimary">@color/yp_blue</item>
+        <item name="colorPrimary">@color/yp_white</item>
         <!-- second background. -->
         <item name="colorPrimaryVariant">@color/yp_white</item>
         <!-- text second background. -->

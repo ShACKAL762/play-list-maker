@@ -5,8 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/colorPrimaryVariant"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.playlistmaker.ui.settings.activity.SettingFragment">
 
     <LinearLayout
         android:id="@+id/title_template"
@@ -14,12 +16,6 @@
         android:layout_height="@dimen/title_height"
         android:padding="4dp"
         android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/arrow_back"
-            android:layout_width="@dimen/back_button"
-            android:layout_height="@dimen/back_button"
-            style="@style/BackArrowButton" />
 
         <TextView
             style="@style/Title"
@@ -52,8 +48,7 @@
             android:text="@string/dark_theme"
             android:insetLeft="0dp"
             android:textSize="@dimen/ys_text_16"
-            app:thumbTint="@color/switch_thumb"
-            app:trackTint="@color/switch_track" />
+             />
 
         <FrameLayout
             android:id="@+id/share_button"

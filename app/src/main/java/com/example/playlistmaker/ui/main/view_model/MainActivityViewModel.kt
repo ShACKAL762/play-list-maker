@@ -6,13 +6,5 @@ import com.example.playlistmaker.domain.main.interactor.MainMenuInteractor
 class MainActivityViewModel(
     private val mainMenuInteractor: MainMenuInteractor,
 ): ViewModel() {
-    fun startSearch(){
-        mainMenuInteractor.startSearch()
-    }
-    fun startLibrary(){
-        mainMenuInteractor.startLibrary()
-    }
-    fun startSettings(){
-        mainMenuInteractor.startSettings()
-    }
+
 }
