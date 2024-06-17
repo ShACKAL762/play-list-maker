@@ -1,7 +1,6 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.data.history.HistoryRepository
-import com.example.playlistmaker.data.main.MainMenuReopsitoryImpl
 import com.example.playlistmaker.data.network.IApi
 import com.example.playlistmaker.data.player.MediaPlayerRepositoryImpl
 import com.example.playlistmaker.data.search.HistoryTrackListRepositoryImpl
@@ -9,7 +8,6 @@ import com.example.playlistmaker.data.search.SearchTrackListRepositoryImpl
 import com.example.playlistmaker.data.search.state.SearchActivityStateRepositoryImpl
 import com.example.playlistmaker.data.settings.ExternalNavigator
 import com.example.playlistmaker.data.settings.SettingRepositoryImpl
-import com.example.playlistmaker.domain.main.repository.MainMenuRepository
 import com.example.playlistmaker.domain.player.repositories.MediaPlayerRepository
 import com.example.playlistmaker.domain.player.repositories.TrackListRepository
 import com.example.playlistmaker.domain.search.repository.HistoryTrackListRepository
@@ -44,8 +42,6 @@ val repoModule = module{
     single<SearchActivityStateRepository> { SearchActivityStateRepositoryImpl() }
     single<SearchTrackListRepository> { SearchTrackListRepositoryImpl(get()) }
     single { HistoryRepository(androidContext(),get())}
-
-    single<MainMenuRepository>{ MainMenuReopsitoryImpl(get())  }
 
 
     single<SharingRepoitory> { ExternalNavigator(androidContext()) }

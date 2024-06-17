@@ -27,7 +27,6 @@ class SettingFragment : Fragment() {
         viewModel.getTheme()
 
         binding.shareButton.setOnClickListener {
-            println("click")
             viewModel.share()
         }
 

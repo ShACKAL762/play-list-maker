@@ -74,7 +74,7 @@ class SearchFragment : Fragment() {
         }
 
         binding.searchLineCleaner.setOnClickListener {
-            hideKeyBoard(this.activity?.currentFocus)
+            hideKeyBoard(requireActivity().currentFocus)
             binding.searchLine.setText("")
             showHistory()
         }
@@ -107,8 +107,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun recyclerViewInit() {
-        binding.recyclerView.layoutManager = LinearLayoutManager(this.activity)
-        val intent = Intent(this.activity, PlayerActivity::class.java)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val intent = Intent(requireContext(), PlayerActivity::class.java)
         binding.recyclerView.adapter = SearchRecycleAdapter(tracks) {
             viewModel.setTrack(it)
             intent.putExtra(
@@ -124,7 +124,7 @@ class SearchFragment : Fragment() {
 
     private fun hideKeyBoard(v: View?) {
         val inputMethodManager =
-            this.activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(v?.windowToken, 0)
     }
 
