@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Switch" parent="Widget.AppCompat.CompoundButton.Switch">
-        <item name="colorControlActivated">@color/yp_light_blue</item>
 
+    <style name="Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="thumbTint">@color/switch_thumb</item>
+        <item name="trackTint">@color/switch_track</item>
     </style>
 </resources>

@@ -5,13 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.databinding.SearchFragmentBinding
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.ui.player.activity.PlayerActivity
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
@@ -19,7 +21,8 @@ import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleA
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
+
     private companion object {
         private const val SEARCH_TEXT = "SEARCH_TEXT"
         private const val TEXT_DEF = ""
@@ -27,14 +30,22 @@ class SearchActivity : AppCompatActivity() {
 
     private var tracks = mutableListOf<Track>()
 
-    private lateinit var binding: ActivitySearchBinding
-    private val viewModel:SearchViewModel by viewModel()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
+    private lateinit var binding: SearchFragmentBinding
+    private val viewModel: SearchViewModel by viewModel()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
-        setContentView(binding.root)
+        binding = SearchFragmentBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.searchLine.setText(savedInstanceState?.getString(SEARCH_TEXT, TEXT_DEF))
         observeInit()
         recyclerViewInit()
 
@@ -63,14 +74,11 @@ class SearchActivity : AppCompatActivity() {
         }
 
         binding.searchLineCleaner.setOnClickListener {
-            hideKeyBoard(currentFocus)
+            hideKeyBoard(requireActivity().currentFocus)
             binding.searchLine.setText("")
             showHistory()
         }
 
-        binding.arrowBack.setOnClickListener {
-            finish()
-        }
 
         binding.cleanHistoryButton.setOnClickListener {
             viewModel.cleanHistory()
@@ -92,17 +100,20 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun search(searchRequest: String) {
-        binding.recyclerView.adapter?.notifyDataSetChanged()
-        viewModel.writeEnd(searchRequest)
+        if (searchRequest.isNotEmpty()) {
+            binding.recyclerView.adapter?.notifyDataSetChanged()
+            viewModel.writeEnd(searchRequest)
+        }
     }
 
     private fun recyclerViewInit() {
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-
-        binding.recyclerView.adapter = SearchRecycleAdapter(tracks){
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val intent = Intent(requireContext(), PlayerActivity::class.java)
+        binding.recyclerView.adapter = SearchRecycleAdapter(tracks) {
             viewModel.setTrack(it)
-            val intent = Intent(this, PlayerActivity::class.java).putExtra(
-                SearchRecycleAdapter.TRACK_ID, it.trackId)
+            intent.putExtra(
+                SearchRecycleAdapter.TRACK_ID, it.trackId
+            )
             this.startActivity(intent)
         }
     }
@@ -113,7 +124,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun hideKeyBoard(v: View?) {
         val inputMethodManager =
-            getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(v?.windowToken, 0)
     }
 
@@ -122,14 +133,8 @@ class SearchActivity : AppCompatActivity() {
         outState.putString(SEARCH_TEXT, binding.searchLine.text.toString())
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        binding.searchLine.setText(savedInstanceState.getString(SEARCH_TEXT, TEXT_DEF))
-    }
-
     private fun observeInit() {
-        println(viewModel)
-        viewModel.searchStateLiveData.observe(this, Observer {
+        viewModel.searchStateLiveData.observe(viewLifecycleOwner, Observer {
             binding.recyclerView.isVisible = it.recycleView
             binding.searchMessage.isVisible = it.searchMessage
             binding.cleanHistoryButton.isVisible = it.cleanHistoryButton
@@ -138,7 +143,7 @@ class SearchActivity : AppCompatActivity() {
             binding.notFoundMessage.isVisible = it.notFound
         })
 
-        viewModel.trackListLiveData.observe(this, Observer {
+        viewModel.trackListLiveData.observe(viewLifecycleOwner, Observer {
             tracks.clear()
             tracks.addAll(it)
             binding.recyclerView.adapter?.notifyDataSetChanged()

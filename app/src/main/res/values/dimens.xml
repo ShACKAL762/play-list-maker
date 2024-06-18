@@ -5,6 +5,7 @@
     <dimen name="ys_text_16">16sp</dimen>
     <dimen name="ys_text_14">14sp</dimen>
     <dimen name="ys_text_11">11sp</dimen>
+    <dimen name="ys_text_12">12sp</dimen>
     <dimen name="indent_between_buttons">16dp</dimen>
     <dimen name="indent_start_end">16dp</dimen>
     <dimen name="button_radius">16dp</dimen>
