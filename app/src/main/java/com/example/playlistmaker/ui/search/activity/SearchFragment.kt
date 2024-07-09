@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.SearchFragmentBinding
 import com.example.playlistmaker.domain.entity.Track
@@ -100,10 +102,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun search(searchRequest: String) {
-        if (searchRequest.isNotEmpty()) {
             binding.recyclerView.adapter?.notifyDataSetChanged()
             viewModel.writeEnd(searchRequest)
-        }
     }
 
     private fun recyclerViewInit() {
@@ -111,9 +111,6 @@ class SearchFragment : Fragment() {
         val intent = Intent(requireContext(), PlayerActivity::class.java)
         binding.recyclerView.adapter = SearchRecycleAdapter(tracks) {
             viewModel.setTrack(it)
-            intent.putExtra(
-                SearchRecycleAdapter.TRACK_ID, it.trackId
-            )
             this.startActivity(intent)
         }
     }

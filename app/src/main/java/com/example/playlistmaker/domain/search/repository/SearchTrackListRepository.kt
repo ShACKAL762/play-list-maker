@@ -1,9 +1,10 @@
 package com.example.playlistmaker.domain.search.repository
 
+import com.example.playlistmaker.data.entity.Resource
 import com.example.playlistmaker.domain.entity.TrackList
-import retrofit2.Response
+import kotlinx.coroutines.flow.Flow
 
 interface SearchTrackListRepository {
-    fun getTrackListResponse(request:String) : Response<TrackList>
+    suspend fun getTrackListResponse(request:String) : Flow<Resource<TrackList>>
 
 }

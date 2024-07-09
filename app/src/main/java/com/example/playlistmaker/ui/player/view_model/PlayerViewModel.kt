@@ -1,14 +1,16 @@
 package com.example.playlistmaker.ui.player.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.player.interactors.MediaPlayerInteractor
 import com.example.playlistmaker.domain.player.interactors.TrackListInteractor
 import com.example.playlistmaker.domain.player.state.PlayerState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -32,22 +34,19 @@ class PlayerViewModel(
     val buttonStateLiveData: LiveData<Boolean> = buttonStatePlay
     val trackLiveData: LiveData<Track> = trackData
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var timerJob: Job? = null
+
 
     init {
         trackData.value = playerTrackInteractor.getTrack()
         preparePlayer(trackData.value!!)
     }
 
-    private val time = Runnable {
-        currentTime.value = playerCurrentTime()
-        timerStart()
-    }
 
     private fun preparePlayer(track: Track) {
         playerInteractor.playerPrepare(track.previewUrl)
         renderPlayerState()
-        handler.removeCallbacks(time)
+        timerJob?.cancel()
 
     }
 
@@ -71,7 +70,17 @@ class PlayerViewModel(
     private fun timerStart() {
         if (playerInteractor.playerState() == PlayerState.PREPARED)
             renderPlayerState()
-        handler.postDelayed(time, TIMER_DELAY_MILLS)
+
+        timerJob?.cancel()
+        timerJob = viewModelScope.launch {
+            while (playerInteractor.playerState() == PlayerState.PLAY) {
+                delay(TIMER_DELAY_MILLS)
+                currentTime.value = playerCurrentTime()
+                if (playerInteractor.playerState() == PlayerState.PREPARED){
+                    renderPlayerState()
+                }
+            }
+        }
     }
 
     private fun playerCurrentTime(): String {
@@ -80,14 +89,14 @@ class PlayerViewModel(
     }
 
     override fun onCleared() {
-        handler.removeCallbacks(time)
+        timerJob?.cancel()
         playerInteractor.release()
         super.onCleared()
     }
 
     fun pause() {
         playerInteractor.pause()
-        handler.removeCallbacks(time)
+        timerJob?.cancel()
     }
 
     fun control() {
