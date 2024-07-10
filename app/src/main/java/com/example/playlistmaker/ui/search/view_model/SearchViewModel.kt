@@ -1,20 +1,16 @@
 package com.example.playlistmaker.ui.search.view_model
 
-import android.content.Context
-import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.data.search.state.SearchState
 import com.example.playlistmaker.domain.entity.Resource
+import com.example.playlistmaker.domain.entity.SearchState
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.entity.TrackList
 import com.example.playlistmaker.domain.search.Interactor.HistoryTrackListInteractor
 import com.example.playlistmaker.domain.search.Interactor.SearchActivityStateInteractor
 import com.example.playlistmaker.domain.search.Interactor.SearchTrackListInteractor
-import com.example.playlistmaker.ui.player.activity.PlayerActivity
-import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleAdapter
 import com.example.playlistmaker.ui.search.view_model.view_state.SearchViewState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -29,10 +25,9 @@ class SearchViewModel(
     companion object {
         private const val SEARCH_DELAY = 2000L
         private const val ITUNES_URL = "https://itunes.apple.com"
-        private const val CLICK_DEBOUNCE_DELAY = 300L
+
 
     }
-    private var isClickAllowed = true
     private var searchJob: Job? = null
 
 
@@ -139,20 +134,6 @@ class SearchViewModel(
         searchJob?.cancel()
         super.onCleared()
     }
-
-    fun getRecycleAdapter(tracks: MutableList<Track>, context: Context): SearchRecycleAdapter =
-        SearchRecycleAdapter(tracks) {
-            viewModelScope.launch {
-                if (isClickAllowed) {
-                    isClickAllowed = false
-                    val intent = Intent(context, PlayerActivity::class.java)
-                    setTrack(it)
-                    context.startActivity(intent)
-                    delay(CLICK_DEBOUNCE_DELAY)
-                    isClickAllowed = true
-                }
-            }
-        }
 
 
 

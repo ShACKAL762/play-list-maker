@@ -14,11 +14,17 @@ class IApi(private val retrofit: Retrofit) {
     suspend fun search(trackName: String): Resource<TrackList> {
 
         iApi = retrofit.create(ItunesApi::class.java)
-       return withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             try {
                 Resource.Success(iApi.search(trackName), 200)
             } catch (e: IOException) {
                 Resource.Fail(408, e.message.toString())
+            } catch (e: retrofit2.HttpException) {
+                if (e.response()?.code() == 404) {
+                    Resource.Success(TrackList(mutableListOf()), 404)
+                } else {
+                    Resource.Fail(408, "Connection Error")
+                }
             } catch (e: RuntimeException) {
                 Resource.Fail(408, "Connection Error")
             }
