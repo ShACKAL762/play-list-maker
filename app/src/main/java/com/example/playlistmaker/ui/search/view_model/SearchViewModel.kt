@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.domain.entity.Resource
 import com.example.playlistmaker.data.search.state.SearchState
+import com.example.playlistmaker.domain.entity.Resource
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.entity.TrackList
 import com.example.playlistmaker.domain.search.Interactor.HistoryTrackListInteractor
@@ -29,8 +29,10 @@ class SearchViewModel(
     companion object {
         private const val SEARCH_DELAY = 2000L
         private const val ITUNES_URL = "https://itunes.apple.com"
-    }
+        private const val CLICK_DEBOUNCE_DELAY = 300L
 
+    }
+    private var isClickAllowed = true
     private var searchJob: Job? = null
 
 
@@ -141,10 +143,14 @@ class SearchViewModel(
     fun getRecycleAdapter(tracks: MutableList<Track>, context: Context): SearchRecycleAdapter =
         SearchRecycleAdapter(tracks) {
             viewModelScope.launch {
-                val intent = Intent(context, PlayerActivity::class.java)
-                setTrack(it)
-                context.startActivity(intent)
-                delay(SearchRecycleAdapter.CLICK_DEBOUNCE_DELAY)
+                if (isClickAllowed) {
+                    isClickAllowed = false
+                    val intent = Intent(context, PlayerActivity::class.java)
+                    setTrack(it)
+                    context.startActivity(intent)
+                    delay(CLICK_DEBOUNCE_DELAY)
+                    isClickAllowed = true
+                }
             }
         }
 

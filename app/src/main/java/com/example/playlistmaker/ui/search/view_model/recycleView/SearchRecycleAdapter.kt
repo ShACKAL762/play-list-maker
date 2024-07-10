@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.TrackViewBinding
 import com.example.playlistmaker.domain.entity.Track
-import kotlinx.coroutines.DelicateCoroutinesApi
 
 class SearchRecycleAdapter(
     private val list: List<Track>,
@@ -16,11 +15,7 @@ class SearchRecycleAdapter(
         fun onTrackClick(track: Track)
     }
 
-    companion object {
-        const val CLICK_DEBOUNCE_DELAY = 500L
-    }
 
-    private var isClickAllowed = true
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context)
         return TrackViewHolder(TrackViewBinding.inflate(view, parent, false))
@@ -30,18 +25,12 @@ class SearchRecycleAdapter(
         return list.size
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val itemView = list[position]
         holder.bind(itemView)
 
         holder.itemView.setOnClickListener {
-            if (isClickAllowed) {
-                isClickAllowed = false
-                clickListener.onTrackClick(itemView)
-                isClickAllowed = true
-            }
-
+            clickListener.onTrackClick(itemView)
         }
 
     }
