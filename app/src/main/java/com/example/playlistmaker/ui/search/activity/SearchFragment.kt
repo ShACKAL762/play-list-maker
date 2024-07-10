@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui.search.activity
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,9 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.SearchFragmentBinding
 import com.example.playlistmaker.domain.entity.Track
-import com.example.playlistmaker.ui.player.activity.PlayerActivity
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
-import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -106,11 +103,7 @@ class SearchFragment : Fragment() {
 
     private fun recyclerViewInit() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val intent = Intent(requireContext(), PlayerActivity::class.java)
-        binding.recyclerView.adapter = SearchRecycleAdapter(tracks) {
-            viewModel.setTrack(it)
-            this.startActivity(intent)
-        }
+        binding.recyclerView.adapter = viewModel.getRecycleAdapter(tracks, requireContext())
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Boolean {

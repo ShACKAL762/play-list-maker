@@ -97,6 +97,7 @@ class PlayerViewModel(
     fun pause() {
         playerInteractor.pause()
         timerJob?.cancel()
+        renderPlayerState()
     }
 
     fun control() {

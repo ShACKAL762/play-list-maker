@@ -1,7 +1,7 @@
 package com.example.playlistmaker.data.network
 
 
-import com.example.playlistmaker.data.entity.Resource
+import com.example.playlistmaker.domain.entity.Resource
 import com.example.playlistmaker.domain.entity.TrackList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

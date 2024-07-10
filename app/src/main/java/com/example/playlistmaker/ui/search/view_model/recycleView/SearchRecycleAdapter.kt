@@ -6,9 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.TrackViewBinding
 import com.example.playlistmaker.domain.entity.Track
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class SearchRecycleAdapter(
     private val list: List<Track>,
@@ -39,17 +36,13 @@ class SearchRecycleAdapter(
         holder.bind(itemView)
 
         holder.itemView.setOnClickListener {
-
-            GlobalScope.launch {
-                if (isClickAllowed) {
-                    isClickAllowed = false
-                    clickListener.onTrackClick(itemView)
-                    delay(CLICK_DEBOUNCE_DELAY)
-                    isClickAllowed = true
-                }
-
+            if (isClickAllowed) {
+                isClickAllowed = false
+                clickListener.onTrackClick(itemView)
+                isClickAllowed = true
             }
 
         }
+
     }
 }

@@ -1,16 +1,20 @@
 package com.example.playlistmaker.ui.search.view_model
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.data.entity.Resource
+import com.example.playlistmaker.domain.entity.Resource
 import com.example.playlistmaker.data.search.state.SearchState
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.entity.TrackList
 import com.example.playlistmaker.domain.search.Interactor.HistoryTrackListInteractor
 import com.example.playlistmaker.domain.search.Interactor.SearchActivityStateInteractor
 import com.example.playlistmaker.domain.search.Interactor.SearchTrackListInteractor
+import com.example.playlistmaker.ui.player.activity.PlayerActivity
+import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleAdapter
 import com.example.playlistmaker.ui.search.view_model.view_state.SearchViewState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -111,6 +115,7 @@ class SearchViewModel(
                                 render(SearchViewState.Content(trackListResponse))
                             }
                         }
+
                         is Resource.Fail -> {
                             changeStateAsyn(SViewState.LOST_CONNECTION)
                         }
@@ -121,7 +126,7 @@ class SearchViewModel(
     }
 
 
-    private suspend fun search(searchRequest: String): Flow<Resource<TrackList>> {
+    private fun search(searchRequest: String): Flow<Resource<TrackList>> {
 
         return searchTrackListInteractor
             .getTrackListResponse(ITUNES_URL, searchRequest)
@@ -133,6 +138,18 @@ class SearchViewModel(
         super.onCleared()
     }
 
+    fun getRecycleAdapter(tracks: MutableList<Track>, context: Context): SearchRecycleAdapter =
+        SearchRecycleAdapter(tracks) {
+            viewModelScope.launch {
+                val intent = Intent(context, PlayerActivity::class.java)
+                setTrack(it)
+                context.startActivity(intent)
+                delay(SearchRecycleAdapter.CLICK_DEBOUNCE_DELAY)
+            }
+        }
+
+
+
     enum class SViewState {
         SUCCESS,
         LOADING,
@@ -143,3 +160,5 @@ class SearchViewModel(
         DEFAULT
     }
 }
+
+
