@@ -1,18 +1,21 @@
 package com.example.playlistmaker.ui.search.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.data.search.state.SearchState
+import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.domain.entity.Resource
+import com.example.playlistmaker.domain.entity.SearchState
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.entity.TrackList
 import com.example.playlistmaker.domain.search.Interactor.HistoryTrackListInteractor
 import com.example.playlistmaker.domain.search.Interactor.SearchActivityStateInteractor
 import com.example.playlistmaker.domain.search.Interactor.SearchTrackListInteractor
 import com.example.playlistmaker.ui.search.view_model.view_state.SearchViewState
-import retrofit2.Response
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val historyTrackListInteractor: HistoryTrackListInteractor,
@@ -22,12 +25,11 @@ class SearchViewModel(
     companion object {
         private const val SEARCH_DELAY = 2000L
         private const val ITUNES_URL = "https://itunes.apple.com"
+
+
     }
+    private var searchJob: Job? = null
 
-    private val handler = Handler(Looper.getMainLooper())
-    private var searchEvent = Runnable {}
-
-    private lateinit var response: Response<TrackList>
 
     //Изменяемые переменные
     private val trackList = MutableLiveData<List<Track>>()
@@ -88,38 +90,52 @@ class SearchViewModel(
         } else
             render(SearchViewState.HideHistory)
     }
-    fun setTrack(track: Track){
+
+    fun setTrack(track: Track) {
         historyTrackListInteractor.setTrack(track)
     }
 
-    fun writeEnd(searchRequest : String) {
-        render(SearchViewState.Loading)
-        handler.removeCallbacks(searchEvent)
+    fun writeEnd(searchRequest: String) {
+        searchJob?.cancel()
         if (searchRequest.isNotEmpty()) {
-            searchEvent = Runnable { search(searchRequest) }
-            handler.postDelayed(searchEvent, SEARCH_DELAY)
+            render(SearchViewState.Loading)
+            searchJob = viewModelScope.launch {
+                delay(SEARCH_DELAY)
+                search(searchRequest).collect { response ->
+
+                    when (response) {
+                        is Resource.Success -> {
+                            val trackListResponse = response.data.results
+                            if (trackListResponse.isEmpty()) {
+                                render(SearchViewState.Empty)
+                            } else {
+                                render(SearchViewState.Content(trackListResponse))
+                            }
+                        }
+
+                        is Resource.Fail -> {
+                            changeStateAsyn(SViewState.LOST_CONNECTION)
+                        }
+                    }
+                }
+            }
         }
     }
 
-    private fun search(searchRequest: String) {
-        Thread {
-            response = searchTrackListInteractor
-                .getTrackListResponse(ITUNES_URL, searchRequest)
-            if (response.code() == 200) {
-                val trackListResponse = response.body()?.results
-                if (trackListResponse.isNullOrEmpty()) {
-                    render(SearchViewState.Empty)
-                } else {
-                    render(SearchViewState.Content(trackListResponse))
-                }
-            } else changeStateAsyn(SViewState.LOST_CONNECTION)
-        }
-            .start()
+
+    private fun search(searchRequest: String): Flow<Resource<TrackList>> {
+
+        return searchTrackListInteractor
+            .getTrackListResponse(ITUNES_URL, searchRequest)
+
     }
+
     override fun onCleared() {
-        handler.removeCallbacks(searchEvent)
+        searchJob?.cancel()
         super.onCleared()
     }
+
+
 
     enum class SViewState {
         SUCCESS,
@@ -131,3 +147,5 @@ class SearchViewModel(
         DEFAULT
     }
 }
+
+

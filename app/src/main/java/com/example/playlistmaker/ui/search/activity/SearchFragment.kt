@@ -12,12 +12,15 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.SearchFragmentBinding
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.ui.player.activity.PlayerActivity
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleAdapter
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -26,6 +29,7 @@ class SearchFragment : Fragment() {
     private companion object {
         private const val SEARCH_TEXT = "SEARCH_TEXT"
         private const val TEXT_DEF = ""
+        private const val CLICK_DEBOUNCE_DELAY = 300L
     }
 
     private var tracks = mutableListOf<Track>()
@@ -100,22 +104,27 @@ class SearchFragment : Fragment() {
     }
 
     private fun search(searchRequest: String) {
-        if (searchRequest.isNotEmpty()) {
-            binding.recyclerView.adapter?.notifyDataSetChanged()
-            viewModel.writeEnd(searchRequest)
-        }
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+        viewModel.writeEnd(searchRequest)
     }
 
     private fun recyclerViewInit() {
+        var isClickAllowed = true
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val intent = Intent(requireContext(), PlayerActivity::class.java)
-        binding.recyclerView.adapter = SearchRecycleAdapter(tracks) {
-            viewModel.setTrack(it)
-            intent.putExtra(
-                SearchRecycleAdapter.TRACK_ID, it.trackId
-            )
-            this.startActivity(intent)
-        }
+        binding.recyclerView.adapter =
+            SearchRecycleAdapter(tracks) {
+
+                lifecycleScope.launch {
+                    if (isClickAllowed) {
+                        isClickAllowed = false
+                        val intent = Intent(requireContext(), PlayerActivity::class.java)
+                        viewModel.setTrack(it)
+                        requireContext().startActivity(intent)
+                        delay(CLICK_DEBOUNCE_DELAY)
+                        isClickAllowed = true
+                    }
+                }
+            }
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Boolean {
