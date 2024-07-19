@@ -40,7 +40,7 @@ class FavoriteListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FavoriteFragmentBinding.inflate(inflater, container, false)
         observeInit()
         recyclerViewInit()

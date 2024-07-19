@@ -16,7 +16,7 @@ class LibraryFragment : Fragment() {
 
     private lateinit var tabMediator: TabLayoutMediator
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         binding = LibraryFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
