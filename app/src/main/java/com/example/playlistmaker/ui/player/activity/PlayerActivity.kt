@@ -12,6 +12,9 @@ import com.example.playlistmaker.ui.player.view_model.PlayerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerActivity : AppCompatActivity() {
+    companion object{
+        const val TRACK_ID = "TRACK_ID"
+    }
 
     private lateinit var binding: ActivityPlayerBinding
     private val viewModel: PlayerViewModel by viewModel()
@@ -21,7 +24,10 @@ class PlayerActivity : AppCompatActivity() {
 
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         playerAdapter = PlayerAdapter(binding)
-
+        if (intent.getStringExtra(TRACK_ID).isNullOrEmpty())
+            viewModel.historyTrack()
+        else
+            intent.getStringExtra(TRACK_ID)?.let { viewModel.favoriteTrack(it) }
         observeInit()
 
         super.onCreate(savedInstanceState)
@@ -35,6 +41,10 @@ class PlayerActivity : AppCompatActivity() {
             stopActivity()
         }
 
+        binding.like.setOnClickListener{
+            viewModel.likeEvent()
+        }
+
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 stopActivity()
@@ -45,6 +55,13 @@ class PlayerActivity : AppCompatActivity() {
     private fun observeInit() {
         viewModel.currentTimeLiveData.observe(this, Observer {
             binding.playTime.text = it
+        })
+        viewModel.likeStateLiveData.observe(this, Observer{
+            if (it){
+                binding.like.setImageResource(R.drawable.like_button)
+            } else {
+                binding.like.setImageResource(R.drawable.dislike_button)
+            }
         })
 
         viewModel.buttonStateLiveData.observe(this, Observer {
