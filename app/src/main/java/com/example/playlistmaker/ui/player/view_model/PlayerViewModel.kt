@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.domain.library.interactors.FavoriteListInteractor
 import com.example.playlistmaker.domain.player.interactors.MediaPlayerInteractor
 import com.example.playlistmaker.domain.player.interactors.TrackListInteractor
 import com.example.playlistmaker.domain.player.state.PlayerState
@@ -15,6 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerViewModel(
+    private val favoriteListInteractor: FavoriteListInteractor,
     private val playerInteractor: MediaPlayerInteractor,
     private val playerTrackInteractor: TrackListInteractor
 ) : ViewModel() {
@@ -27,20 +29,17 @@ class PlayerViewModel(
 
 
     private val currentTime = MutableLiveData<String>()
+    private val likeStatePlay = MutableLiveData<Boolean>()
     private val buttonStatePlay = MutableLiveData<Boolean>()
     private val trackData = MutableLiveData<Track>()
 
+
     val currentTimeLiveData: LiveData<String> = currentTime
+    val likeStateLiveData: LiveData<Boolean> = likeStatePlay
     val buttonStateLiveData: LiveData<Boolean> = buttonStatePlay
     val trackLiveData: LiveData<Track> = trackData
 
     private var timerJob: Job? = null
-
-
-    init {
-        trackData.value = playerTrackInteractor.getTrack()
-        preparePlayer(trackData.value!!)
-    }
 
 
     private fun preparePlayer(track: Track) {
@@ -76,7 +75,7 @@ class PlayerViewModel(
             while (playerInteractor.playerState() == PlayerState.PLAY) {
                 delay(TIMER_DELAY_MILLS)
                 currentTime.value = playerCurrentTime()
-                if (playerInteractor.playerState() == PlayerState.PREPARED){
+                if (playerInteractor.playerState() == PlayerState.PREPARED) {
                     renderPlayerState()
                 }
             }
@@ -103,5 +102,54 @@ class PlayerViewModel(
     fun control() {
         playerInteractor.playerControl()
         renderPlayerState()
+    }
+
+    fun likeEvent() {
+        viewModelScope.launch {
+            if (likeStateLiveData.value == true) {
+                likeStatePlay.value = false
+                trackData.value?.isFavorite = false
+                favoriteListInteractor.deleteTrack(trackLiveData.value!!)
+            } else {
+
+                likeStatePlay.value = true
+                trackData.value?.isFavorite = true
+                favoriteListInteractor.insertTrack(trackLiveData.value!!)
+            }
+        }
+
+    }
+
+    fun historyTrack() {
+        viewModelScope.launch {
+            favoriteListInteractor.getFavoriteIdList().collect {
+                val historyTrack = playerTrackInteractor.getTrack()
+                it.forEach { trackId ->
+                    if (trackId == historyTrack.trackId) {
+                        historyTrack.isFavorite = true
+                    }
+                }
+                trackData.value = historyTrack
+            }
+
+            preparePlayer(trackData.value!!)
+            likeStatePlay.value = trackData.value!!.isFavorite
+        }
+
+    }
+
+    fun favoriteTrack(string: String) {
+        viewModelScope.launch {
+            favoriteListInteractor.getFavoriteList().collect {
+                it.forEach { track ->
+                    if (track.trackId == string) {
+                        trackData.value = track
+                        preparePlayer(trackData.value!!)
+                        likeStatePlay.value = trackData.value!!.isFavorite
+                    }
+                }
+            }
+        }
+
     }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.LibraryFragmentBinding
+import com.example.playlistmaker.ui.library.activity.view_models.LibraryViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -15,7 +16,7 @@ class LibraryFragment : Fragment() {
 
     private lateinit var tabMediator: TabLayoutMediator
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         binding = LibraryFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }

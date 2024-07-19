@@ -1,7 +1,7 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.domain.main.interactor.MainMenuInteractor
-import com.example.playlistmaker.domain.main.iteractor_impl.MainMenuInteractorImpl
+import com.example.playlistmaker.domain.library.interactors.FavoriteListInteractor
+import com.example.playlistmaker.domain.library.interactors_Impl.FavoriteListInteractorImpl
 import com.example.playlistmaker.domain.player.interactors.MediaPlayerInteractor
 import com.example.playlistmaker.domain.player.interactors.TrackListInteractor
 import com.example.playlistmaker.domain.player.interactors_impl.MediaPlayerInteractorImpl
@@ -23,13 +23,11 @@ val domainModule = module {
     factory<SearchActivityStateInteractor> { SearchActivityStateInteractorImpl(get()) }
     factory<SearchTrackListInteractor> { SearchTrackListInteractorImpl(get()) }
 
-    factory <MainMenuInteractor>{MainMenuInteractorImpl(get())}
-
-
     factory<SharingInteractor> { SharingInteractorImpl(get()) }
     factory<SettingsInteractor> { SettingsInteractorImpl(get()) }
 
     factory<MediaPlayerInteractor>{ MediaPlayerInteractorImpl(get()) }
     factory<TrackListInteractor> { TrackListInteractorImpl(get()) }
 
+    factory<FavoriteListInteractor> { FavoriteListInteractorImpl(get()) }
 }

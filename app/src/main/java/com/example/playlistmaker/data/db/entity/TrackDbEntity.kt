@@ -1,6 +1,12 @@
-package com.example.playlistmaker.domain.entity
+package com.example.playlistmaker.data.db.entity
 
-class Track(
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "track_table")
+class TrackDbEntity(
+    @PrimaryKey
+    var trackId: String,
     var trackName: String, // Название композиции)
     var artistName: String, // Имя исполнителя)
     var trackTimeMillis: String, // Продолжительность трека)
@@ -9,14 +15,6 @@ class Track(
     var releaseDate: String, // Год релиза
     var primaryGenreName: String, // Жанр
     var country: String, // Страна
-    var trackId: String,
-    var previewUrl : String,
-    var isFavorite: Boolean = false
-
-) {
-
-
-    override fun hashCode(): Int {
-        return trackId.toInt()
-    }
-}
+    var previewUrl: String,
+    var isFavorite: Boolean
+)

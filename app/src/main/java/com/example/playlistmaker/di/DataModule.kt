@@ -1,6 +1,10 @@
 package com.example.playlistmaker.di
 
+import androidx.room.Room
+import com.example.playlistmaker.data.converters.TrackDbConverter
+import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.data.history.HistoryRepository
+import com.example.playlistmaker.data.library.FavoriteListRepositoryImpl
 import com.example.playlistmaker.data.network.IApi
 import com.example.playlistmaker.data.player.MediaPlayerRepositoryImpl
 import com.example.playlistmaker.data.search.HistoryTrackListRepositoryImpl
@@ -8,6 +12,7 @@ import com.example.playlistmaker.data.search.SearchTrackListRepositoryImpl
 import com.example.playlistmaker.data.search.state.SearchActivityStateRepositoryImpl
 import com.example.playlistmaker.data.settings.ExternalNavigator
 import com.example.playlistmaker.data.settings.SettingRepositoryImpl
+import com.example.playlistmaker.domain.library.repositories.FavoriteListRepository
 import com.example.playlistmaker.domain.player.repositories.MediaPlayerRepository
 import com.example.playlistmaker.domain.player.repositories.TrackListRepository
 import com.example.playlistmaker.domain.search.repository.HistoryTrackListRepository
@@ -51,4 +56,13 @@ val repoModule = module{
     single<TrackListRepository> { HistoryRepository(androidContext(),get()) }
 
     factory { Gson() }
+
+    single { Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+        .build()}
+
+    single<FavoriteListRepository>{ FavoriteListRepositoryImpl(get(), get())}
+
+    factory { TrackDbConverter() }
+
 }
+
