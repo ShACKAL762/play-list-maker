@@ -42,10 +42,12 @@ class PlayerViewModel(
     private var timerJob: Job? = null
 
 
-    private fun preparePlayer(track: Track) {
-        playerInteractor.playerPrepare(track.previewUrl)
-        renderPlayerState()
-        timerJob?.cancel()
+    private fun preparePlayer(track: Track?) {
+        if (track != null) {
+            playerInteractor.playerPrepare(track.previewUrl)
+            renderPlayerState()
+            timerJob?.cancel()
+        }
 
     }
 
@@ -109,47 +111,57 @@ class PlayerViewModel(
             if (likeStateLiveData.value == true) {
                 likeStatePlay.value = false
                 trackData.value?.isFavorite = false
-                favoriteListInteractor.deleteTrack(trackLiveData.value!!)
+                favoriteListInteractor.deleteTrack(trackLiveData.value as Track)
             } else {
 
                 likeStatePlay.value = true
                 trackData.value?.isFavorite = true
-                favoriteListInteractor.insertTrack(trackLiveData.value!!)
+                favoriteListInteractor.insertTrack(trackLiveData.value as Track)
             }
         }
 
     }
 
-    fun historyTrack() {
-        viewModelScope.launch {
-            favoriteListInteractor.getFavoriteIdList().collect {
-                val historyTrack = playerTrackInteractor.getTrack()
-                it.forEach { trackId ->
-                    if (trackId == historyTrack.trackId) {
-                        historyTrack.isFavorite = true
-                    }
-                }
-                trackData.value = historyTrack
-            }
+    /* fun historyTrack() {
+         viewModelScope.launch {
+             favoriteListInteractor.getFavoriteIdList().collect {
+                 val historyTrack = playerTrackInteractor.getTrack()
+                 it.forEach { trackId ->
+                     if (trackId == historyTrack.trackId) {
+                         historyTrack.isFavorite = true
+                     }
+                 }
+                 trackData.value = historyTrack
+             }
 
-            preparePlayer(trackData.value!!)
-            likeStatePlay.value = trackData.value!!.isFavorite
-        }
+             preparePlayer(trackData.value)
+             likeStatePlay.value = trackData.value?.isFavorite
+         }
 
-    }
+     }*/
 
-    fun favoriteTrack(string: String) {
+    fun prepareTrack(trackId: String) {
         viewModelScope.launch {
             favoriteListInteractor.getFavoriteList().collect {
                 it.forEach { track ->
-                    if (track.trackId == string) {
+                    if (track.trackId == trackId) {
                         trackData.value = track
-                        preparePlayer(trackData.value!!)
-                        likeStatePlay.value = trackData.value!!.isFavorite
                     }
                 }
             }
+            if (trackData.value == null) {
+                favoriteListInteractor.getFavoriteIdList().collect {
+                    val historyTrack = playerTrackInteractor.getTrack()
+                    it.forEach { trackId ->
+                        if (trackId == historyTrack.trackId) {
+                            historyTrack.isFavorite = true
+                        }
+                    }
+                    trackData.value = historyTrack
+                }
+            }
+            preparePlayer(trackData.value)
+            likeStatePlay.value = trackData.value?.isFavorite
         }
-
     }
 }

@@ -13,10 +13,4 @@ class Track(
     var previewUrl : String,
     var isFavorite: Boolean = false
 
-) {
-
-
-    override fun hashCode(): Int {
-        return trackId.toInt()
-    }
-}
+) 

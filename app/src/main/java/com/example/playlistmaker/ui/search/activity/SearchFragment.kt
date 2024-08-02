@@ -30,6 +30,7 @@ class SearchFragment : Fragment() {
         private const val SEARCH_TEXT = "SEARCH_TEXT"
         private const val TEXT_DEF = ""
         private const val CLICK_DEBOUNCE_DELAY = 300L
+        const val TRACK_ID = "TRACK_ID"
     }
 
     private var tracks = mutableListOf<Track>()
@@ -121,6 +122,7 @@ class SearchFragment : Fragment() {
                     if (isClickAllowed) {
                         isClickAllowed = false
                         val intent = Intent(requireContext(), PlayerActivity::class.java)
+                        intent.putExtra(TRACK_ID,it.trackId)
                         viewModel.setTrack(it)
                         requireContext().startActivity(intent)
                         delay(CLICK_DEBOUNCE_DELAY)
