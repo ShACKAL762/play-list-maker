@@ -18,13 +18,16 @@
         <activity
             android:name=".ui.main.activity.HostActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustNothing"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.library.activity.CreateAlbumFragment"
+            android:exported="false" />
         <activity
             android:name=".ui.library.activity.LibraryFragment"
             android:exported="false" />
