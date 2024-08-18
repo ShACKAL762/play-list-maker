@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -16,7 +18,8 @@
         <activity
             android:name=".ui.main.activity.HostActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustNothing">>
+            android:windowSoftInputMode="adjustNothing"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -32,9 +35,11 @@
         <activity
             android:name=".ui.settings.activity.SettingFragment"
             android:exported="true" />
-        <activity android:name=".ui.player.activity.PlayerActivity"/>
+        <activity
+            android:name=".ui.player.activity.PlayerActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+
 
 </manifest>

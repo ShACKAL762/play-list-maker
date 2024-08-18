@@ -96,6 +96,9 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.searchLine.setSelection(binding.searchLine.length())
+        if (binding.searchLine.text.isEmpty()){
+            viewModel.setHistoryVisibleState()
+        }
     }
 
     private fun showHistory() {
