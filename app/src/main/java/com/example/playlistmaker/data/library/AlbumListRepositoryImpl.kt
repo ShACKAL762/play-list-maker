@@ -42,18 +42,14 @@ class AlbumListRepositoryImpl(
 
     private fun saveAlbumImage(album: Album): Uri {
         val filePath = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
-        //создаем каталог, если он не создан
         if (!filePath.exists()) {
             filePath.mkdirs()
         }
 
-        //создаём экземпляр класса File, который указывает на файл внутри каталога
-        val file = File(filePath, "${album.name}.jpg")//Todo от имени файла
-        // создаём входящий поток байтов из выбранной картинки
+
+        val file = File(filePath, "${album.name}.jpg")
         val inputStream = context.contentResolver.openInputStream(album.imageSrc!!)
-        // создаём исходящий поток байтов в созданный выше файл
         val outputStream = FileOutputStream(file)
-        // записываем картинку с помощью BitmapFactory
         BitmapFactory
             .decodeStream(inputStream)
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
