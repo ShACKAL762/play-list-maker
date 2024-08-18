@@ -59,7 +59,13 @@ class CreateAlbumFragment : Fragment() {
         }
         binding.createButton.setOnClickListener {
             viewModel.createAlbum()
-            Toast.makeText(requireContext(),"${R.string.playlist} ${binding.name.text} ${R.string.created}.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "${requireContext().getString(R.string.playlist)} ${binding.name.text} ${
+                    requireContext().getString(R.string.created)
+                }.",
+                Toast.LENGTH_SHORT
+            ).show()
 
             findNavController().popBackStack()
         }
@@ -69,14 +75,16 @@ class CreateAlbumFragment : Fragment() {
             } else
                 findNavController().popBackStack()
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (!viewModel.isEmpty()) {
-                    dialog()
-                } else
-                    findNavController().popBackStack()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (!viewModel.isEmpty()) {
+                        dialog()
+                    } else
+                        findNavController().popBackStack()
+                }
+            })
         return binding.root
     }
 
@@ -191,15 +199,17 @@ class CreateAlbumFragment : Fragment() {
 
         }
     }
-    fun dialog(){
-        MaterialAlertDialogBuilder(requireContext(),R.style.MatrialAlertText)
-            .setTitle(R.string.end_of_create)
-            .setMessage(R.string.unsaved_data_lost)
-            .setNegativeButton(R.string.cancel) { _, _ ->{
 
+    fun dialog() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.MatrialAlertText)
+            .setTitle(requireContext().getString(R.string.end_of_create))
+            .setMessage(requireContext().getString(R.string.unsaved_data_lost))
+            .setNegativeButton(requireContext().getString(R.string.cancel)) { _, _ ->
+                {
+
+                }
             }
-            }
-            .setPositiveButton(R.string.complete) { _,_ ->
+            .setPositiveButton(requireContext().getString(R.string.complete)) { _, _ ->
                 findNavController().popBackStack()
             }
             .show()

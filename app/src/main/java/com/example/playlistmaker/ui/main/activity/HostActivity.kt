@@ -28,6 +28,7 @@ class HostActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener{_, destination,_ ->
             when(destination.id) {
                 R.id.createAlbumFragment -> bottomNavigationView.isVisible = false
+                R.id.playerActivity -> bottomNavigationView.isVisible = false
                 else -> bottomNavigationView.isVisible = true
             }
 

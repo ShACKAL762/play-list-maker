@@ -139,9 +139,9 @@ class PlayerFragment : Fragment() {
             when(it.success){
                 true -> {
                     bottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
-                    Toast.makeText(requireContext(),"${R.string.track_added} ${it.albumName}.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"${requireContext().getString(R.string.track_added)} ${it.albumName}.",Toast.LENGTH_SHORT).show()
                 }
-                false -> {Toast.makeText(requireContext(),"${R.string.track_added_yet} ${it.albumName}.",Toast.LENGTH_SHORT).show()}
+                false -> {Toast.makeText(requireContext(),"${requireContext().getString(R.string.track_added_yet)} ${it.albumName}.",Toast.LENGTH_SHORT).show()}
             }
 
         })
