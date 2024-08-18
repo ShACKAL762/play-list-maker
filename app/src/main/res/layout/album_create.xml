@@ -39,6 +39,9 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image"
+            app:shapeAppearance="@style/ShapeAppearance"
+            android:scaleType="centerCrop"
+            android:clickable="true"
             android:layout_width="312dp"
             android:layout_height="312dp"
             android:layout_gravity="center"
@@ -88,7 +91,7 @@
             app:hintTextColor="@color/yp_blue">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/about"
+                android:id="@+id/tracks_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/ys_display_regular"

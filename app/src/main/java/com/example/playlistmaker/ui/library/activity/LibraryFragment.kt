@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.LibraryFragmentBinding
-import com.example.playlistmaker.ui.library.activity.view_models.LibraryViewPagerAdapter
+import com.example.playlistmaker.ui.library.view_models.LibraryViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 

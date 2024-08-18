@@ -4,39 +4,79 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.AlbumCreateBinding
+import com.example.playlistmaker.ui.library.view_models.CreateAlbumViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateAlbumFragment : Fragment() {
     companion object {
         fun newInstance() = CreateAlbumFragment().apply {}
     }
 
-    //private val viewModel: AlbumsListViewModel by viewModel()
+    private val viewModel: CreateAlbumViewModel by viewModel()
 
-    private lateinit var textWatcher:TextWatcher
-    private lateinit var aboutTextWatcher:TextWatcher
+    private lateinit var textWatcher: TextWatcher
+    private lateinit var aboutTextWatcher: TextWatcher
     private lateinit var binding: AlbumCreateBinding
-
+    private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = AlbumCreateBinding.inflate(inflater, container, false)
+
         textWatchersInit()
         binding.name.addTextChangedListener(textWatcher)
-        binding.about.addTextChangedListener(aboutTextWatcher)
-        binding.createButton.setOnClickListener {
-            binding.name.setText("")
+        binding.tracksQuantity.addTextChangedListener(aboutTextWatcher)
+
+        pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                binding.image.setImageURI(uri)
+                viewModel.uriCash(uri)
+            } else {
+                Log.d("PhotoPicker", "No media selected")
+            }
+
         }
-        binding.arrowBack.setOnClickListener { findNavController().popBackStack() }
+
+        binding.image.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+        binding.createButton.setOnClickListener {
+            viewModel.createAlbum()
+            Toast.makeText(requireContext(),"${R.string.playlist} ${binding.name.text} ${R.string.created}.", Toast.LENGTH_SHORT).show()
+
+            findNavController().popBackStack()
+        }
+        binding.arrowBack.setOnClickListener {
+            if (!viewModel.isEmpty()) {
+                dialog()
+            } else
+                findNavController().popBackStack()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (!viewModel.isEmpty()) {
+                    dialog()
+                } else
+                    findNavController().popBackStack()
+            }
+        })
         return binding.root
     }
 
@@ -45,7 +85,7 @@ class CreateAlbumFragment : Fragment() {
         binding.createButton.isEnabled = !s.isNullOrEmpty()
     }
 
-    private fun checkState(border: TextInputLayout, s: CharSequence?,) {
+    private fun checkState(border: TextInputLayout, s: CharSequence?) {
         if (!s.isNullOrEmpty()) {
             border.defaultHintTextColor =
                 ColorStateList.valueOf(
@@ -119,6 +159,7 @@ class CreateAlbumFragment : Fragment() {
         }
 
     }
+
     private fun textWatchersInit() {
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -127,6 +168,7 @@ class CreateAlbumFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 buttonStateCheck(s)
                 checkState(binding.border, s)
+                viewModel.setAlbumName(s)
 
             }
 
@@ -140,6 +182,7 @@ class CreateAlbumFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 checkState(binding.borderAbout, s)
+                viewModel.setAlbumAbout(s)
 
             }
 
@@ -147,6 +190,19 @@ class CreateAlbumFragment : Fragment() {
             }
 
         }
+    }
+    fun dialog(){
+        MaterialAlertDialogBuilder(requireContext(),R.style.MatrialAlertText)
+            .setTitle(R.string.end_of_create)
+            .setMessage(R.string.unsaved_data_lost)
+            .setNegativeButton(R.string.cancel) { _, _ ->{
+
+            }
+            }
+            .setPositiveButton(R.string.complete) { _,_ ->
+                findNavController().popBackStack()
+            }
+            .show()
     }
 
 }

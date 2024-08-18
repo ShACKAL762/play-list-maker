@@ -24,4 +24,5 @@
     <dimen name="library_placeholder_margin_top">104dp</dimen>
     <dimen name="library_empty_text_margin_top">240dp</dimen>
     <dimen name="title_height">56dp</dimen>
+    <dimen name="album_corner_radius">8dp</dimen>
 </resources>

@@ -39,7 +39,7 @@
             android:name=".ui.settings.activity.SettingFragment"
             android:exported="true" />
         <activity
-            android:name=".ui.player.activity.PlayerActivity"
+            android:name=".ui.player.activity.PlayerFragment"
             android:screenOrientation="portrait"/>
     </application>
 

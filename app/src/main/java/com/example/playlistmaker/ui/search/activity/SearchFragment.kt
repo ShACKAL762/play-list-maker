@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui.search.activity
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,14 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.SearchFragmentBinding
 import com.example.playlistmaker.domain.entity.Track
-import com.example.playlistmaker.ui.player.activity.PlayerActivity
+import com.example.playlistmaker.ui.main.view_model.MainActivityViewModel
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleAdapter
 import kotlinx.coroutines.delay
@@ -37,6 +40,7 @@ class SearchFragment : Fragment() {
 
     private lateinit var binding: SearchFragmentBinding
     private val viewModel: SearchViewModel by viewModel()
+    val mainViewModel: MainActivityViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -121,10 +125,11 @@ class SearchFragment : Fragment() {
                 lifecycleScope.launch {
                     if (isClickAllowed) {
                         isClickAllowed = false
-                        val intent = Intent(requireContext(), PlayerActivity::class.java)
-                        intent.putExtra(TRACK_ID,it.trackId)
                         viewModel.setTrack(it)
-                        requireContext().startActivity(intent)
+
+                        val bundle = bundleOf(TRACK_ID to it.trackId)
+                        findNavController().navigate(R.id.action_searchActivity_to_playerActivity,bundle)
+
                         delay(CLICK_DEBOUNCE_DELAY)
                         isClickAllowed = true
                     }

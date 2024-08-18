@@ -115,7 +115,9 @@
         <item name="android:textSize">@dimen/ys_text_12</item>
     </style>
 
-    <style name="albumCreateEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-       <item name="android:textCursorDrawable">@drawable/cursor</item>
+
+
+    <style name="ShapeAppearance">
+        <item name="cornerSize">8dp</item>
     </style>
 </resources>
