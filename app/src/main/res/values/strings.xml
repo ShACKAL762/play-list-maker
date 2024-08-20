@@ -31,5 +31,20 @@
     <string name="new_album">Новый плейлист</string>
     <string name="favorite_tracks">Избранные треки</string>
     <string name="albums">Плейлисты</string>
-
+    <string name="new_playlist">Новый плейлист</string>
+    <string name="Album_name">Название*</string>
+    <string name="about">Описание</string>
+    <string name="create">Создать</string>
+    <string name="track3">треков</string>
+    <string name="track1">трек</string>
+    <string name="track2">трека</string>
+    <string name="add_to_playList">Добавить в плейлист</string>
+    <string name="end_of_create">Завершить создание плейлиста?</string>
+    <string name="unsaved_data_lost">Все несохраненные данные будут потеряны</string>
+    <string name="cancel">Отмена</string>
+    <string name="complete">Завершить</string>
+    <string name="playlist">Плейлист</string>
+    <string name="created">создан</string>
+    <string name="track_added_yet">Трек уже добавлен в плейлист</string>
+    <string name="track_added">Добавлено в плейлист</string>
 </resources>

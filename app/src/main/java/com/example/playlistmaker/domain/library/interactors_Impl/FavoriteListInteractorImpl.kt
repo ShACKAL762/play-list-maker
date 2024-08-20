@@ -5,9 +5,10 @@ import com.example.playlistmaker.domain.library.interactors.FavoriteListInteract
 import com.example.playlistmaker.domain.library.repositories.FavoriteListRepository
 import kotlinx.coroutines.flow.Flow
 
-class FavoriteListInteractorImpl(private val favoriteListRepositoryImpl: FavoriteListRepository) : FavoriteListInteractor {
+class FavoriteListInteractorImpl(private val favoriteListRepositoryImpl: FavoriteListRepository) :
+    FavoriteListInteractor {
     override fun getFavoriteList(): Flow<List<Track>> {
-    return favoriteListRepositoryImpl.getFavoriteList()
+        return favoriteListRepositoryImpl.getFavoriteList()
     }
 
     override fun getFavoriteIdList(): Flow<List<String>> {
