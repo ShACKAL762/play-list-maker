@@ -44,8 +44,8 @@ class PlayerViewModel(
     val likeStateLiveData: LiveData<Boolean> = likeStatePlay
     val buttonStateLiveData: LiveData<Boolean> = buttonStatePlay
     val trackLiveData: LiveData<Track> = trackData
-    val albumListLiveData = albumList
-    val insertStatusLiveData = insertStatus
+    val albumListLiveData: LiveData<List<Album>> = albumList
+    val insertStatusLiveData: LiveData<InsertState> = insertStatus
 
     private var timerJob: Job? = null
 
