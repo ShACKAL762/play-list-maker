@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
-import androidx.core.net.toUri
 import com.example.playlistmaker.data.converters.AlbumDbConverter
 import com.example.playlistmaker.data.converters.AlbumTrackConverter
 import com.example.playlistmaker.data.db.AppDatabase
@@ -35,12 +34,12 @@ class AlbumListRepositoryImpl(
 
     override suspend fun insertAlbum(album: Album):Long {
 
-        if (album.imageSrc != Uri.EMPTY)
+        if (!album.imageSrc.isNullOrEmpty())
             album.imageSrc = saveAlbumImage(album)
         return appDatabase.albumDao().insertAlbum(albumDbConverter.map(album))
     }
 
-    private fun saveAlbumImage(album: Album): Uri {
+    private fun saveAlbumImage(album: Album): String {
         val filePath = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
         if (!filePath.exists()) {
             filePath.mkdirs()
@@ -48,12 +47,12 @@ class AlbumListRepositoryImpl(
 
 
         val file = File(filePath, "${album.name}.jpg")
-        val inputStream = context.contentResolver.openInputStream(album.imageSrc!!)
+        val inputStream = context.contentResolver.openInputStream(Uri.parse(album.imageSrc!!))
         val outputStream = FileOutputStream(file)
         BitmapFactory
             .decodeStream(inputStream)
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
-        return file.toUri()
+        return file.toString()
 
     }
 

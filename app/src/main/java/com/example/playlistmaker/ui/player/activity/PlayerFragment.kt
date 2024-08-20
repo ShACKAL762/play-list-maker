@@ -35,7 +35,7 @@ class PlayerFragment : Fragment() {
     private val viewModel: PlayerViewModel by viewModel()
     private lateinit var playerAdapter: PlayerAdapter
     private val albums = mutableListOf<Album>()
-    private lateinit var bottomSheet:BottomSheetBehavior<LinearLayout>
+    private lateinit var bottomSheet: BottomSheetBehavior<LinearLayout>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,13 +56,11 @@ class PlayerFragment : Fragment() {
         observeInit()
         recyclerViewInit()
 
-
         bottomSheet = BottomSheetBehavior.from(binding.bottomSheet)
         bottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
         binding.createPlayList.setOnClickListener {
             findNavController().navigate(R.id.action_playerActivity_to_createAlbumFragment)
         }
-
 
         binding.play.setOnClickListener {
             viewModel.control()
@@ -90,21 +88,20 @@ class PlayerFragment : Fragment() {
                     }
 
                     else -> binding.shadow.isVisible = true
-
-
                 }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
-
         })
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().popBackStack()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().popBackStack()
+                }
+            })
     }
 
     private fun observeInit() {
@@ -136,12 +133,23 @@ class PlayerFragment : Fragment() {
             binding.recyclerView.adapter?.notifyDataSetChanged()
         })
         viewModel.insertStatusLiveData.observe(viewLifecycleOwner, Observer {
-            when(it.success){
+            when (it.success) {
                 true -> {
                     bottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
-                    Toast.makeText(requireContext(),"${requireContext().getString(R.string.track_added)} ${it.albumName}.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "${requireContext().getString(R.string.track_added)} ${it.albumName}.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                false -> {Toast.makeText(requireContext(),"${requireContext().getString(R.string.track_added_yet)} ${it.albumName}.",Toast.LENGTH_SHORT).show()}
+
+                false -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "${requireContext().getString(R.string.track_added_yet)} ${it.albumName}.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
         })

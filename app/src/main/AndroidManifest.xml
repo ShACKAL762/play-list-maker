@@ -25,22 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.library.activity.CreateAlbumFragment"
-            android:exported="false" />
-        <activity
-            android:name=".ui.library.activity.LibraryFragment"
-            android:exported="false" />
-        <activity
-            android:name=".ui.search.activity.SearchFragment"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.settings.activity.SettingFragment"
-            android:exported="true" />
-        <activity
-            android:name=".ui.player.activity.PlayerFragment"
-            android:screenOrientation="portrait"/>
     </application>
 
 

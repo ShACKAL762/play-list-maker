@@ -1,6 +1,5 @@
 package com.example.playlistmaker.data.converters
 
-import android.net.Uri
 import com.example.playlistmaker.data.db.entity.AlbumDbEntity
 import com.example.playlistmaker.domain.entity.Album
 
@@ -21,7 +20,7 @@ class AlbumDbConverter {
             albumDbEntity.name,
             albumDbEntity.about,
             albumDbEntity.trackQuantity,
-            Uri.parse(albumDbEntity.imageSrc),
+            albumDbEntity.imageSrc
         )
     }
 }

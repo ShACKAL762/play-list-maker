@@ -205,9 +205,6 @@ class CreateAlbumFragment : Fragment() {
             .setTitle(requireContext().getString(R.string.end_of_create))
             .setMessage(requireContext().getString(R.string.unsaved_data_lost))
             .setNegativeButton(requireContext().getString(R.string.cancel)) { _, _ ->
-                {
-
-                }
             }
             .setPositiveButton(requireContext().getString(R.string.complete)) { _, _ ->
                 findNavController().popBackStack()
