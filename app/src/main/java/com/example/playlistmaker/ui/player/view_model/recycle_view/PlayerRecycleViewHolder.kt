@@ -23,7 +23,7 @@ class PlayerRecycleViewHolder(private val binding: AlbumViewBinding) :
         Glide
             .with(itemView)
             .load(album.imageSrc)
-            .fitCenter()
+            .centerCrop()
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(corner))
             .into(binding.trackImage)

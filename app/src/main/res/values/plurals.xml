@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="plurals_track">
+        <item quantity="one">трек</item>
+        <item quantity="few">трека</item>
+        <item quantity="other">треков</item>
+    </plurals>
+    <plurals name="plurals_minute">
+        <item quantity="one">минута</item>
+        <item quantity="few">минуты</item>
+        <item quantity="other">минут</item>
+    </plurals>
+</resources>

@@ -20,8 +20,8 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.SearchFragmentBinding
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.ui.main.view_model.MainActivityViewModel
+import com.example.playlistmaker.ui.search.recycleView.SearchRecycleAdapter
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
-import com.example.playlistmaker.ui.search.view_model.recycleView.SearchRecycleAdapter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,7 +33,7 @@ class SearchFragment : Fragment() {
         private const val SEARCH_TEXT = "SEARCH_TEXT"
         private const val TEXT_DEF = ""
         private const val CLICK_DEBOUNCE_DELAY = 300L
-        const val TRACK_ID = "TRACK_ID"
+        private const val TRACK_ID = "TRACK_ID"
     }
 
     private var tracks = mutableListOf<Track>()

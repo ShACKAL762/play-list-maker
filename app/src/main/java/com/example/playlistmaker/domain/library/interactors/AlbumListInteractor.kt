@@ -6,9 +6,15 @@ import kotlinx.coroutines.flow.Flow
 
 interface AlbumListInteractor {
     fun getAlbumList(): Flow<List<Album>>
+    fun getAlbum(albumId: Int): Flow<Album>
+
+    fun getAlbumTrackList(albumId: Int): Flow<List<Track>>
 
     suspend fun deleteAlbum(album: Album)
     suspend fun insertAlbum(album: Album):Long
     suspend fun addTrack(trackId: Track, albumId: Int) :Long
+    suspend fun deleteTrack(track: Track, albumId: Int) {
+
+    }
 
 }

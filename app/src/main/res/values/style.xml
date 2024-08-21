@@ -142,4 +142,24 @@
     <style name="PositiveMaterialAlertButtonText" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/yp_blue</item>
     </style>
+
+
+    <style name="DeleteAlertText" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="materialAlertDialogBodyTextStyle">@style/DeleteAlertBodyText</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DeletePositiveMaterialAlertButtonText</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DeleteAlertButtonText</item>
+        <item name="background">@color/yp_white</item>
+    </style>
+    <style name="DeleteAlertBodyText" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/yp_black</item>
+        <item name="android:textSize">@dimen/ys_text_18</item>
+
+    </style>
+    <style name="DeleteAlertButtonText" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/yp_black</item>
+    </style>
+    <style name="DeletePositiveMaterialAlertButtonText" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/yp_black</item>
+    </style>
 </resources>

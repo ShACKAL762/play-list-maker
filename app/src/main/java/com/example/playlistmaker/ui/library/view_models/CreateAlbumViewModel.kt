@@ -25,7 +25,8 @@ class CreateAlbumViewModel(
                     createAlbumLiveData.value?.albumName as String,
                     createAlbumLiveData.value?.about as String,
                     0,
-                    createAlbumLiveData.value?.imageSrc.toString()
+                    createAlbumLiveData.value?.imageSrc.toString(),
+                    0
                 )
             )
         }

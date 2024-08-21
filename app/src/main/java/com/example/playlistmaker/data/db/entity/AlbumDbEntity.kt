@@ -10,6 +10,7 @@ class AlbumDbEntity(
     val name: String,
     val about: String,
     val trackQuantity: Int,
-    val imageSrc: String
+    val imageSrc: String,
+    val time: Long
 ) {
 }

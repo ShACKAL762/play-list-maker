@@ -11,15 +11,17 @@ import com.example.playlistmaker.data.db.entity.AlbumDbEntity
 interface AlbumDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAlbum(albumDbEntity: AlbumDbEntity):Long
-
-    /*@Query("SELECT trackList FROM album_table WHERE name = :albumName")
-    suspend fun getTrackList(albumName:String): String*/
+    
     @Query("SELECT * FROM album_table")
     suspend fun getAlbums(): List<AlbumDbEntity>
+    @Query("SELECT * FROM album_table WHERE id = :albumId")
+    suspend fun getAlbum(albumId: Int): AlbumDbEntity
     @Delete(entity = AlbumDbEntity::class)
     suspend fun delete(albumDbEntity: AlbumDbEntity)
 
     @Query("UPDATE album_table SET trackQuantity = :trackQuantity WHERE id = :albumId")
     fun updateTrackQuantity(albumId: Int, trackQuantity:Int)
+    @Query("UPDATE album_table SET time = :timeQuantity WHERE id = :albumId")
+    fun updateTimeQuantity(albumId: Int, timeQuantity:Long)
 
 }

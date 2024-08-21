@@ -6,4 +6,5 @@ class Album(
     val about:String,
     val tracksQuantity:Int,
     var imageSrc: String?,
+    var time: Long
 )

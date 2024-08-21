@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.search.view_model.recycleView
+package com.example.playlistmaker.ui.search.recycleView
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide

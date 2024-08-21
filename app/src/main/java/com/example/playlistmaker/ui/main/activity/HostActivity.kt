@@ -29,6 +29,7 @@ class HostActivity : AppCompatActivity() {
             when(destination.id) {
                 R.id.createAlbumFragment -> bottomNavigationView.isVisible = false
                 R.id.playerActivity -> bottomNavigationView.isVisible = false
+                R.id.playListFragment -> bottomNavigationView.isVisible =false
                 else -> bottomNavigationView.isVisible = true
             }
 
