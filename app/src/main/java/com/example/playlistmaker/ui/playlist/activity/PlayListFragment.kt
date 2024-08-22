@@ -42,7 +42,7 @@ class PlayListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = PlaylistFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -54,13 +54,15 @@ class PlayListFragment : Fragment() {
         recycleInit()
         viewModel.updateAlbumState(requireArguments().getInt(ALBUM_ID))
         binding.editAlbum.setOnClickListener {
-            findNavController().navigate(R.id.action_playListFragment_to_createAlbumFragment,
+            findNavController().navigate(
+                R.id.action_playListFragment_to_createAlbumFragment,
                 bundleOf(ALBUM_ID to album.id.toString())
             )
         }
 
         binding.shareAlbum.setOnClickListener {
             share()
+            bottomSheetMenu.state = BottomSheetBehavior.STATE_HIDDEN
         }
         binding.shareButton.setOnClickListener {
             share()
@@ -72,7 +74,9 @@ class PlayListFragment : Fragment() {
             bottomSheetMenu.state = BottomSheetBehavior.STATE_HIDDEN
         }
         binding.deleteAlbum.setOnClickListener {
-            viewModel.deleteAlbum(album)
+            dialogDeleteAlbum(album)
+        }
+        binding.arrowBack.setOnClickListener {
             findNavController().popBackStack()
         }
 
@@ -89,14 +93,18 @@ class PlayListFragment : Fragment() {
         bottomSheetMenu.state = BottomSheetBehavior.STATE_HIDDEN
         bottomSheetMenu.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when(newState){
+                when (newState) {
 
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         binding.shadow.isVisible = false
                     }
-                    else ->{binding.shadow.isVisible = true}
+
+                    else -> {
+                        binding.shadow.isVisible = true
+                    }
                 }
             }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })
@@ -104,8 +112,8 @@ class PlayListFragment : Fragment() {
 
     private fun share() {
         if (trackList.isEmpty()) {
-            Toast.makeText(requireContext(), "Альбом пуст", Toast.LENGTH_SHORT).show()
-        }else{
+            Toast.makeText(requireContext(), requireContext().getString(R.string.empty_playlist), Toast.LENGTH_SHORT).show()
+        } else {
             viewModel.share()
         }
     }
@@ -121,6 +129,9 @@ class PlayListFragment : Fragment() {
             trackList.clear()
             trackList.addAll(it)
             binding.recyclerView.adapter?.notifyDataSetChanged()
+            if (trackList.isEmpty())
+                binding.emptyPlayList.isVisible = true
+            else binding.emptyPlayList.isVisible = false
         }
     }
 
@@ -158,12 +169,26 @@ class PlayListFragment : Fragment() {
 
     private fun dialogDeleteTrack(track: Track) {
         MaterialAlertDialogBuilder(requireContext(), R.style.DeleteAlertText)
+            .setTitle(requireContext().getString(R.string.delete_track_title))
+            .setMessage(requireContext().getString(R.string.delete_track))
+            .setNegativeButton(requireContext().getString(R.string.cancel)) { _, _ ->
+            }
+            .setPositiveButton(requireContext().getString(R.string.delete)) { _, _ ->
+                viewModel.deleteTrack(track)
+            }
+            .show()
+
+    }
+
+    private fun dialogDeleteAlbum(album: Album) {
+        MaterialAlertDialogBuilder(requireContext(), R.style.DeleteAlertText)
             .setTitle("")
-            .setMessage("Хотите удалить трек?")
+            .setMessage("${requireContext().getString(R.string.delete_album)} \"${album.name}\"?")
             .setNegativeButton(requireContext().getString(R.string.no)) { _, _ ->
             }
             .setPositiveButton(requireContext().getString(R.string.yes)) { _, _ ->
-                viewModel.deleteTrack(track)
+                viewModel.deleteAlbum(album)
+                findNavController().popBackStack()
             }
             .show()
     }

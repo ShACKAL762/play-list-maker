@@ -49,10 +49,6 @@ class CreateAlbumViewModel(
 
     }
 
-    fun dialog() {
-
-    }
-
     fun isEmpty(): Boolean {
         return if (createAlbumLiveData.value?.albumName?.isEmpty() == false)
             false
