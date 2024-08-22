@@ -12,12 +12,25 @@
         android:layout_height="match_parent">
 
         <ImageView
+            tools:src="@drawable/placeholder"
             android:id="@+id/albumImage"
             android:layout_width="match_parent"
             android:layout_height="360dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/arrow_back"
+            style="@style/BackArrowButton"
+            android:src="@drawable/ic_black_arrow_back"
+            android:layout_width="@dimen/back_button"
+            android:layout_height="@dimen/back_button"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
             android:id="@+id/name"
@@ -120,7 +133,7 @@
         android:orientation="vertical"
         tools:visibility="gone"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="200dp"
+        app:behavior_peekHeight="250dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -131,6 +144,14 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="12dp" />
     </LinearLayout>
+    <FrameLayout
+        android:id="@+id/shadow"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/yp_black"
+        android:alpha="0.5"
+        android:visibility="gone"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomSheetMenu"
@@ -139,6 +160,7 @@
         android:background="@drawable/bottomsheet_background"
         android:orientation="vertical"
         app:behavior_hideable="true"
+        android:clickable="true"
         app:behavior_peekHeight="300dp"
         tools:visibility="gone"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">

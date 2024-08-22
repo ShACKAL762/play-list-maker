@@ -60,5 +60,8 @@
         <action
             android:id="@+id/action_playListFragment_to_playerActivity"
             app:destination="@id/playerActivity" />
+        <action
+            android:id="@+id/action_playListFragment_to_createAlbumFragment"
+            app:destination="@id/createAlbumFragment" />
     </fragment>
 </navigation>

@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.playlistmaker.data.db.entity.AlbumDbEntity
 
 @Dao
@@ -14,6 +15,8 @@ interface AlbumDao {
     
     @Query("SELECT * FROM album_table")
     suspend fun getAlbums(): List<AlbumDbEntity>
+    @Update(onConflict = OnConflictStrategy.REPLACE, entity = AlbumDbEntity::class)
+    suspend fun updateAlbum(albumDbEntity: AlbumDbEntity)
     @Query("SELECT * FROM album_table WHERE id = :albumId")
     suspend fun getAlbum(albumId: Int): AlbumDbEntity
     @Delete(entity = AlbumDbEntity::class)

@@ -25,29 +25,40 @@ class PlayListViewModel(
     val trackListLiveData: LiveData<List<Track>> = trackListMutableLiveData
 
 
-
-    fun updateTrackList(albumId: Int){
+    fun updateTrackList(albumId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            albumListInteractor.getAlbumTrackList(albumId).collect(){
-            trackListMutableLiveData.postValue(it)
+            albumListInteractor.getAlbumTrackList(albumId).collect() {
+                trackListMutableLiveData.postValue(it)
             }
         }
     }
 
 
-    fun updateAlbumState(albumId:Int) {
+    fun updateAlbumState(albumId: Int) {
         updateTrackList(albumId)
-        viewModelScope.launch(Dispatchers.IO){
-           albumListInteractor.getAlbum(albumId).collect{
-               albumMutableLiveData.postValue(it)
-           }
+        viewModelScope.launch(Dispatchers.IO) {
+            albumListInteractor.getAlbum(albumId).collect {
+                albumMutableLiveData.postValue(it)
+            }
         }
     }
 
     fun deleteTrack(track: Track) {
-        viewModelScope.launch (Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             albumLiveData.value?.id?.let { albumListInteractor.deleteTrack(track, it) }
             albumLiveData.value?.id?.let { updateAlbumState(it) }
+        }
+    }
+
+    fun share() {
+        viewModelScope.launch {
+            albumListInteractor.share(albumLiveData.value?.id)
+        }
+    }
+
+    fun deleteAlbum(album: Album) {
+        viewModelScope.launch(Dispatchers.IO) {
+            albumListInteractor.deleteAlbum(album)
         }
     }
 }

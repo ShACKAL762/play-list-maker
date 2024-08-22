@@ -34,4 +34,12 @@ class AlbumListInteractorImpl(private val albumListRepository: AlbumListReposito
     override suspend fun deleteTrack(track: Track, albumId: Int) {
         albumListRepository.deleteTrack(track,albumId)
     }
+
+    override suspend fun updateAlbum(album: Album) {
+        albumListRepository.updateAlbum(album)
+    }
+
+    override suspend fun share(id: Int?) {
+        albumListRepository.share(id)
+    }
 }

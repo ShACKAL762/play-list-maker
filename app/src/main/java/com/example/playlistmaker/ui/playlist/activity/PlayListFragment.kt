@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -25,9 +28,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayListFragment : Fragment() {
     lateinit var binding: PlaylistFragmentBinding
-    val viewModel: PlayListViewModel by viewModel()
     lateinit var album: Album
-    val trackList = mutableListOf<Track>()
+    private val viewModel: PlayListViewModel by viewModel()
+    private val trackList = mutableListOf<Track>()
+    lateinit var bottomSheetMenu: BottomSheetBehavior<ConstraintLayout>
+
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 300L
         private const val ALBUM_ID = "albumId"
@@ -43,25 +48,66 @@ class PlayListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetMenu)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        bottomSheetMenuInit()
         observeInit()
         recycleInit()
-
-
         viewModel.updateAlbumState(requireArguments().getInt(ALBUM_ID))
-        binding.moreButton.setOnClickListener {
-
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        binding.editAlbum.setOnClickListener {
+            findNavController().navigate(R.id.action_playListFragment_to_createAlbumFragment,
+                bundleOf(ALBUM_ID to album.id.toString())
+            )
         }
 
+        binding.shareAlbum.setOnClickListener {
+            share()
+        }
         binding.shareButton.setOnClickListener {
-
+            share()
         }
+        binding.moreButton.setOnClickListener {
+            bottomSheetMenu.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+        binding.shadow.setOnClickListener {
+            bottomSheetMenu.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        binding.deleteAlbum.setOnClickListener {
+            viewModel.deleteAlbum(album)
+            findNavController().popBackStack()
+        }
+
+
 
         super.onViewCreated(view, savedInstanceState)
 
 
+    }
+
+    private fun bottomSheetMenuInit() {
+        bottomSheetMenu = BottomSheetBehavior.from(binding.bottomSheetMenu)
+
+        bottomSheetMenu.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetMenu.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when(newState){
+
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.shadow.isVisible = false
+                    }
+                    else ->{binding.shadow.isVisible = true}
+                }
+            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+        })
+    }
+
+    private fun share() {
+        if (trackList.isEmpty()) {
+            Toast.makeText(requireContext(), "Альбом пуст", Toast.LENGTH_SHORT).show()
+        }else{
+            viewModel.share()
+        }
     }
 
 
@@ -69,6 +115,7 @@ class PlayListFragment : Fragment() {
 
         viewModel.albumLiveData.observe(viewLifecycleOwner) {
             PlayListAdapter(binding).onBindPlayerHolder(it)
+            album = it
         }
         viewModel.trackListLiveData.observe(viewLifecycleOwner) {
             trackList.clear()

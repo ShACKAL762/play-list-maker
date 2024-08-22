@@ -1,6 +1,7 @@
 package com.example.playlistmaker.data.library
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -13,10 +14,13 @@ import com.example.playlistmaker.data.db.entity.AlbumsTrackDbEntity
 import com.example.playlistmaker.domain.entity.Album
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.library.repositories.AlbumListRepository
+import com.example.playlistmaker.fueches.trackFormat
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class AlbumListRepositoryImpl(
     private val appDatabase: AppDatabase,
@@ -24,6 +28,7 @@ class AlbumListRepositoryImpl(
     private val albumTrackConverter: AlbumTrackConverter,
     private val context: Context
 ) : AlbumListRepository {
+    private val timeFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
     override fun getAlbumList(): Flow<List<Album>> = flow {
         val albums = appDatabase.albumDao().getAlbums()
         emit(convertAlbum(albums))
@@ -35,11 +40,16 @@ class AlbumListRepositoryImpl(
 
     override suspend fun deleteAlbum(album: Album) {
         appDatabase.albumDao().delete(albumDbConverter.map(album))
+        appDatabase.albumTrackListDao().deleteAllAlbumTracks(album.id)
     }
 
     override suspend fun deleteTrack(track: Track, albumId: Int) {
-        appDatabase.albumTrackListDao().deleteTrack(albumTrackConverter.map(track,albumId))
-        updateDB(albumId,1)
+        appDatabase.albumTrackListDao().deleteTrack(albumTrackConverter.map(track, albumId))
+        updateDB(albumId)
+    }
+
+    override suspend fun updateAlbum(album: Album) {
+        appDatabase.albumDao().updateAlbum(albumDbConverter.map(album))
     }
 
     override suspend fun insertAlbum(album: Album): Long {
@@ -71,34 +81,61 @@ class AlbumListRepositoryImpl(
         val status =
             appDatabase.albumTrackListDao().insertTrack(albumTrackConverter.map(track, albumId))
 
-        updateDB(albumId,status)
-            return status
+        updateDB(albumId)
+        return status
     }
 
-    private suspend fun updateDB(albumId: Int,status:Long) {
-        if (status != -1L){
+    private suspend fun updateDB(albumId: Int) {
             appDatabase.albumDao()
-                .updateTrackQuantity(albumId, appDatabase.albumTrackListDao().getTracks(albumId).size)
+                .updateTrackQuantity(
+                    albumId,
+                    appDatabase.albumTrackListDao().getTracks(albumId).size)
 
             var albumTime = 0L
             val trackList = appDatabase.albumTrackListDao().getTracks(albumId)
-            for (it in trackList){
+            for (it in trackList) {
                 albumTime += it.trackTimeMillis.toLong()
             }
             appDatabase.albumDao()
                 .updateTimeQuantity(albumId, albumTime)
         }
-    }
+
 
     override fun getAlbum(albumId: Int): Flow<Album> = flow {
         emit(albumDbConverter.map(appDatabase.albumDao().getAlbum(albumId)))
     }
 
+    override suspend fun share(id: Int?) {
+        val shareData = id?.let { buildShareData(it)}
+        Intent(Intent.ACTION_SEND).let {
+            it.putExtra(
+                Intent.EXTRA_TEXT,
+            shareData)
+            it.setType("text/plain")
+            it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(it)
+        }
+    }
+
+    private suspend fun buildShareData(id: Int): String {
+        val shareAlbum =  appDatabase.albumDao().getAlbum(id)
+        val shareAlbumTrackList =appDatabase.albumTrackListDao().getTracks(id)
+        var shareData =
+            "${shareAlbum.name} \n" +
+                    "${shareAlbum.about} \n" +
+                    "${shareAlbum.trackQuantity}  ${trackFormat(shareAlbum.trackQuantity,context)}\n\n"
+        for ((index,track) in shareAlbumTrackList.withIndex()){
+            shareData = shareData.plus(
+                "${index+1}. ${track.artistName} - ${timeFormat.format(track.trackTimeMillis.toInt())}\n")
+        }
+    return shareData
+    }
 
 
     private fun convertAlbum(albums: List<AlbumDbEntity>): List<Album> {
         return albums.map { album -> albumDbConverter.map(album) }
     }
+
     private fun convertTracks(tracks: List<AlbumsTrackDbEntity>): List<Track> {
         return tracks.map { track -> albumTrackConverter.map(track) }
     }

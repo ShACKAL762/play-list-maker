@@ -39,7 +39,9 @@ class AlbumsListFragment : Fragment() {
     ): View {
         binding = AlbumFragmentBinding.inflate(inflater, container, false)
         binding.createPlayList.setOnClickListener {
-            findNavController().navigate(R.id.action_libraryFragment_to_createAlbumFragment)
+            findNavController().navigate(R.id.action_libraryFragment_to_createAlbumFragment,
+                bundleOf()
+            )
         }
         observeInit()
         recycleViewInit()

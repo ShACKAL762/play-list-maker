@@ -1,6 +1,7 @@
 package com.example.playlistmaker.ui.library.activity
 
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -25,6 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreateAlbumFragment : Fragment() {
     companion object {
+        const val ALBUM_ID = "albumId"
         fun newInstance() = CreateAlbumFragment().apply {}
     }
 
@@ -35,14 +37,20 @@ class CreateAlbumFragment : Fragment() {
     private lateinit var binding: AlbumCreateBinding
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = AlbumCreateBinding.inflate(inflater, container, false)
-
+        return binding.root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         textWatchersInit()
+        observeInit()
         binding.name.addTextChangedListener(textWatcher)
-        binding.tracksQuantity.addTextChangedListener(aboutTextWatcher)
+        binding.aboutCreate.addTextChangedListener(aboutTextWatcher)
+
+
 
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
@@ -85,7 +93,35 @@ class CreateAlbumFragment : Fragment() {
                         findNavController().popBackStack()
                 }
             })
-        return binding.root
+        checkInput()
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun observeInit() {
+        viewModel.albumLiveData.observe(viewLifecycleOwner){album->
+            binding.name.setText(album.name)
+            binding.aboutCreate.setText(album.about)
+            binding.createButton.setOnClickListener {
+                viewModel.updateAlbum(album)
+                findNavController().popBackStack()
+            }
+            if (album.imageSrc!=null)
+            binding.image.setImageURI(Uri.parse(album.imageSrc))
+            viewModel.uriCash(Uri.parse(album.imageSrc))
+            Log.e("Test", "${album.imageSrc}")
+        }
+    }
+
+    private fun checkInput() {
+        if(requireArguments().size()>0)
+            updateBinding()
+    }
+
+    private fun updateBinding() {
+        binding.title.setText("Изменение")
+        binding.createButton.setText("Сохранить")
+        requireArguments().getString(ALBUM_ID)?.toInt()?.let { viewModel.getAlbum(it) }
+
     }
 
 

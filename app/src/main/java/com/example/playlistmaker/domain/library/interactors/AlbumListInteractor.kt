@@ -13,8 +13,9 @@ interface AlbumListInteractor {
     suspend fun deleteAlbum(album: Album)
     suspend fun insertAlbum(album: Album):Long
     suspend fun addTrack(trackId: Track, albumId: Int) :Long
-    suspend fun deleteTrack(track: Track, albumId: Int) {
+    suspend fun deleteTrack(track: Track, albumId: Int)
+    suspend fun updateAlbum(album: Album)
 
-    }
+    suspend fun share(id: Int?)
 
 }
