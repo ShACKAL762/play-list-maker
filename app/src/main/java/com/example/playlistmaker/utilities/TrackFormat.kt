@@ -1,4 +1,4 @@
-package com.example.playlistmaker.fueches
+package com.example.playlistmaker.utilities
 
 import android.content.Context
 import com.example.playlistmaker.R

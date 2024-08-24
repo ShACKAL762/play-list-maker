@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.SearchFragmentBinding
 import com.example.playlistmaker.domain.entity.Track
-import com.example.playlistmaker.ui.main.view_model.MainActivityViewModel
 import com.example.playlistmaker.ui.search.recycleView.SearchRecycleAdapter
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import kotlinx.coroutines.delay
@@ -40,11 +38,9 @@ class SearchFragment : Fragment() {
 
     private lateinit var binding: SearchFragmentBinding
     private val viewModel: SearchViewModel by viewModel()
-    val mainViewModel: MainActivityViewModel by viewModels()
+    private var lastSearchRequestString = ""
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         binding = SearchFragmentBinding.inflate(layoutInflater)
@@ -71,7 +67,6 @@ class SearchFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // empty
             }
         }
         binding.searchLine.addTextChangedListener(simpleTextWatcher)
@@ -101,7 +96,7 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.searchLine.setSelection(binding.searchLine.length())
-        if (binding.searchLine.text.isEmpty()){
+        if (binding.searchLine.text.isEmpty()) {
             viewModel.setHistoryVisibleState()
         }
     }
@@ -113,28 +108,29 @@ class SearchFragment : Fragment() {
 
     private fun search(searchRequest: String) {
         binding.recyclerView.adapter?.notifyDataSetChanged()
-        viewModel.writeEnd(searchRequest)
+        if (searchRequest != lastSearchRequestString) viewModel.writeEnd(searchRequest)
     }
 
     private fun recyclerViewInit() {
         var isClickAllowed = true
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter =
-            SearchRecycleAdapter(tracks) {
+        binding.recyclerView.adapter = SearchRecycleAdapter(tracks) {
 
-                lifecycleScope.launch {
-                    if (isClickAllowed) {
-                        isClickAllowed = false
-                        viewModel.setTrack(it)
+            lifecycleScope.launch {
+                if (isClickAllowed) {
+                    isClickAllowed = false
+                    viewModel.setTrack(it)
 
-                        val bundle = bundleOf(TRACK_ID to it.trackId)
-                        findNavController().navigate(R.id.action_searchActivity_to_playerActivity,bundle)
+                    val bundle = bundleOf(TRACK_ID to it.trackId)
+                    findNavController().navigate(
+                        R.id.action_searchActivity_to_playerActivity, bundle
+                    )
 
-                        delay(CLICK_DEBOUNCE_DELAY)
-                        isClickAllowed = true
-                    }
+                    delay(CLICK_DEBOUNCE_DELAY)
+                    isClickAllowed = true
                 }
             }
+        }
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Boolean {
@@ -147,10 +143,6 @@ class SearchFragment : Fragment() {
         inputMethodManager?.hideSoftInputFromWindow(v?.windowToken, 0)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_TEXT, binding.searchLine.text.toString())
-    }
 
     private fun observeInit() {
         viewModel.searchStateLiveData.observe(viewLifecycleOwner, Observer {
@@ -167,6 +159,9 @@ class SearchFragment : Fragment() {
             tracks.addAll(it)
             binding.recyclerView.adapter?.notifyDataSetChanged()
         })
+        viewModel.searchRequestStringLiveData.observe(viewLifecycleOwner) {
+            lastSearchRequestString = it
+        }
 
     }
 }

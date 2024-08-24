@@ -1,7 +1,7 @@
-package com.example.playlistmaker.domain.search.InteractorImpl
+package com.example.playlistmaker.domain.search.interactorImpl
 
 import com.example.playlistmaker.domain.entity.SearchState
-import com.example.playlistmaker.domain.search.Interactor.SearchActivityStateInteractor
+import com.example.playlistmaker.domain.search.interactor.SearchActivityStateInteractor
 import com.example.playlistmaker.domain.search.repository.SearchActivityStateRepository
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 

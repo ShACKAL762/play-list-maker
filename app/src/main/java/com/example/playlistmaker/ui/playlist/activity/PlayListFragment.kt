@@ -27,14 +27,14 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayListFragment : Fragment() {
-    lateinit var binding: PlaylistFragmentBinding
-    lateinit var album: Album
+    private lateinit var binding: PlaylistFragmentBinding
+    private lateinit var album: Album
     private val viewModel: PlayListViewModel by viewModel()
     private val trackList = mutableListOf<Track>()
-    lateinit var bottomSheetMenu: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var bottomSheetMenu: BottomSheetBehavior<ConstraintLayout>
 
     companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 300L
+        private const val CLICK_DEBOUNCE_DELAY = 400L
         private const val ALBUM_ID = "albumId"
         const val TRACK_ID = "TRACK_ID"
     }
@@ -80,11 +80,7 @@ class PlayListFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-
-
         super.onViewCreated(view, savedInstanceState)
-
-
     }
 
     private fun bottomSheetMenuInit() {
@@ -118,7 +114,6 @@ class PlayListFragment : Fragment() {
         }
     }
 
-
     private fun observeInit() {
 
         viewModel.albumLiveData.observe(viewLifecycleOwner) {
@@ -147,42 +142,36 @@ class PlayListFragment : Fragment() {
 
                 override fun onTrackClick(track: Track) {
                     var isClickAllowed = true
+
                     lifecycleScope.launch {
                         if (isClickAllowed) {
                             isClickAllowed = false
-
-                            val bundle = bundleOf(TRACK_ID to track.trackId)
                             findNavController().navigate(
                                 R.id.action_playListFragment_to_playerActivity,
-                                bundle
+                                bundleOf(TRACK_ID to track.trackId)
                             )
                             delay(CLICK_DEBOUNCE_DELAY)
                             isClickAllowed = true
                         }
                     }
                 }
-
             }
         )
-
     }
 
     private fun dialogDeleteTrack(track: Track) {
         MaterialAlertDialogBuilder(requireContext(), R.style.DeleteAlertText)
-            .setTitle(requireContext().getString(R.string.delete_track_title))
             .setMessage(requireContext().getString(R.string.delete_track))
-            .setNegativeButton(requireContext().getString(R.string.cancel)) { _, _ ->
+            .setNegativeButton(requireContext().getString(R.string.no)) { _, _ ->
             }
-            .setPositiveButton(requireContext().getString(R.string.delete)) { _, _ ->
+            .setPositiveButton(requireContext().getString(R.string.yes)) { _, _ ->
                 viewModel.deleteTrack(track)
             }
             .show()
-
     }
 
     private fun dialogDeleteAlbum(album: Album) {
         MaterialAlertDialogBuilder(requireContext(), R.style.DeleteAlertText)
-            .setTitle("")
             .setMessage("${requireContext().getString(R.string.delete_album)} \"${album.name}\"?")
             .setNegativeButton(requireContext().getString(R.string.no)) { _, _ ->
             }

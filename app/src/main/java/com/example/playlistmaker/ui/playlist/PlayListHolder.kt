@@ -5,8 +5,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.PlaylistFragmentBinding
 import com.example.playlistmaker.domain.entity.Album
-import com.example.playlistmaker.fueches.minuteFormat
-import com.example.playlistmaker.fueches.trackFormat
+import com.example.playlistmaker.utilities.minuteFormat
+import com.example.playlistmaker.utilities.trackFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 

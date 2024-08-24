@@ -42,4 +42,8 @@ class AlbumListInteractorImpl(private val albumListRepository: AlbumListReposito
     override suspend fun share(id: Int?) {
         albumListRepository.share(id)
     }
+
+    override suspend fun getTrack(trackId: String): Flow<Track> {
+        return albumListRepository.getTrack(trackId)
+    }
 }

@@ -8,9 +8,9 @@ import com.example.playlistmaker.domain.entity.Resource
 import com.example.playlistmaker.domain.entity.SearchState
 import com.example.playlistmaker.domain.entity.Track
 import com.example.playlistmaker.domain.entity.TrackList
-import com.example.playlistmaker.domain.search.Interactor.HistoryTrackListInteractor
-import com.example.playlistmaker.domain.search.Interactor.SearchActivityStateInteractor
-import com.example.playlistmaker.domain.search.Interactor.SearchTrackListInteractor
+import com.example.playlistmaker.domain.search.interactor.HistoryTrackListInteractor
+import com.example.playlistmaker.domain.search.interactor.SearchActivityStateInteractor
+import com.example.playlistmaker.domain.search.interactor.SearchTrackListInteractor
 import com.example.playlistmaker.ui.search.view_model.view_state.SearchViewState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -34,10 +34,13 @@ class SearchViewModel(
     //Изменяемые переменные
     private val trackList = MutableLiveData<List<Track>>()
     private val searchState = MutableLiveData<SearchState>()
+    private val searchRequestString = MutableLiveData<String>()
 
     //Переменные для Observer
     val trackListLiveData: LiveData<List<Track>> = trackList
     val searchStateLiveData: LiveData<SearchState> = searchState
+    val searchRequestStringLiveData: LiveData<String> = searchRequestString
+
 
     init {
         searchState.value = stateInteractor.changeState(SViewState.DEFAULT)
@@ -96,6 +99,7 @@ class SearchViewModel(
     }
 
     fun writeEnd(searchRequest: String) {
+        searchRequestString.value = searchRequest
         searchJob?.cancel()
         if (searchRequest.isNotEmpty()) {
             render(SearchViewState.Loading)
@@ -124,7 +128,6 @@ class SearchViewModel(
 
 
     private fun search(searchRequest: String): Flow<Resource<TrackList>> {
-
         return searchTrackListInteractor
             .getTrackListResponse(ITUNES_URL, searchRequest)
 

@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui.library.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,7 +81,6 @@ class AlbumsListFragment : Fragment() {
     }
 
     override fun onResume() {
-        Log.e("On", "Resume")
         viewModel.updateAlbumList()
         binding.recyclerView.adapter?.notifyDataSetChanged()
         super.onResume()

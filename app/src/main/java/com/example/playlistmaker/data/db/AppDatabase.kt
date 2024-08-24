@@ -6,7 +6,7 @@ import com.example.playlistmaker.data.db.entity.AlbumDbEntity
 import com.example.playlistmaker.data.db.entity.AlbumsTrackDbEntity
 import com.example.playlistmaker.data.db.entity.TrackDbEntity
 
-@Database(version = 5, entities = [TrackDbEntity::class,AlbumDbEntity::class,AlbumsTrackDbEntity::class], exportSchema = false)
+@Database(version = 6, entities = [TrackDbEntity::class,AlbumDbEntity::class,AlbumsTrackDbEntity::class], exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun trackDao(): TrackDao
     abstract fun albumDao(): AlbumDao

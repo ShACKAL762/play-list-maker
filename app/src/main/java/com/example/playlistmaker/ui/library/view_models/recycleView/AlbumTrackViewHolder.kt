@@ -6,7 +6,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.AlbumCardViewBinding
 import com.example.playlistmaker.domain.entity.Album
-import com.example.playlistmaker.fueches.trackFormat
+import com.example.playlistmaker.utilities.trackFormat
 
 class AlbumTrackViewHolder(private val binding:AlbumCardViewBinding) : RecyclerView.ViewHolder(binding.root){
     private val corner by lazy { itemView.resources.getDimension(R.dimen.album_corner_radius).toInt() }
@@ -22,8 +22,8 @@ class AlbumTrackViewHolder(private val binding:AlbumCardViewBinding) : RecyclerV
         Glide
             .with(itemView)
             .load(album.imageSrc)
-            .fitCenter()
             .placeholder(R.drawable.placeholder)
+            .centerCrop()
             .transform(RoundedCorners(corner))
             .into(binding.cardImage)
 

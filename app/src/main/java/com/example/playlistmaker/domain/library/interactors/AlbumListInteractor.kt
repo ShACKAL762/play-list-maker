@@ -17,5 +17,5 @@ interface AlbumListInteractor {
     suspend fun updateAlbum(album: Album)
 
     suspend fun share(id: Int?)
-
+    suspend fun getTrack(trackId: String): Flow<Track>
 }

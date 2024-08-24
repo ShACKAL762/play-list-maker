@@ -45,13 +45,12 @@ open class CreateAlbumFragment : Fragment() {
         binding = AlbumCreateBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         textWatchersInit()
         observeInit()
         binding.name.addTextChangedListener(textWatcher)
         binding.aboutCreate.addTextChangedListener(aboutTextWatcher)
-
-
 
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
@@ -98,16 +97,18 @@ open class CreateAlbumFragment : Fragment() {
     }
 
 
-
     private fun checkInput() {
-        if(requireArguments().size()>0) {
+        if (requireArguments().size() > 0) {
             updateBinding()
             binding.image.background = AppCompatResources.getDrawable(
                 requireContext(),
                 R.drawable.placeholder
             )
-        }else
-            binding.image.background = AppCompatResources.getDrawable(requireContext(),R.drawable.album_create_placeholder)
+        } else
+            binding.image.background = AppCompatResources.getDrawable(
+                requireContext(),
+                R.drawable.album_create_placeholder
+            )
     }
 
     private fun updateBinding() {
@@ -116,15 +117,15 @@ open class CreateAlbumFragment : Fragment() {
         requireArguments().getString(ALBUM_ID)?.toInt()?.let { viewModel.getAlbum(it) }
         binding.arrowBack.setOnClickListener { findNavController().popBackStack() }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object :OnBackPressedCallback(true){
+            object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                   findNavController().popBackStack()
+                    findNavController().popBackStack()
                 }
             })
     }
 
     private fun observeInit() {
-        viewModel.albumLiveData.observe(viewLifecycleOwner){album->
+        viewModel.albumLiveData.observe(viewLifecycleOwner) { album ->
             binding.name.setText(album.name)
             binding.aboutCreate.setText(album.about)
             binding.createButton.setOnClickListener {
@@ -134,11 +135,13 @@ open class CreateAlbumFragment : Fragment() {
             binding.image.setImageURI(Uri.parse(album.imageSrc))
             viewModel.uriCash(Uri.parse(album.imageSrc))
 
+        }
     }
-    }
+
     private fun buttonStateCheck(s: CharSequence?) {
         binding.createButton.isEnabled = !s.isNullOrEmpty()
     }
+
     private fun checkState(border: TextInputLayout, s: CharSequence?) {
         if (!s.isNullOrEmpty()) {
             border.defaultHintTextColor =
@@ -247,7 +250,7 @@ open class CreateAlbumFragment : Fragment() {
     }
 
     fun dialog() {
-        MaterialAlertDialogBuilder(requireContext(), R.style.MatrialAlertText)
+        MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertText)
             .setTitle(requireContext().getString(R.string.end_of_create))
             .setMessage(requireContext().getString(R.string.unsaved_data_lost))
             .setNegativeButton(requireContext().getString(R.string.cancel)) { _, _ ->

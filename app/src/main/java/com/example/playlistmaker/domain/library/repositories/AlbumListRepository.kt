@@ -15,5 +15,6 @@ interface AlbumListRepository {
     suspend fun addTrack(track: Track, albumId: Int):Long
     suspend fun deleteTrack(track: Track, albumId: Int)
     suspend fun updateAlbum(album: Album)
+    fun getTrack(trackId: String): Flow<Track>
 
 }

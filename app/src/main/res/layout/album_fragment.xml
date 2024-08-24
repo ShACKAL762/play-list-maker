@@ -5,20 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/createPlayList"
+        android:id="@+id/create_play_list"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
         android:text="@string/new_album"
         style="@style/SearchMessageButton"/>
     <ImageView
-        android:id="@+id/placeHolder"
+        android:id="@+id/place_holder"
         android:layout_width="@dimen/image_120"
         android:layout_height="@dimen/image_120"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/library_placeholder_margin_top"
         android:src="@drawable/place_holder_not_found"/>
     <TextView
-        android:id="@+id/placeHolderText"
+        android:id="@+id/place_holder_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -29,7 +29,7 @@
         android:gravity="center"
         />
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="76dp"
