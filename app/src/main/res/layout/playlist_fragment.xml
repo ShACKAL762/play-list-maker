@@ -127,7 +127,7 @@
             android:layout_width="@dimen/icon_size_24x24"
             android:layout_height="@dimen/icon_size_24x24"
             android:layout_marginStart="@dimen/margin_16"
-            android:layout_marginBottom="@dimen/space_4"
+            android:layout_marginBottom="@dimen/space_24"
             android:clickable="true"
             android:src="@drawable/ic_more_button"
             app:layout_constraintBottom_toBottomOf="parent"
