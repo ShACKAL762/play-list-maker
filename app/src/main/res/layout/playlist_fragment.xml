@@ -114,8 +114,8 @@
 
         <ImageView
             android:id="@+id/share_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/space_24"
+            android:layout_height="@dimen/space_24"
             android:clickable="true"
             android:src="@drawable/ic_black_share"
 
@@ -161,7 +161,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/space_24"
             android:baselineAligned="false" />
     </LinearLayout>
 

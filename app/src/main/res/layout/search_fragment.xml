@@ -104,7 +104,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/clean_history_button"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/space_24"
             android:layout_marginBottom="20dp"
             android:text="@string/clean_history"
             android:visibility="gone"
@@ -164,7 +164,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/refresh"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/space_24"
             android:text="@string/refresh"
             android:padding="1dp"
             style="@style/SearchMessageButton">

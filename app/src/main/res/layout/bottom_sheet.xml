@@ -34,7 +34,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/create_play_list"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/space_24"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"/>
 

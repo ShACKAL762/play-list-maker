@@ -16,7 +16,7 @@
     <TextView
         android:id="@+id/track_name"
         style="@style/TrackText"
-        tools:text = "aaaaasssssssssssssssssssssssssssssssssssssssssssssssssss"
+        tools:text = "NameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNam"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:layout_marginStart="66dp"
@@ -42,7 +42,7 @@
             android:layout_height="match_parent"
             android:ellipsize="end"
             android:maxLines="1"
-            tools:text = "asdasdadsasdasdadasdasdasdadsadasdasdasdasdasdasdsasdasd"
+            tools:text = "TextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextText"
             style="@style/TrackText"/>
 
 
@@ -54,7 +54,7 @@
 
         <TextView
             android:id="@+id/time"
-            tools:text= "wwwwwwwwwwwwwwwwwwwwww"
+            tools:text= "TimeTimeTimeTimeTimeTimeTime"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
