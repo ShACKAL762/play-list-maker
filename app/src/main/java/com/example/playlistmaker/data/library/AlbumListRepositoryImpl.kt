@@ -173,7 +173,7 @@ class AlbumListRepositoryImpl(
                     }\n\n"
         for ((index, track) in shareAlbumTrackList.withIndex()) {
             shareData = shareData.plus(
-                "${index + 1}. ${track.artistName} - ${timeFormat.format(track.trackTimeMillis.toInt())}\n"
+                "${index + 1}. ${track.artistName} - ${track.trackName} (${timeFormat.format(track.trackTimeMillis.toInt())})\n"
             )
         }
         return shareData

@@ -12,7 +12,7 @@ import java.util.Locale
 
 class PlayListHolder (private val binding: PlaylistFragmentBinding){
     private val corner by lazy { binding.root.resources.getDimension(R.dimen.corner_radius).toInt() }
-    private val timeFormat by lazy { SimpleDateFormat("mm", Locale.getDefault()) }
+    private val timeFormat by lazy { SimpleDateFormat("m", Locale.getDefault()) }
     fun bind(album: Album) {
         val trackQuantity = "${album.tracksQuantity} ${trackFormat(album.tracksQuantity,binding.root.context)}"
         val minuteQuantity = "${timeFormat.format(album.time)} ${minuteFormat(timeFormat.format(album.time).toInt(),binding.root.context)}"

@@ -48,7 +48,6 @@ class PlayListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         bottomSheetMenuInit()
         observeInit()
         recycleInit()
@@ -108,7 +107,11 @@ class PlayListFragment : Fragment() {
 
     private fun share() {
         if (trackList.isEmpty()) {
-            Toast.makeText(requireContext(), requireContext().getString(R.string.empty_playlist), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                requireContext().getString(R.string.empty_playlist),
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
             viewModel.share()
         }
