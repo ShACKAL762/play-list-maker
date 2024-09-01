@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <plurals name="pluals_1">
-        <item quantity="one"> трек</item>
-        <item quantity="few"> трека</item>
-        <item quantity="other"> треков</item>
-    </plurals>
-</resources>

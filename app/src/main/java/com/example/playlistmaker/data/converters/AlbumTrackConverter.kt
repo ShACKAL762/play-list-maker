@@ -4,8 +4,26 @@ import com.example.playlistmaker.data.db.entity.AlbumsTrackDbEntity
 import com.example.playlistmaker.domain.entity.Track
 
 class AlbumTrackConverter {
+    fun map(track: Track, albumId: Int, index: Long): AlbumsTrackDbEntity {
+        return AlbumsTrackDbEntity(
+            index,
+            albumId,
+            track.trackId,
+            track.trackName,
+            track.artistName,
+            track.trackTimeMillis,
+            track.artworkUrl100,
+            track.collectionName,
+            track.releaseDate,
+            track.primaryGenreName,
+            track.country,
+            track.previewUrl,
+            track.isFavorite
+        )
+    }
     fun map(track: Track, albumId: Int): AlbumsTrackDbEntity {
         return AlbumsTrackDbEntity(
+            null,
             albumId,
             track.trackId,
             track.trackName,

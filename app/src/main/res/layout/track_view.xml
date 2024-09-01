@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    xmlns:tool="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:backgroundTint="@android:color/transparent">
 
     <ImageView
@@ -10,15 +10,20 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="13dp"/>
+        android:layout_marginStart="13dp"
+        tools:src = "@drawable/placeholder"/>
 
     <TextView
         android:id="@+id/track_name"
         style="@style/TrackText"
-        android:layout_width="250dp"
+        tools:text = "NameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNameNam"
+        android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:layout_marginStart="66dp"
         android:layout_marginTop="14dp"
+        android:layout_marginEnd="40dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="?android:textColor"
         android:textSize="@dimen/ys_text_16" />
 
@@ -32,23 +37,24 @@
 
         <TextView
             android:id="@+id/author_name"
-
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:maxEms="16"
             android:ellipsize="end"
             android:maxLines="1"
+            tools:text = "TextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextText"
             style="@style/TrackText"/>
 
 
         <ImageView
+
             android:layout_width="13dp"
             android:layout_height="13dp"
             android:src="@drawable/ic_point"/>
 
         <TextView
             android:id="@+id/time"
-
+            tools:text= "15:15"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             style="@style/TrackText"/>

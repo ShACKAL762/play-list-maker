@@ -6,7 +6,7 @@
     <string name="dark_theme">Темная тема</string>
     <string name="share_app">Поделиться приложением</string>
     <string name="support_send">Написать в поддержку</string>
-    <string name="EULA">Пользовательское соглашение</string>
+    <string name="eula">Пользовательское соглашение</string>
     <string name="back">back</string>
     <string name="uri_of_course">https://practicum.yandex.ru/android-developer/</string>
     <string name="mail">Cer.97@yandex.ru</string>
@@ -31,8 +31,8 @@
     <string name="new_album">Новый плейлист</string>
     <string name="favorite_tracks">Избранные треки</string>
     <string name="albums">Плейлисты</string>
-    <string name="new_playlist">Новый плейлист</string>
-    <string name="Album_name">Название*</string>
+    <string name="new_playlist">Новый плейлист </string>
+    <string name="album_name">Название*</string>
     <string name="about">Описание</string>
     <string name="create">Создать</string>
     <string name="track3">треков</string>
@@ -47,4 +47,16 @@
     <string name="created">создан</string>
     <string name="track_added_yet">Трек уже добавлен в плейлист</string>
     <string name="track_added">Добавлено в плейлист</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="delete">Удалить</string>
+    <string name="delete_track_title">"Удалить трек?"</string>
+    <string name="delete_track">"Хотите удалить трек?"</string>
+    <string name="delete_album">"Хотите удалить плейлист"</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Сохранить</string>
+    <string name="share">Поделиться</string>
+    <string name="edit_information">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="empty_playlist">Плейлист пуст</string>
 </resources>

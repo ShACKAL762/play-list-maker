@@ -22,15 +22,15 @@ class PlayerViewModel(
     private val favoriteListInteractor: FavoriteListInteractor,
     private val albumListInteractor: AlbumListInteractor,
     private val playerInteractor: MediaPlayerInteractor,
-    private val playerTrackInteractor: TrackListInteractor
+    private val playerTrackInteractor: TrackListInteractor,
 ) : ViewModel() {
 
     companion object {
         private const val TIMER_DELAY_MILLS = 300L
+
     }
 
     private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault()) }
-
 
     private val currentTime = MutableLiveData<String>()
     private val likeStatePlay = MutableLiveData<Boolean>()
@@ -48,10 +48,27 @@ class PlayerViewModel(
     val insertStatusLiveData: LiveData<InsertState> = insertStatus
 
     private var timerJob: Job? = null
+    private val dispatchersIO = Dispatchers.IO
+    init {
+        trackData.value = Track(
+            "",
+            "",
+            "0",
+            "",
+            "",
+            "2000",
+            "",
+            "",
+            "",
+            "",
+
+        )
+    }
 
 
     private fun preparePlayer(track: Track?) {
-        if (track != null) {
+        if (track != null)
+        if (track.previewUrl.isNotEmpty()){
             playerInteractor.playerPrepare(track.previewUrl)
             renderPlayerState()
             timerJob?.cancel()
@@ -133,31 +150,39 @@ class PlayerViewModel(
 
     fun prepareTrack(trackId: String) {
         viewModelScope.launch {
+            viewModelScope.launch(dispatchersIO) {
+                albumListInteractor.getTrack(trackId).collect {
+                    trackData.postValue(it)
+                }
+            }
+
+            if (trackData.value?.trackId?.isEmpty() == true) {
+                favoriteListInteractor.getFavoriteList().collect {
+                    it.forEach { track ->
+                        if (track.trackId == trackId)
+                            trackData.value = track
+                    }
+                }
+            }
+
+            if (trackData.value?.trackId?.isEmpty() == true) {
+                trackData.value = playerTrackInteractor.getTrack()
+            }
             favoriteListInteractor.getFavoriteList().collect {
-                it.forEach { track ->
-                    if (track.trackId == trackId) {
-                        trackData.value = track
+                it.forEach { favoriteTrack ->
+                    if (trackData.value?.trackId == favoriteTrack.trackId) {
+                        trackData.value?.isFavorite = true
                     }
                 }
+                likeStatePlay.value = trackData.value?.isFavorite
             }
-            if (trackData.value == null) {
-                favoriteListInteractor.getFavoriteIdList().collect {
-                    val historyTrack = playerTrackInteractor.getTrack()
-                    it.forEach { trackId ->
-                        if (trackId == historyTrack.trackId) {
-                            historyTrack.isFavorite = true
-                        }
-                    }
-                    trackData.value = historyTrack
-                }
-            }
-            preparePlayer(trackData.value)
-            likeStatePlay.value = trackData.value?.isFavorite
+        preparePlayer(trackData.value)
         }
+
     }
 
     fun insertTrack(it: Album) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatchersIO) {
             if (trackData.value != null && it.id != null) {
                 val track = trackData.value as Track
 

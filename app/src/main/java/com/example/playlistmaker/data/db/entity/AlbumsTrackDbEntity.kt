@@ -4,6 +4,7 @@ import androidx.room.Entity
 
 @Entity(tableName = "album_track_list_table", primaryKeys = ["albumId", "trackId"])
 class AlbumsTrackDbEntity(
+    var index: Long?,
     var albumId: Int,
     var trackId: String,
     var trackName: String, // Название композиции)

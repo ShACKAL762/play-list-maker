@@ -23,12 +23,13 @@ class HostActivity : AppCompatActivity() {
         setContentView(binding.root)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
         val navController = navHostFragment.navController
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
         bottomNavigationView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener{_, destination,_ ->
             when(destination.id) {
                 R.id.createAlbumFragment -> bottomNavigationView.isVisible = false
                 R.id.playerActivity -> bottomNavigationView.isVisible = false
+                R.id.playListFragment -> bottomNavigationView.isVisible =false
                 else -> bottomNavigationView.isVisible = true
             }
 

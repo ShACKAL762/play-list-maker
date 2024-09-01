@@ -11,6 +11,14 @@ class AlbumListInteractorImpl(private val albumListRepository: AlbumListReposito
         return albumListRepository.getAlbumList()
     }
 
+    override fun getAlbum(albumId: Int): Flow<Album> {
+       return albumListRepository.getAlbum(albumId)
+    }
+
+    override fun getAlbumTrackList(albumId: Int): Flow<List<Track>>{
+      return albumListRepository.getTrackList(albumId)
+    }
+
     override suspend fun deleteAlbum(album: Album){
         albumListRepository.deleteAlbum(album)
     }
@@ -21,5 +29,21 @@ class AlbumListInteractorImpl(private val albumListRepository: AlbumListReposito
 
     override suspend fun addTrack(trackId: Track, albumId: Int): Long {
         return albumListRepository.addTrack(trackId,albumId)
+    }
+
+    override suspend fun deleteTrack(track: Track, albumId: Int) {
+        albumListRepository.deleteTrack(track,albumId)
+    }
+
+    override suspend fun updateAlbum(album: Album) {
+        albumListRepository.updateAlbum(album)
+    }
+
+    override suspend fun share(id: Int?) {
+        albumListRepository.share(id)
+    }
+
+    override suspend fun getTrack(trackId: String): Flow<Track> {
+        return albumListRepository.getTrack(trackId)
     }
 }

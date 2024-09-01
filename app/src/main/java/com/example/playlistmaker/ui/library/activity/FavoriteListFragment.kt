@@ -1,7 +1,6 @@
 package com.example.playlistmaker.ui.library.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,7 +57,6 @@ class FavoriteListFragment : Fragment() {
                 lifecycleScope.launch {
                     if (isClickAllowed) {
                         isClickAllowed = false
-                        Log.e("Test", it.trackName)
 
                         val bundle = bundleOf(TRACK_ID to it.trackId)
                         findNavController().navigate(R.id.action_libraryFragment_to_playerActivity,bundle)

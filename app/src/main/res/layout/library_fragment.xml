@@ -30,18 +30,18 @@
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimaryVariant"
         app:tabIndicator="@drawable/tab_indicator"
         app:tabIndicatorFullWidth="false"
         app:tabIndicatorColor="?attr/colorOnPrimary"
-        app:tabTextAppearance="@style/tabText"
+        app:tabTextAppearance="@style/TabText"
         app:tabTextColor="?attr/colorOnPrimary" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

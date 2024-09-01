@@ -10,7 +10,8 @@ class AlbumDbConverter {
             album.name,
             album.about,
             album.tracksQuantity,
-            album.imageSrc.toString()
+            album.imageSrc.toString(),
+            album.time
         )
     }
 
@@ -20,7 +21,8 @@ class AlbumDbConverter {
             albumDbEntity.name,
             albumDbEntity.about,
             albumDbEntity.trackQuantity,
-            albumDbEntity.imageSrc
+            albumDbEntity.imageSrc,
+            albumDbEntity.time
         )
     }
 }

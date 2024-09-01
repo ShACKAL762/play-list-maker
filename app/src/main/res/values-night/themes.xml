@@ -13,7 +13,6 @@
         <!-- icons. -->
         <item name="colorOnSecondary">@color/yp_white</item>
 
-
         <item name="colorTertiary">@color/yp_white</item>
         <item name="android:textColor">@color/yp_white</item>
 
