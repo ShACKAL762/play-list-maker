@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -41,8 +42,9 @@ class PlayerFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
+        viewModel.prepareTrack(requireArguments().getString(TRACK_ID).toString())
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -51,15 +53,15 @@ class PlayerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         playerAdapter = PlayerAdapter(binding)
-        viewModel.prepareTrack(requireArguments().getString(TRACK_ID).toString())
-
         observeInit()
         recyclerViewInit()
 
         bottomSheet = BottomSheetBehavior.from(binding.bottomSheet)
         bottomSheet.state = BottomSheetBehavior.STATE_HIDDEN
         binding.createPlayList.setOnClickListener {
-            findNavController().navigate(R.id.action_playerActivity_to_createAlbumFragment)
+            findNavController().navigate(R.id.action_playerActivity_to_createAlbumFragment,
+                bundleOf()
+            )
         }
 
         binding.play.setOnClickListener {

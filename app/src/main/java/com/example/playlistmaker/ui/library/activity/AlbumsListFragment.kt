@@ -1,10 +1,10 @@
 package com.example.playlistmaker.ui.library.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AlbumsListFragment : Fragment() {
     companion object {
+        const val ALBUM_ID = "albumId"
         const val CLICK_DEBOUNCE_DELAY = 2000L
         fun newInstance() = AlbumsListFragment().apply {}
     }
@@ -37,7 +38,9 @@ class AlbumsListFragment : Fragment() {
     ): View {
         binding = AlbumFragmentBinding.inflate(inflater, container, false)
         binding.createPlayList.setOnClickListener {
-            findNavController().navigate(R.id.action_libraryFragment_to_createAlbumFragment)
+            findNavController().navigate(R.id.action_libraryFragment_to_createAlbumFragment,
+                bundleOf()
+            )
         }
         observeInit()
         recycleViewInit()
@@ -51,7 +54,7 @@ class AlbumsListFragment : Fragment() {
             albums.addAll(it)
             binding.recyclerView.adapter?.notifyDataSetChanged()
         }
-        viewModel.albumListViewStateLiveData.observe(viewLifecycleOwner){
+        viewModel.albumListViewStateLiveData.observe(viewLifecycleOwner) {
             binding.recyclerView.isVisible = it
             binding.placeHolder.isVisible = !it
             binding.placeHolderText.isVisible = !it
@@ -64,6 +67,9 @@ class AlbumsListFragment : Fragment() {
         binding.recyclerView.adapter =
             AlbumRecycleAdapter(albums) {
 
+                findNavController().navigate(R.id.action_libraryFragment_to_playListFragment,
+                    bundleOf(ALBUM_ID to it.id)
+                )
                 lifecycleScope.launch {
                     if (isClickAllowed) {
                         isClickAllowed = false
@@ -75,7 +81,6 @@ class AlbumsListFragment : Fragment() {
     }
 
     override fun onResume() {
-        Log.e("On","Resume")
         viewModel.updateAlbumList()
         binding.recyclerView.adapter?.notifyDataSetChanged()
         super.onResume()

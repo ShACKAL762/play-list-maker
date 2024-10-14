@@ -4,6 +4,6 @@ import com.example.playlistmaker.domain.entity.Track
 
 interface TrackListInteractor {
     fun getTrackList():List<Track>
-    fun getTrack(): Track
+    fun getTrack(): Track?
 
 }

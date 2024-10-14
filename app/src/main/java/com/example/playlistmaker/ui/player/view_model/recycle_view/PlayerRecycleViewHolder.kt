@@ -6,7 +6,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.AlbumViewBinding
 import com.example.playlistmaker.domain.entity.Album
-import com.example.playlistmaker.fueches.trackFormat
+import com.example.playlistmaker.utilities.trackFormat
 
 class PlayerRecycleViewHolder(private val binding: AlbumViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -23,7 +23,7 @@ class PlayerRecycleViewHolder(private val binding: AlbumViewBinding) :
         Glide
             .with(itemView)
             .load(album.imageSrc)
-            .fitCenter()
+            .centerCrop()
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(corner))
             .into(binding.trackImage)

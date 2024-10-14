@@ -14,11 +14,19 @@ interface AlbumTrackListDao {
 
     @Query("SELECT * FROM album_track_list_table WHERE albumId =:albumId ")
     suspend fun getTracks(albumId:Int): List<AlbumsTrackDbEntity>
+    @Query("SELECT * FROM album_track_list_table ")
+    suspend fun getTracks(): List<AlbumsTrackDbEntity>
 
-    @Query("SELECT trackId FROM album_track_list_table")
-    suspend fun getTracksId(): List<String>
 
     @Delete(entity = AlbumsTrackDbEntity::class)
     suspend fun deleteTrack(track: AlbumsTrackDbEntity)
+    @Query("DELETE FROM album_track_list_table WHERE trackId =:trackId")
+    suspend fun deleteTrack(trackId:String)
+    @Query("DELETE FROM album_track_list_table WHERE albumId =:id")
+    suspend fun deleteAllAlbumTracks(id: Int?)
+    @Query("SELECT * FROM album_track_list_table WHERE trackId =:trackId ")
+    fun getTrack(trackId: String) : AlbumsTrackDbEntity?
+    @Query("SELECT `index` FROM album_track_list_table ORDER BY `index` DESC LIMIT 1")
+    fun getMaxIndex():Long?
 
 }

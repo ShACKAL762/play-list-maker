@@ -14,7 +14,9 @@ class HistoryRepository (private val context: Context, private val gson: Gson) :
         return getHistoryList()
     }
 
-    override fun getTrack(): Track {
+    override fun getTrack(): Track? {
+        if (getHistoryList().isEmpty())
+            return null
         return getHistoryList().first()
     }
 
@@ -23,8 +25,10 @@ class HistoryRepository (private val context: Context, private val gson: Gson) :
             .getString(historyPref, "")
         var historyList: MutableList<Track> = mutableListOf()
         if (!history.equals("")) {
-            historyList = gson.fromJson(history, History::class.java).list//
+            historyList = gson.fromJson(history, History::class.java).list
         }
+        if (history.isNullOrEmpty())
+            return mutableListOf()
         return historyList
     }
 
